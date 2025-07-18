@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 
 import App from "../App";
-import { SignIn, SignUp, NotFound, TeacherLayout, AdminLayout, Worker, SingleGroup, StudentLayout, Groups, LayoutProtect, LoginProtect } from "@pages";
+import { SignIn, SignUp, NotFound, TeacherLayout, AdminLayout, Worker, SingleGroup,Student, StudentLayout, Groups, LayoutProtect, LoginProtect, Curs } from "@pages";
 const Router = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -16,8 +16,15 @@ const Router = () => {
         
         {/* ADMIN LAYOUT */}
         <Route path="admin" element={<LayoutProtect><AdminLayout/></LayoutProtect>}>
-         <Route index element={<Groups/>}/>
+         <Route path="groups" element={<Groups/>}/>
          <Route path="group/:id" element={<SingleGroup/>}/>
+         <Route path="students" element={<Student/>}/>
+         <Route path="teachers" element={<TeacherLayout/>} />
+         <Route path="courses" element={<Curs/>} />
+        <Route path="*" element={<NotFound/>}/>
+
+
+
         </Route>
 
         {/* TEACHER LAYOUT */}

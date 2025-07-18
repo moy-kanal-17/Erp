@@ -8,7 +8,7 @@ import { groupFormSchema } from "@utils";
 import { useCourse, useGroup } from "@hooks";
 
 interface GroupProps extends ModalProps {
-  update: Group 
+  update: Group;
 }
 
 const GroupModal = ({ open, toggle, update }: GroupProps) => {
@@ -27,8 +27,8 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
       name: "",
       status: "",
       course_id: undefined,
-      start_date: null,
-      end_date: null,
+      start_date: "2025-06-30",
+      end_date: "2025-06-30",
     },
   });
 

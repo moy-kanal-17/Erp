@@ -9,7 +9,7 @@ export const useGroup = (params: ParamsType, id?: number) => {
     queryFn: async () => groupService.getGroups(params),
   });
   const groupStudentsQuery = useQuery({
-    queryKey: ["group-students", params],
+    queryKey: ["groups", params],
     queryFn: async () => groupService.getGroupStudents(params, id!),
   });
   const students = groupStudentsQuery.data;
@@ -21,6 +21,19 @@ export const useGroup = (params: ParamsType, id?: number) => {
         queryClient.invalidateQueries({ queryKey: ["groups"] });
       },
     });
+  };
+  const useGroupByid = (params: ParamsType, id: number) => {
+    const queryClient = useQueryClient();
+    const { data } = useQuery({
+      queryKey: ["groups", params],
+      queryFn: async () => groupService.getGroupStudents(params,id),
+    });
+    const groupStudentsQuery = useQuery({
+      queryKey: ["groups", params],
+      queryFn: async () => groupService.getGroupStudents(params, id!),
+    });
+    const students = groupStudentsQuery.data;
+    return students
   };
   const useGroupUpdate = () => {
     return useMutation({
@@ -39,12 +52,13 @@ export const useGroup = (params: ParamsType, id?: number) => {
     });
   };
 
-    // Return the data and mutation hooks
+  // Return the data and mutation hooks
   return {
     data,
     students,
     useGroupCreate,
     useGroupUpdate,
     useGroupDelete,
+    useGroupByid
   };
 };

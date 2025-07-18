@@ -14,10 +14,12 @@ export const groupService = {
         const res = await apiConfig().postRequest(ApiUrls.GROUPS, model)
         return res
     },
-    async updateGroup(model:Group):Promise<any>{
-        const res = await apiConfig().patchRequest(`${ApiUrls.GROUPS}/${model.id}`, model)
-        return res
-    },
+  async updateGroup(model: Group): Promise<any> {
+  const { id, ...body } = model;
+  const res = await apiConfig().patchRequest(`${ApiUrls.GROUPS}/${id}`, body);
+  return res;
+}
+,
     async deleteGroup(id: number):Promise<any>{
         const res = await apiConfig().deleteRequest(`${ApiUrls.GROUPS}/${id}`)
         return res
