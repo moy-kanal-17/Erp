@@ -10,20 +10,22 @@ import {
   UserOutlined,
   GlobalOutlined,
   CodeOutlined,
+  BranchesOutlined,
+  ReadOutlined,
 } from '@ant-design/icons';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { clearStorage } from '@helpers'; // Предполагаю, что у тебя есть этот хелпер
+import { clearStorage } from '@helpers'; 
 
 const { Header, Sider, Content } = Layout;
 
 const Admin = () => {
   const navigate = useNavigate();
-  const [language, setLanguage] = useState('en'); // Для переключения языка
-  const [projects, setProjects] = useState([]); // Для хранения проектов
-  const [newProject, setNewProject] = useState(''); // Для добавления нового проекта
+  const [language, setLanguage] = useState('en');
+  const [projects, setProjects] = useState([]); 
+  const [newProject, setNewProject] = useState('');
   const isMounted = useRef(true);
 
-  // Локализация
+
   const translations = useMemo(() => ({
     en: {
       dashboard: 'Dashboard',
@@ -51,7 +53,6 @@ const Admin = () => {
     },
   }), []);
 
-  // Обработчик кликов по меню
   const handleMenuClick = useCallback((e:any) => {
     switch (e.key) {
       case '1':
@@ -76,19 +77,29 @@ const Admin = () => {
         clearStorage();
         navigate('/');
         break;
+
+      case '8':
+        navigate('/admin/branch');
+        break;
+
+
+      case '9':
+        navigate('/admin/rooms');
+        break;
+      
       default:
         break;
     }
   }, [navigate]);
 
-  // Переключение языка
+
   const handleLanguageChange = useCallback((value:string) => {
     setLanguage(value);
   }, []);
 
 
 
-  // Проверка токена
+
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (!token) {
@@ -152,6 +163,20 @@ const Admin = () => {
                 icon: <CodeOutlined />,
                 label: translations[language].projects,
               },
+
+                            {
+                key: '8',
+                icon: <BranchesOutlined />,
+                label: "Branchs",
+              },
+
+
+                                          {
+                key: '9',
+                icon: <ReadOutlined />,
+                label: "Rooms",
+              },
+
               {
                 key: '7',
                 icon: <LogoutOutlined />,
@@ -233,64 +258,64 @@ const ContentWrapper = styled(Content)`
   box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
 `;
 
-const ProjectSection = styled.div`
-  h3 {
-    font-size: 1.6rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: #d1c2ff;
-  }
+// const ProjectSection = styled.div`
+//   h3 {
+//     font-size: 1.6rem;
+//     font-weight: 600;
+//     margin-bottom: 1rem;
+//     color: #d1c2ff;
+//   }
 
-  p {
-    color: #9ca3af;
-    font-size: 1rem;
-  }
-`;
+//   p {
+//     color: #9ca3af;
+//     font-size: 1rem;
+//   }
+// `;
 
-const ProjectForm = styled.div`
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 2rem;
+// const ProjectForm = styled.div`
+//   display: flex;
+//   gap: 1rem;
+//   margin-bottom: 2rem;
 
-  input {
-    border-radius: 0.75rem;
-    border: 1px solid #374151;
-    background: rgba(31, 41, 55, 0.9);
-    padding: 0.75rem;
-    color: #f3f4f6;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-  }
+//   input {
+//     border-radius: 0.75rem;
+//     border: 1px solid #374151;
+//     background: rgba(31, 41, 55, 0.9);
+//     padding: 0.75rem;
+//     color: #f3f4f6;
+//     font-size: 1rem;
+//     transition: all 0.3s ease;
+//   }
 
-  input:focus {
-    border-color: #9a79ff;
-    box-shadow: 0 0 10px rgba(154, 121, 255, 0.3);
-    outline: none;
-  }
+//   input:focus {
+//     border-color: #9a79ff;
+//     box-shadow: 0 0 10px rgba(154, 121, 255, 0.3);
+//     outline: none;
+//   }
 
-  button {
-    border-radius: 0.75rem;
-  }
-`;
+//   button {
+//     border-radius: 0.75rem;
+//   }
+// `;
 
-const ProjectList = styled.ul`
-  list-style: none;
-  padding: 0;
-  display: grid;
-  gap: 1rem;
+// const ProjectList = styled.ul`
+//   list-style: none;
+//   padding: 0;
+//   display: grid;
+//   gap: 1rem;
 
-  li {
-    padding: 1rem;
-    background: rgba(55, 65, 81, 0.7);
-    border-radius: 0.75rem;
-    color: #f3f4f6;
-    transition: all 0.3s ease;
-  }
+//   li {
+//     padding: 1rem;
+//     background: rgba(55, 65, 81, 0.7);
+//     border-radius: 0.75rem;
+//     color: #f3f4f6;
+//     transition: all 0.3s ease;
+//   }
 
-  li:hover {
-    background: rgba(55, 65, 81, 0.9);
-    box-shadow: 0 0 15px rgba(154, 121, 255, 0.3);
-  }
-`;
+//   li:hover {
+//     background: rgba(55, 65, 81, 0.9);
+//     box-shadow: 0 0 15px rgba(154, 121, 255, 0.3);
+//   }
+// `;
 
 export default Admin;

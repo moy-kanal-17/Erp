@@ -1,3 +1,4 @@
 export * from './auth.ts'
 export * from './group.ts'
 export * from './general.ts'
+export * from './room.type.ts'

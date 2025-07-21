@@ -7,6 +7,8 @@ import {
 
 import App from "../App";
 import { SignIn, SignUp, NotFound, TeacherLayout, AdminLayout, Worker, SingleGroup,Student, StudentLayout, Groups, LayoutProtect, LoginProtect, Curs } from "@pages";
+import Branchs from "../pages/branchs/branch";
+import Rooms from "../pages/rooms/rooms";
 const Router = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -21,6 +23,10 @@ const Router = () => {
          <Route path="students" element={<Student/>}/>
          <Route path="teachers" element={<TeacherLayout/>} />
          <Route path="courses" element={<Curs/>} />
+         <Route path="branch" element={<Branchs/>} />
+         <Route path="rooms" element={<Rooms/>} />
+
+        
         <Route path="*" element={<NotFound/>}/>
 
 

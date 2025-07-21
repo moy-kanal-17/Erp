@@ -13,4 +13,6 @@ export class ApiUrls {
 
     public static TEACHERS: string = '/teacher'
 
+    public static ROOMS:string = '/rooms'
+
 }
