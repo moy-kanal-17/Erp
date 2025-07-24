@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import { Layout, Menu, Table, Avatar, Dropdown, Typography, message } from 'antd';
 import {
-  HomeOutlined,
-  BookOutlined,
+
   UserOutlined,
   LogoutOutlined,
 } from '@ant-design/icons';
@@ -23,13 +22,6 @@ interface User {
   role: string;
 }
 
-// Тип для пунктов меню
-interface MenuItem {
-  key: string;
-  icon: React.ReactNode;
-  label: string;
-  path: string;
-}
 
 const TeacherSpisoks: React.FC = () => {
   const navigate = useNavigate();
