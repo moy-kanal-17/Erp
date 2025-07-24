@@ -1,4 +1,4 @@
-import { Modal, Form, Input, Button, Select, DatePicker } from "antd";
+import { Modal, Form, Input, Button, Select, DatePicker, TimePicker } from "antd";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect } from "react";
@@ -28,9 +28,8 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
     defaultValues: {
       name: "",
       status: "",
-      course_id: 0,
-      start_date: null,
-      end_date: null,
+      courseId: 0,
+
     },
   });
 
@@ -38,9 +37,9 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
     if (update?.id) {
       setValue("name", update.name);
       setValue("status", update.status);
-      setValue("course_id", update.course_id);
-      setValue("start_date", update.start_date ? dayjs(update.start_date) : null);
-      setValue("end_date", update.end_date ? dayjs(update.end_date) : null);
+      setValue("courseId", update.courseId);
+      setValue("start_date", dayjs(update.start_date)! );
+      setValue("end_date",  dayjs(update.end_date)! );
     }
   }, [update, setValue]);
 
@@ -49,6 +48,9 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
       ...data,
       start_date: data.start_date ? dayjs(data.start_date).format("YYYY-MM-DD") : null,
       end_date: data.end_date ? dayjs(data.end_date).format("YYYY-MM-DD") : null,
+      start_time: data.start_time?.format("HH:mm"),
+      end_time: data.end_time?.format("HH:mm"),
+      roomId:1
     };
 
     if (update?.id) {
@@ -126,6 +128,63 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
           />
         </Form.Item>
 
+
+
+
+{/* //------------------------------------ */}
+
+
+<Form.Item
+  label="Start Time"
+  validateStatus={errors.start_time ? "error" : ""}
+  help={errors.start_time?.message}
+>
+  <Controller
+    name="start_time"
+    control={control}
+    render={({ field }) => (
+      <TimePicker
+        {...field}
+        style={{ width: "100%" }}
+        format="HH:mm"
+        minuteStep={5}
+        placeholder="Start Time"
+        value={field.value as any}
+        onChange={(time) => field.onChange(time)}
+      />
+    )}
+  />
+</Form.Item>
+
+<Form.Item
+  label="End Time"
+  validateStatus={errors.end_time ? "error" : ""}
+  help={errors.end_time?.message}
+>
+  <Controller
+    name="end_time"
+    control={control}
+    render={({ field }) => (
+      <TimePicker
+        {...field}
+        style={{ width: "100%" }}
+        format="HH:mm"
+        minuteStep={5}
+        placeholder="End Time"
+        value={field.value as any}
+        onChange={(time) => field.onChange(time)}
+      />
+    )}
+  />
+</Form.Item>
+
+
+
+
+{/* //------------------------------------ */}
+
+
+
         <Form.Item
           label="Status"
           validateStatus={errors.status ? "error" : ""}
@@ -150,11 +209,11 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
 
         <Form.Item
           label="Course"
-          validateStatus={errors.course_id ? "error" : ""}
-          help={errors.course_id?.message}
+          validateStatus={errors.courseId ? "error" : ""}
+          help={errors.courseId?.message}
         >
           <Controller
-            name="course_id"
+            name="courseId"
             control={control}
             render={({ field }) => (
               <Select

@@ -9,7 +9,7 @@ import GroupModal from "./modal";
 
 const Branchs = () => {
   const [open, setOpen] = useState(false);
-  const [update, setUpdate] = useState<Group | null>(null);
+  const [update, setUpdate] = useState<Group>();
   const [params, setParams] = useState({
     page: 1,
     limit: 10,
@@ -41,7 +41,7 @@ const Branchs = () => {
   const toggle = () => {
     setOpen(!open);
     if (update) {
-      setUpdate(null);
+      setUpdate(undefined);
     }
   };
   const handleTableChange = (pagination: TablePaginationConfig) => {
@@ -69,7 +69,10 @@ const Branchs = () => {
 
   return (
     <>
-      {open && <GroupModal open={open} toggle={toggle} update={update}/>}
+      {open && <GroupModal open={open} toggle={toggle} 
+      update={update}
+      />
+      }
       <h1>Branchs</h1>
       <Button type="primary" onClick={() => setOpen(true)}>
         add group

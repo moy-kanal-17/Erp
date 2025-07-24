@@ -41,6 +41,8 @@ export const userService = {
     try {
       const response = await apiConfig().patchRequest(`${ApiUrls.STUDENTS}/${id}`, data);
       Notification('success', 'Yangilandi', 'Foydalanuvchi yangilandi');
+      console.log(response);
+      
     } catch (error) {
       console.error("Error updating user:", error);
       Notification('error', 'Xatolik', 'Yangilashda xatolik yuz berdi');
@@ -51,6 +53,7 @@ export const userService = {
     try {
       const response = await apiConfig().deleteRequest(`${ApiUrls.STUDENTS}/${id}`);
       Notification('success', 'O‘chirildi', 'Foydalanuvchi o‘chirildi');
+      console.log(response);
     } catch (error) {
       console.error("Error deleting user:", error);
       Notification('error', 'Xatolik', 'O‘chirishda xatolik yuz berdi');

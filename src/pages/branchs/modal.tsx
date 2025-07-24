@@ -8,7 +8,7 @@ import { groupFormSchema } from "@utils";
 import { useCourse, useGroup } from "@hooks";
 
 interface GroupProps extends ModalProps {
-  update: Group;
+  update: Group|undefined;
 }
 
 const GroupModal = ({ open, toggle, update }: GroupProps) => {
@@ -26,7 +26,7 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
     defaultValues: {
       name: "",
       status: "",
-      course_id: undefined,
+      courseId: undefined,
       start_date: "2025-06-30",
       end_date: "2025-06-30",
     },
@@ -36,7 +36,7 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
     if (update?.id) {
       setValue("name", update.name);
       setValue("status", update.status);
-      setValue("course_id", update.course_id);
+      setValue("courseId", update.courseId);
       setValue("start_date", update.start_date ? dayjs(update.start_date) : null);
       setValue("end_date", update.end_date ? dayjs(update.end_date) : null);
     }
@@ -146,11 +146,11 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
 
         <Form.Item
           label="Course"
-          validateStatus={errors.course_id ? "error" : ""}
-          help={errors.course_id?.message}
+          validateStatus={errors.courseId ? "error" : ""}
+          help={errors.courseId?.message}
         >
           <Controller
-            name="course_id"
+            name="courseId"
             control={control}
             render={({ field }) => (
               <Select

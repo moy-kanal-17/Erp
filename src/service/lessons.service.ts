@@ -1,6 +1,6 @@
 import { apiConfig } from "@api/config"
 import { ApiUrls } from "@api/api-urls"
-import { type Group, type ParamsType } from "@types"
+import {  type ParamsType } from "@types"
 import type { Lesson } from "../types/lessons"
 export const lessonService = {
     async lessons(params:ParamsType){

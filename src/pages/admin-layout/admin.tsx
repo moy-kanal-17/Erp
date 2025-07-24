@@ -1,59 +1,27 @@
-import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
+import {  useCallback, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { Layout, Menu, Select, Input, Button } from 'antd';
+import { Layout, Menu } from 'antd';
 import {
   BookOutlined,
   HomeOutlined,
   LogoutOutlined,
   TeamOutlined,
   UserOutlined,
-  GlobalOutlined,
   CodeOutlined,
   BranchesOutlined,
   ReadOutlined,
 } from '@ant-design/icons';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { clearStorage } from '@helpers'; 
+import { clearStorage } from '@helpers';
 
 const { Header, Sider, Content } = Layout;
 
 const Admin = () => {
   const navigate = useNavigate();
-  const [language, setLanguage] = useState('en');
-  const [projects, setProjects] = useState([]); 
-  const [newProject, setNewProject] = useState('');
   const isMounted = useRef(true);
 
-
-  const translations = useMemo(() => ({
-    en: {
-      dashboard: 'Dashboard',
-      groups: 'Groups',
-      students: 'Students',
-      teachers: 'Teachers',
-      courses: 'Courses',
-      projects: 'Projects',
-      logout: 'Logout',
-      title: 'Admin Panel',
-      addProject: 'Add Project',
-      projectPlaceholder: 'Enter project name',
-    },
-    ru: {
-      dashboard: 'Панель управления',
-      groups: 'Группы',
-      students: 'Студенты',
-      teachers: 'Преподаватели',
-      courses: 'Курсы',
-      projects: 'Проекты',
-      logout: 'Выход',
-      title: 'Админ-панель',
-      addProject: 'Добавить проект',
-      projectPlaceholder: 'Введите название проекта',
-    },
-  }), []);
-
-  const handleMenuClick = useCallback((e:any) => {
+  const handleMenuClick = useCallback((e: any) => {
     switch (e.key) {
       case '1':
         navigate('/admin/');
@@ -77,28 +45,16 @@ const Admin = () => {
         clearStorage();
         navigate('/');
         break;
-
       case '8':
         navigate('/admin/branch');
         break;
-
-
       case '9':
         navigate('/admin/rooms');
         break;
-      
       default:
         break;
     }
   }, [navigate]);
-
-
-  const handleLanguageChange = useCallback((value:string) => {
-    setLanguage(value);
-  }, []);
-
-
-
 
   useEffect(() => {
     const token = localStorage.getItem('access_token');
@@ -124,7 +80,7 @@ const Admin = () => {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.4 }}
             >
-              {language === 'en' ? 'Admin' : 'Админ'}
+              Admin
             </motion.div>
           </LogoWrapper>
           <Menu
@@ -136,51 +92,47 @@ const Admin = () => {
               {
                 key: '1',
                 icon: <HomeOutlined />,
-                label: translations[language].dashboard,
+                label: 'Dashboard',
               },
               {
                 key: '2',
                 icon: <TeamOutlined />,
-                label: translations[language].groups,
+                label: 'Groups',
               },
               {
                 key: '3',
                 icon: <UserOutlined />,
-                label: translations[language].students,
+                label: 'Students',
               },
               {
                 key: '4',
                 icon: <UserOutlined />,
-                label: translations[language].teachers,
+                label: 'Teachers',
               },
               {
                 key: '5',
                 icon: <BookOutlined />,
-                label: translations[language].courses,
+                label: 'Courses',
               },
               {
                 key: '6',
                 icon: <CodeOutlined />,
-                label: translations[language].projects,
+                label: 'Projects',
               },
-
-                            {
+              {
                 key: '8',
                 icon: <BranchesOutlined />,
-                label: "Branchs",
+                label: 'Branches',
               },
-
-
-                                          {
+              {
                 key: '9',
                 icon: <ReadOutlined />,
-                label: "Rooms",
+                label: 'Rooms',
               },
-
               {
                 key: '7',
                 icon: <LogoutOutlined />,
-                label: translations[language].logout,
+                label: 'Logout',
               },
             ]}
           />
@@ -194,17 +146,8 @@ const Admin = () => {
             transition={{ delay: 0.3 }}
             style={{ margin: 0 }}
           >
-            {translations[language].title}
+            Admin Panel
           </motion.h2>
-          <Select
-            value={language}
-            onChange={handleLanguageChange}
-            style={{ width: 120 }}
-            options={[
-              { value: 'en', label: 'English' },
-              { value: 'ru', label: 'Русский' },
-            ]}
-          />
         </StyledHeader>
         <ContentWrapper>
           <motion.div
@@ -212,7 +155,7 @@ const Admin = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
           >
-              <Outlet />
+            <Outlet />
           </motion.div>
         </ContentWrapper>
       </Layout>
@@ -220,7 +163,7 @@ const Admin = () => {
   );
 };
 
-// Стили
+// Styled Components
 const StyledLayout = styled(Layout)`
   background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
   min-height: 100vh;
@@ -257,65 +200,5 @@ const ContentWrapper = styled(Content)`
   min-height: 360px;
   box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
 `;
-
-// const ProjectSection = styled.div`
-//   h3 {
-//     font-size: 1.6rem;
-//     font-weight: 600;
-//     margin-bottom: 1rem;
-//     color: #d1c2ff;
-//   }
-
-//   p {
-//     color: #9ca3af;
-//     font-size: 1rem;
-//   }
-// `;
-
-// const ProjectForm = styled.div`
-//   display: flex;
-//   gap: 1rem;
-//   margin-bottom: 2rem;
-
-//   input {
-//     border-radius: 0.75rem;
-//     border: 1px solid #374151;
-//     background: rgba(31, 41, 55, 0.9);
-//     padding: 0.75rem;
-//     color: #f3f4f6;
-//     font-size: 1rem;
-//     transition: all 0.3s ease;
-//   }
-
-//   input:focus {
-//     border-color: #9a79ff;
-//     box-shadow: 0 0 10px rgba(154, 121, 255, 0.3);
-//     outline: none;
-//   }
-
-//   button {
-//     border-radius: 0.75rem;
-//   }
-// `;
-
-// const ProjectList = styled.ul`
-//   list-style: none;
-//   padding: 0;
-//   display: grid;
-//   gap: 1rem;
-
-//   li {
-//     padding: 1rem;
-//     background: rgba(55, 65, 81, 0.7);
-//     border-radius: 0.75rem;
-//     color: #f3f4f6;
-//     transition: all 0.3s ease;
-//   }
-
-//   li:hover {
-//     background: rgba(55, 65, 81, 0.9);
-//     box-shadow: 0 0 15px rgba(154, 121, 255, 0.3);
-//   }
-// `;
 
 export default Admin;

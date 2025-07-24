@@ -1,90 +1,97 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { Button, Table, message, Modal, Form, Input, Select } from 'antd';
+import { Button, Table, Modal, Form, Input, Select } from 'antd';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { courseService } from '../../service/course.service';
 import { Notification } from '../../helpers';
 
+// Типы
+type Course = {
+  id: number;
+  title: string;
+  description: string;
+};
+
+type ActionButtonsProps = {
+  onEdit: () => void;
+  onDelete: () => void;
+  isDeleting: boolean;
+};
+
+type CourseTableProps = {
+  columns: any;
+  dataSource?: Course[];
+  loading: boolean;
+  isError: boolean;
+};
+
+type CourseModalProps = {
+  open: boolean;
+  onCancel: () => void;
+  onOk: () => void;
+  loading: boolean;
+  form: any;
+  language: string;
+  translations: Record<string, Record<string, string>>;
+};
+
+const translations = {
+  en: {
+    editCourse: "Edit Course",
+    addCourse: "Update",
+    cancel: "Cancel",
+    courseName: "Course Name",
+    requiredTitle: "Please enter a course name",
+    courseDescription: "Course Description",
+    requiredDescription: "Please enter a course description",
+  },
+};
+
 const Curs = () => {
   const queryClient = useQueryClient();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editCourse, setEditCourse] = useState(null);
+  const [editCourse, setEditCourse] = useState<Course | null>(null);
   const [form] = Form.useForm();
   const [language, setLanguage] = useState('en');
-
-  // Локализация
-  const translations = useMemo(() => ({
-    en: {
-      title: 'Courses List',
-      id: 'ID',
-      courseTitle: 'Title',
-      description: 'Description',
-      actions: 'Actions',
-      editCourse: 'Edit Course',
-      addCourse: 'Add Course',
-      courseName: 'Course Name',
-      courseDescription: 'Course Description',
-      requiredTitle: 'Title is required!',
-      requiredDescription: 'Description is required!',
-      noData: 'No courses available',
-      errorLoading: 'Error loading courses!',
-    },
-    ru: {
-      title: 'Список курсов',
-      id: 'ID',
-      courseTitle: 'Название',
-      description: 'Описание',
-      actions: 'Действия',
-      editCourse: 'Редактировать курс',
-      addCourse: 'Добавить курс',
-      courseName: 'Название курса',
-      courseDescription: 'Описание курса',
-      requiredTitle: 'Название обязательно!',
-      requiredDescription: 'Описание обязательно!',
-      noData: 'Курсы отсутствуют',
-      errorLoading: 'Ошибка при загрузке курсов!',
-    },
-  }), []);
 
   // Получение курсов
   const {
     data: courses,
     isLoading,
     isError,
-  } = useQuery({
+  } = useQuery<Course[]>({
     queryKey: ['courses'],
     queryFn: () => courseService.getCourses({ page: 1, limit: 100 }),
   });
 
   // Удаление курса
   const deleteMutation = useMutation({
-    mutationFn: (id) => courseService.deleteCourse(id),
+    mutationFn: (id: number) => courseService.deleteCourse(id),
     onSuccess: () => {
-      Notification('info', translations[language].deleteSuccess || 'Deleted!', translations[language].courseDeleted || 'Course deleted');
+      Notification('info', "deleteSuccess", 'Course deleted');
       queryClient.invalidateQueries({ queryKey: ['courses'] });
     },
     onError: () => {
-      message.error(translations[language].deleteError || 'Error deleting course');
+      Notification('error', "delete not Success", 'Course not deleted');
     },
   });
 
   // Обновление курса
   const updateMutation = useMutation({
-    mutationFn: (data) => courseService.updateCourse(data.id, data),
+    mutationFn: (data: Course) => courseService.updateCourse(data.id, data),
     onSuccess: () => {
-      Notification('success', translations[language].updateSuccess || 'Success', translations[language].courseUpdated || 'Course updated');
+      Notification('success', "update Success", 'Course updated');
       setIsModalOpen(false);
       setEditCourse(null);
       form.resetFields();
     },
     onError: () => {
-      message.error(translations[language].updateError || 'Error updating course');
+      Notification('error', "update not Success", 'Course not updated');
     },
   });
 
-  // Обработчики
-  const handleEdit = useCallback((course:any) => {
+  const handleEdit = useCallback((course: Course) => {
     setEditCourse(course);
     setIsModalOpen(true);
     form.setFieldsValue({
@@ -93,12 +100,12 @@ const Curs = () => {
     });
   }, [form]);
 
-  const handleDelete = useCallback((id) => {
+  const handleDelete = useCallback((id: number) => {
     deleteMutation.mutate(id);
   }, [deleteMutation]);
 
   const handleUpdate = useCallback(() => {
-    form.validateFields().then((values) => {
+    form.validateFields().then((values: any) => {
       if (editCourse?.id) {
         updateMutation.mutate({
           ...editCourse,
@@ -109,15 +116,14 @@ const Curs = () => {
     });
   }, [form, editCourse, updateMutation]);
 
-  // Колонки таблицы
   const columns = useMemo(() => [
-    { title: translations[language].id, dataIndex: 'id', key: 'id' },
-    { title: translations[language].courseTitle, dataIndex: 'title', key: 'title' },
-    { title: translations[language].description, dataIndex: 'description', key: 'description' },
+    { title: "ID", dataIndex: 'id', key: 'id' },
+    { title: "Title", dataIndex: 'title', key: 'title' },
+    { title: "Description", dataIndex: 'description', key: 'description' },
     {
-      title: translations[language].actions,
+      title: "Actions",
       key: 'actions',
-      render: (_, record) => (
+      render: (_: any, record: Course) => (
         <ActionButtons
           onEdit={() => handleEdit(record)}
           onDelete={() => handleDelete(record.id)}
@@ -125,36 +131,31 @@ const Curs = () => {
         />
       ),
     },
-  ], [language, handleEdit, handleDelete, deleteMutation.isPending]);
+  ], [handleEdit, handleDelete, deleteMutation.isPending]);
 
   return (
     <StyledContainer>
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
+      <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
         <HeaderWrapper>
-          <h1>{translations[language].title}</h1>
+          <h1>Courses</h1>
           <Select
             value={language}
             onChange={setLanguage}
-            style={{ width: 120 }}
+            style={{ width: 140 }}
             options={[
               { value: 'en', label: 'English' },
-              { value: 'ru', label: 'Русский' },
             ]}
           />
         </HeaderWrapper>
       </motion.div>
+
       <CourseTable
         columns={columns}
         dataSource={courses}
         loading={isLoading}
         isError={isError}
-        language={language}
-        translations={translations}
       />
+
       <CourseModal
         open={isModalOpen}
         onCancel={() => {
@@ -172,29 +173,19 @@ const Curs = () => {
   );
 };
 
-// Компонент для кнопок действий
-const ActionButtons = ({ onEdit, onDelete, isDeleting }) => (
+const ActionButtons: React.FC<ActionButtonsProps> = ({ onEdit, onDelete, isDeleting }) => (
   <ButtonGroup>
     <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-      <Button type="primary" onClick={onEdit} className="edit-button">
-        ✏️
-      </Button>
+      <Button type="primary" onClick={onEdit} className="edit-button">✏️</Button>
     </motion.div>
     <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.95 }}>
-      <Button type="primary" danger onClick={onDelete} loading={isDeleting} className="delete-button">
-        🗑️
-      </Button>
+      <Button type="primary" danger onClick={onDelete} loading={isDeleting} className="delete-button">🗑️</Button>
     </motion.div>
   </ButtonGroup>
 );
 
-// Компонент для таблицы
-const CourseTable = ({ columns, dataSource, loading, isError, language, translations }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.95 }}
-    animate={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.5, delay: 0.2 }}
-  >
+const CourseTable: React.FC<CourseTableProps> = ({ columns, dataSource, loading, isError }) => (
+  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }}>
     <StyledTable
       dataSource={dataSource}
       columns={columns}
@@ -210,14 +201,21 @@ const CourseTable = ({ columns, dataSource, loading, isError, language, translat
         transition={{ delay: 0.4 }}
         className="error-text"
       >
-        {translations[language].errorLoading}
+        Failed to load courses
       </motion.p>
     )}
   </motion.div>
 );
 
-// Компонент для модального окна
-const CourseModal = ({ open, onCancel, onOk, loading, form, language, translations }) => (
+const CourseModal: React.FC<CourseModalProps> = ({
+  open,
+  onCancel,
+  onOk,
+  loading,
+  form,
+  language,
+  translations
+}) => (
   <StyledModal
     title={translations[language].editCourse}
     open={open}
@@ -225,13 +223,9 @@ const CourseModal = ({ open, onCancel, onOk, loading, form, language, translatio
     onOk={onOk}
     confirmLoading={loading}
     okText={translations[language].addCourse}
-    cancelText={translations[language].cancel || 'Cancel'}
+    cancelText={translations[language].cancel}
   >
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
       <Form layout="vertical" form={form}>
         <Form.Item
           name="title"
@@ -336,14 +330,6 @@ const StyledModal = styled(Modal)`
   .ant-input:focus, .ant-input-textarea:focus {
     border-color: #9a79ff;
     box-shadow: 0 0 10px rgba(154, 121, 255, 0.3);
-  }
-`;
-
-const errorTextStyles = `
-  .error-text {
-    color: #ef4444;
-    font-size: 1rem;
-    margin-top: 16px;
   }
 `;
 

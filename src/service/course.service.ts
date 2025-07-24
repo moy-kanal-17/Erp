@@ -17,9 +17,19 @@ export const courseService = {
     return res?.data;
   },
 
+  //   "title": "Frontend",
+  // "description": "Learn HTML and JS.",
+  // "price": 250000,
+  // "duration": 3,
+  // "lessons_in_a_week": 5,
+  // "lessons_in_a_month": 12,
+  // "lesson_duration": 240
+
   updateCourse: async (id: number, data: Course) => {
 
-  const { id: _, is_active, created_at,updated_at, groups, ...cleanData } = data;
+  const { id: _,
+    //  is_active, created_at,updated_at, groups,
+      ...cleanData } = data;
 
   const res = await apiConfig().patchRequest(`/courses/${id}`, cleanData);
   return res?.data;

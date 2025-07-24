@@ -9,9 +9,7 @@ export const useCourse = (params: ParamsType) => {
     queryFn: async () => courseService.getCourses(params),
   });
 
-  // Mutations
 
-    // Return the data and mutation hooks
   return {
     data,
   };

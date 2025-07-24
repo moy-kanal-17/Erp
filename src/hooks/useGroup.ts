@@ -57,6 +57,8 @@ const groupLessonsQuery= useQuery({
       queryKey: ["groups", params],
       queryFn: async () => groupService.getGroupStudents( id),
     });
+    console.log(data,queryClient);
+    
     
     const groupStudentsQuery = useQuery({
       queryKey: ["groups", params],

@@ -6,7 +6,7 @@ import { ScheduleOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 
 const { Title, Text } = Typography;
-const { Link: AnchorLink } = Anchor;
+// const { Link: AnchorLink } = Anchor;
 
 const GroupPage = () => {
   const [lessons, setLessons] = useState([]);
