@@ -5,6 +5,10 @@ export class ApiUrls {
 
     // GROUPS
     public static GROUPS: string = "/group"
+    public static GROUP_students: string = "/group-students"
+    public static GROUP_TEACHER: string = "/group-teachers"
+
+
 
     // COURSES
     public static COURSES: string = "/courses"
@@ -15,4 +19,7 @@ export class ApiUrls {
 
     public static ROOMS:string = '/rooms'
 
+
+    //Lessons
+    public static LEASSONS:string = '/lessons'
 }

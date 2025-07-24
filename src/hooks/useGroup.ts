@@ -8,11 +8,20 @@ export const useGroup = (params: ParamsType, id?: number) => {
     queryKey: ["groups", params],
     queryFn: async () => groupService.getGroups(params),
   });
-  const groupStudentsQuery = useQuery({
-    queryKey: ["groups", params],
-    queryFn: async () => groupService.getGroupStudents(params, id!),
-  });
-  const students = groupStudentsQuery.data;
+
+// export const useGroupByid = (params: ParamsType, id?: number) => {
+
+//     const queryClient = useQueryClient();
+//   const { data } = useQuery({
+//     queryKey: ["groups", params],
+//     queryFn: async () => groupService.getGroupStudents(id!),
+//   });
+
+  // const groupStudentsQuery = useQuery({
+  //   queryKey: ["group-students"],
+  //   queryFn: async () => groupService.getGroupStudents( id!),
+  // });
+  // const students = groupStudentsQuery.data;
   // Mutations
   const useGroupCreate = () => {
     return useMutation({
@@ -20,20 +29,41 @@ export const useGroup = (params: ParamsType, id?: number) => {
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ["groups"] });
       },
-    });
+      });
   };
+
+
+
+  const groupStudentsQuery= useQuery({
+    enabled: !!id,
+    queryKey:["group-students"],
+    queryFn:async () => groupService.getGroupStudents(id!)
+  });
+  const students = groupStudentsQuery.data
+
+const groupLessonsQuery= useQuery({
+    enabled: !!id,
+    queryKey:["teacher"],
+    queryFn:async () => groupService.getGroupTeachers(id!)
+  });
+  const lessons = groupLessonsQuery.data
+
+
+
+
   const useGroupByid = (params: ParamsType, id: number) => {
     const queryClient = useQueryClient();
     const { data } = useQuery({
       queryKey: ["groups", params],
-      queryFn: async () => groupService.getGroupStudents(params,id),
+      queryFn: async () => groupService.getGroupStudents( id),
     });
+    
     const groupStudentsQuery = useQuery({
       queryKey: ["groups", params],
-      queryFn: async () => groupService.getGroupStudents(params, id!),
+      queryFn: async () => groupService.getGroupStudents( id!),
     });
     const students = groupStudentsQuery.data;
-    return students
+    return students;
   };
   const useGroupUpdate = () => {
     return useMutation({
@@ -55,10 +85,11 @@ export const useGroup = (params: ParamsType, id?: number) => {
   // Return the data and mutation hooks
   return {
     data,
+    lessons,
     students,
     useGroupCreate,
     useGroupUpdate,
     useGroupDelete,
-    useGroupByid
+    useGroupByid,
   };
 };

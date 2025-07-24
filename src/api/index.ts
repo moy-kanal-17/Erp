@@ -20,7 +20,7 @@ axiosInstance.interceptors.response.use(
       window.location.href = "/";
       clearStorage();
     }
-    return Promise.reject(error); // Reject other errors
+    // return Promise.reject(error); // Reject other errors
   }
 );
 

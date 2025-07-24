@@ -6,7 +6,7 @@ export function apiConfig() {
         const res = await axiosInstance.get(url, {params})
         return res
     } catch (err:any) {
-     Notification('error', err?.message)
+    //  Notification('error', err?.message)
     }
   }
   async function postRequest(url:string, body:object={}){

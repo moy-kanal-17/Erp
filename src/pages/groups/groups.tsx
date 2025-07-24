@@ -69,7 +69,7 @@ const Groups = () => {
 
   return (
     <>
-      {open && <GroupModal open={open} toggle={toggle} update={update}/>}
+      {open && <GroupModal open={open} toggle={toggle} update={update as any}/>}
       <h1>GROUPS</h1>
       <Button type="primary" onClick={() => setOpen(true)}>
         add group

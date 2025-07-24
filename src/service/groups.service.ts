@@ -6,10 +6,23 @@ export const groupService = {
         const res = await apiConfig().getRequest(ApiUrls.GROUPS, params)
         return res
     },
-    async getGroupStudents(params:ParamsType, id: number){
-        const res = await apiConfig().getRequest(`${ApiUrls.GROUPS}/${id}`, params)
-        return res
+    async getGroupStudents( id: number){
+        const res = await apiConfig().getRequest(`${ApiUrls.GROUPS}/${id}`)
+        console.log(res?.data,'-----res in service');
+        
+        return res?.data
     },
+
+
+    async getGroupTeachers( id: number){
+        const res = await apiConfig().getRequest(`${ApiUrls.GROUP_TEACHER}/${id}`)
+        console.log(res?.data.teacher,'-----res in service');
+        console.log(res?.data.group,"grouuup???");
+        
+        return res?.data.teacher
+    },
+
+
     async createGroup(model:Group):Promise<any>{
         const res = await apiConfig().postRequest(ApiUrls.GROUPS, model)
         return res

@@ -14,6 +14,8 @@ const SingleGroup = lazy(()=> import('./groups/single-group'))
 const Student = lazy(()=> import('./admin-layout/users'))
 const  Curs = lazy(() => import("./curs/curs.tsx"));
 const  Rooms = lazy(() => import("./rooms/rooms.tsx"));
+const  GroupPage = lazy(() => import("./lessons/lessosG.tsx"));
 
 
-export {SignIn,Curs, Student,SignUp, NotFound, StudentLayout, SingleGroup, AdminLayout, TeacherLayout, Groups, LayoutProtect, LoginProtect, Worker}
+
+export {SignIn,Curs,GroupPage,Rooms, Student,SignUp, NotFound, StudentLayout, SingleGroup, AdminLayout, TeacherLayout, Groups, LayoutProtect, LoginProtect, Worker}

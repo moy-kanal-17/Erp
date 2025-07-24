@@ -1,0 +1,83 @@
+import { Button } from "antd";
+import type {   GroupLessonsType } from "../../types/lessons";
+import { useRef, useState } from "react";
+
+const GroupLessons = ({ lessons }: GroupLessonsType) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  const handleScroll = () => {
+    if (containerRef.current) {
+      setScrollPosition(containerRef.current.scrollLeft);
+    }
+  };
+
+  const goNext = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({ left: 200, behavior: "smooth" });
+    }
+  };
+
+  const goPrev = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollBy({ left: -200, behavior: "smooth" });
+    }
+  };
+
+  const isStartDisabled = () => {
+    if (!containerRef.current) return true;
+    return scrollPosition <= 5;
+  };
+
+  const isEndDisabled = () => {
+    if (!containerRef.current) return true;
+    const container = containerRef.current;
+    return (
+      scrollPosition + container.clientWidth >= container.scrollWidth - 5
+    );
+  };
+
+  return (
+    <div style={{ position: 'relative', width: '900px' }}>
+
+      <div className="flex justify-between mb-5 p-5">
+        <Button type="primary" onClick={goPrev} disabled={isStartDisabled()}>
+          Prev
+        </Button>
+
+        <Button type="primary" onClick={goNext} disabled={isEndDisabled()}>
+          Next
+        </Button>
+      </div>
+
+      <div
+        ref={containerRef}
+        onScroll={handleScroll}
+        className="overflow-x-auto whitespace-nowrap border p-2 rounded"
+                style={{
+          overflowX: 'scroll',
+          whiteSpace: 'nowrap',
+          width: '100%',
+        }}
+        
+      >
+        
+        {lessons.map((lesson, index) => (
+                 <div style={{ display: 'inline-block', width: '200px' }}
+            key={lesson.id}
+            className="inline-block w-60 bg-gray-300 rounded-lg p-4 m-2"
+          >
+            <span className="block font-bold mb-1 bg-black" >#{index + 1}</span>
+            <div><h1>{lesson.title || "No title"},id:{lesson.id}</h1></div>
+            
+          </div>
+        ))}
+        
+      </div>
+      
+    </div>
+    
+  );
+};
+
+export default GroupLessons;

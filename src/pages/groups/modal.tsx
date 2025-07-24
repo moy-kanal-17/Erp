@@ -15,6 +15,8 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
   const { mutate: createFn } = useGroup({ page: 1, limit: 5 }, update?.id).useGroupCreate();
   const { mutate: updateFn } = useGroup({ page: 1, limit: 5 }, update?.id).useGroupUpdate();
   const { data } = useCourse({ page: 1, limit: 10 });
+  console.log("Course data:", data);
+
 
   const {
     control,
@@ -26,7 +28,7 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
     defaultValues: {
       name: "",
       status: "",
-      course_id: undefined,
+      course_id: 0,
       start_date: null,
       end_date: null,
     },
@@ -57,6 +59,8 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
 
     toggle();
   };
+
+  
 
   return (
     <Modal
@@ -158,7 +162,7 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
                 showSearch
                 placeholder="Select course"
                 optionFilterProp="label"
-                options={data?.data?.courses.map((course: any) => ({
+                options={data?.map((course: any) => ({
                   value: course.id,
                   label: course.title,
                 }))}
