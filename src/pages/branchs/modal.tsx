@@ -144,28 +144,35 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
           />
         </Form.Item>
 
-        <Form.Item
-          label="Course"
-          validateStatus={errors.courseId ? "error" : ""}
-          help={errors.courseId?.message}
-        >
-          <Controller
-            name="courseId"
-            control={control}
-            render={({ field }) => (
-              <Select
-                {...field}
-                showSearch
-                placeholder="Select course"
-                optionFilterProp="label"
-                options={data?.data?.courses.map((course: any) => ({
-                  value: course.id,
-                  label: course.title,
-                }))}
-              />
-            )}
-          />
-        </Form.Item>
+{!update && (
+  <Form.Item
+    label="Course"
+    validateStatus={errors.courseId ? "error" : ""}
+    help={errors.courseId?.message}
+  >
+    <Controller
+      name="courseId"
+      control={control}
+      render={({ field }) => (
+        <Select
+          {...field}
+          showSearch
+          placeholder="Select course"
+          optionFilterProp="label"
+          options={
+            data?.data?.courses.map((course: any) => ({
+              value: course.id,
+              label: course.title,
+            })) || []
+          }
+          onChange={(value) => field.onChange(value)}
+        />
+      )}
+    />
+  </Form.Item>
+)}
+
+
 
         <Form.Item>
           <Button type="primary" htmlType="submit" block>

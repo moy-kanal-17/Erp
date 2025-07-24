@@ -249,7 +249,7 @@ const CourseModal: React.FC<CourseModalProps> = ({
 // Стили
 const StyledContainer = styled.div`
   padding: 24px;
-  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+  background: linear-gradient(135deg, #ffffffff 0%, #eeeeeeff 100%);
   min-height: 100vh;
 `;
 
