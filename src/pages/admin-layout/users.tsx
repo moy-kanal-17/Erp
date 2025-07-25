@@ -121,8 +121,8 @@ const Student: React.FC = () => {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">👥 Foydalanuvchilar</h2>
-        <Button type="primary" onClick={() => openModal()}>Yangi Foydalanuvchi</Button>
+        <h2 className="text-xl font-bold">Students</h2>
+        <Button type="primary" onClick={() => openModal()}>Add New Students</Button>
       </div>
 
       <Table dataSource={users} columns={columns} rowKey="id" bordered pagination={{ pageSize: 8 }} />
@@ -137,10 +137,10 @@ const Student: React.FC = () => {
         width={500}
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="first_name" label="Ism" rules={[{ required: true, message: 'Ism majburiy' }]}>
+          <Form.Item name="first_name" label="Name" rules={[{ required: true, message: 'Name required' }]}>
             <Input />
           </Form.Item>
-          <Form.Item name="last_name" label="Familiya" rules={[{ required: true, message: 'Familiya majburiy' }]}>
+          <Form.Item name="last_name" label="Last name" rules={[{ required: true, message: 'Familiya majburiy' }]}>
             <Input />
           </Form.Item>
           <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email', message: 'To\'g\'ri email kiriting!' }]}>
@@ -152,7 +152,7 @@ const Student: React.FC = () => {
             <>
               <Form.Item
                 name="password_hash"
-                label="Parol"
+                label="Password"
                 rules={[
                   { required: true, message: 'Parol majburiy' },
                   { min: 8, message: 'Parol kamida 8 ta belgidan iborat bo‘lishi kerak' }

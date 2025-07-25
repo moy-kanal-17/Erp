@@ -8,6 +8,8 @@ export const useTeachers = (params: ParamsType) => {
 		queryKey: ["teacher", params],
 		queryFn: async () => teacherService.getTeacher(params),
 	});
+	console.log(data,"dataa!! teacher");
+	
 	const useTeacherCreate = () => {
 		return useMutation({
 			mutationFn: async (data: any) => teacherService.createTeacher(data),

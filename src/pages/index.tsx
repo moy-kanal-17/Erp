@@ -6,6 +6,8 @@ const NotFound = lazy(()=> import('./not-found/not-found'))
 const StudentLayout = lazy(()=> import('./student-layout/student'))
 const AdminLayout = lazy(()=> import('./admin-layout/admin'))
 const TeacherLayout = lazy(()=> import('./teacher-layout/teacherSpisoks.tsx'))
+const TeacherDashboard = lazy(()=> import('./teacher-layout/teacher.tsx'))
+
 const Groups = lazy(()=> import('./groups/groups'))
 const LayoutProtect = lazy(()=> import('./protect-routes/layout-protect'))
 const LoginProtect = lazy(()=> import('./protect-routes/login-protect'))
@@ -20,4 +22,4 @@ const  GroupPage = lazy(() => import("./lessons/lessosG.tsx"));
 
 
 
-export {SignIn,Curs,GroupPage,Rooms, Student,SignUp, NotFound, StudentLayout, SingleGroup, AdminLayout, TeacherLayout, Groups, LayoutProtect, LoginProtect, Worker}
+export {SignIn,Curs,GroupPage,TeacherDashboard,Rooms, Student,SignUp, NotFound, StudentLayout, SingleGroup, AdminLayout, TeacherLayout, Groups, LayoutProtect, LoginProtect, Worker}

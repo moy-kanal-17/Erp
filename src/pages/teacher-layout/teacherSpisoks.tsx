@@ -103,7 +103,7 @@ const TeacherLayout: React.FC = () => {
         <div className="flex justify-between items-center mb-4">
           <Title level={5}>Teachers</Title>
           <Button type="primary" icon={<PlusOutlined />} onClick={() => showModal()}>
-            Yangi qo‘shish
+            Add new Teachers
           </Button>
         </div>
 
@@ -140,10 +140,16 @@ const TeacherLayout: React.FC = () => {
           <Form.Item name="email" label="Email" rules={[{ required: true, type: 'email' }]}>
             <Input />
           </Form.Item>
+
+          
+
+
           {!editingUser && (
-            <Form.Item name="avatar_url" label="Parol" rules={[{ required: true }]}>
+            <Form.Item name="password" label="Parol" rules={[{ required: true }]}>
               <Input.Password />
             </Form.Item>
+
+ 
           )}
           <Form.Item name="role" label="Roli" rules={[{ required: true }]}>
             <Select options={[

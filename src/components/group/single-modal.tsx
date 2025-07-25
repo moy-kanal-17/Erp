@@ -32,7 +32,9 @@ const AddTeacherorStudentModal = ({
 	let originalData: any[] = [];
 	if (addingTeacher) {
 		const { data: teachers } = useTeachers({ page: 1, limit: 100 });
-		originalData = teachers ? teachers.data.teachers : [];
+		originalData = teachers ? teachers.data.data : [];
+		console.log(teachers?.data.data,"teachersIN IF!");
+		
 	} else {
 		const { data: students } = useStudents({ page: 1, limit: 100 });
 		originalData = students ? students.data.students : [];
@@ -54,7 +56,8 @@ const AddTeacherorStudentModal = ({
 	const onSubmit = (data: any) => {
 		data["status"] = true;
 		data["start_date"] = new Date().toISOString();
-		data["end_date"] = new Date().toISOString();
+		data.teacherId = [data.teacherId]
+
 		data.groupId = groupId;
 		if (addingTeacher) {
 			delete data.studentId;
@@ -68,6 +71,7 @@ const AddTeacherorStudentModal = ({
 			});
 		} else {
 			delete data.teacherId;
+			data.studentId = [data.studentId]
 			addStudent(data, {
 				onSuccess: () => {
 					queryClient.invalidateQueries({

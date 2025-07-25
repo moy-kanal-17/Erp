@@ -82,10 +82,10 @@
 
       <div className="mt-6">
        <h3 className="text-md font-semibold text-gray-700 mb-2">Students</h3>
-       {students?.data && students.data.length > 0 ? (
+       {students?.data && students.data.length > 0 ? 
         <GroupStudents students={students.data} id={id} />
-       ) : (
-        <p className="text-gray-500">No students enrolled in this group.</p>
+        : (
+        <GroupStudents students={[]} id={id} />
        )}
       </div>
      </div>
