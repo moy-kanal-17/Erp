@@ -23,7 +23,7 @@ const TeacherLayout: React.FC = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await teacherService.geTeachers();
+      const res = await teacherService.getTeacher({page:1,limit:50});
       setUsers(res?.data?.teachers || []);
     } catch (err) {
       setError('Xatolik yuz berdi!');
@@ -73,10 +73,10 @@ const TeacherLayout: React.FC = () => {
 
       if (editingUser) {
         delete values.password; // защита от отправки пароля при редактировании
-        await teacherService.updateUser(editingUser.id, values);
+        await teacherService.updateTeacher(editingUser.id, values);
         message.success("🔄 O'qituvchi tahrirlandi!");
       } else {
-        await teacherService.postUser(values);
+        await teacherService.createTeacher(values);
         message.success("✅ O'qituvchi qo‘shildi!");
       }
 

@@ -275,7 +275,7 @@ const StyledTable = styled(Table)`
   }
 
   .ant-table-thead > tr > th {
-    background: #1e3a8a;
+    background: #ffffffff;
     color: #c8b6ff;
     font-weight: 600;
   }
@@ -290,7 +290,7 @@ const ButtonGroup = styled.div`
   gap: 8px;
 
   .edit-button {
-    background: #9a79ff;
+    background: #008cffff;
     border-color: #9a79ff;
   }
 

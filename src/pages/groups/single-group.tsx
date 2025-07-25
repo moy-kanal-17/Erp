@@ -1,4 +1,4 @@
- import { useGroups } from "@hooks";
+ import { useGroup } from "@hooks";
  import { Calendar, Clock } from "lucide-react";
  import { useParams } from "react-router-dom";
  import GroupTeachers from "../../components/group/group-teachers";
@@ -8,7 +8,7 @@
 
  const SingleGroup = () => {
   const { id } = useParams<{ id: string }>();
-  const { dataById, students, lessons, teachers } = useGroups({page:1,limit:10}, Number(id));
+  const { dataById, students, lessons, teachers } = useGroup({page:1,limit:10}, Number(id));
   const groupData: any = dataById
    ? dataById.data.group
    : { course: { title: "", price: 0 } };

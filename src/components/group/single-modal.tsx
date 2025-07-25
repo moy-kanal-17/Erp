@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useGroup } from "@hooks";
+import { useGroup, useTeachers } from "@hooks";
 
 import { useQueryClient } from "@tanstack/react-query";
 import type { ModalProps } from "@types";
@@ -7,6 +7,7 @@ import { Button, Form, Input, Modal } from "antd";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import * as yup from "yup";
+import { useStudents } from "../../hooks/useStudent";
 
 const schema = yup.object().shape({
 	studentId: yup.number().required("Student must be selected"),
@@ -30,7 +31,7 @@ const AddTeacherorStudentModal = ({
 	});
 	let originalData: any[] = [];
 	if (addingTeacher) {
-		const { data: teachers } = useTeacheachers({ page: 1, limit: 100 });
+		const { data: teachers } = useTeachers({ page: 1, limit: 100 });
 		originalData = teachers ? teachers.data.teachers : [];
 	} else {
 		const { data: students } = useStudents({ page: 1, limit: 100 });

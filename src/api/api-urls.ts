@@ -8,14 +8,13 @@ export class ApiUrls {
     public static GROUP_students: string = "/group-students"
     public static GROUP_TEACHER: string = "/group-teachers"
 
-
-
+    //STUDENTS
+    public static STUDENTS: string = '/students'
+    // TECHERS
+    public static TEACHERS: string = '/teacher'
     // COURSES
     public static COURSES: string = "/courses"
 
-    public static STUDENTS: string = '/student'
-
-    public static TEACHERS: string = '/teacher'
 
     public static ROOMS:string = '/rooms'
 

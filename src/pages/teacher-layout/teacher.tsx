@@ -8,7 +8,7 @@ import {
 } from '@ant-design/icons';
 import { userService } from '../../service/users.service';
 import 'antd/dist/reset.css';
-// import { useGroups } from '@hooks';
+// import { useGroup } from '@hooks';
 
 const { Header, Sider, Content, Footer } = Layout;
 const { Title } = Typography;

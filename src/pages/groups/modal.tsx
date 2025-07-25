@@ -5,15 +5,15 @@ import { useEffect } from "react";
 import dayjs from "dayjs";
 import type { ModalProps, Group } from "@types";
 import { groupFormSchema } from "@utils";
-import { useCourse, useGroups } from "@hooks";
+import { useCourse, useGroup } from "@hooks";
 
 interface GroupProps extends ModalProps {
   update: Group 
 }
 
 const GroupModal = ({ open, toggle, update }: GroupProps) => {
-  const { mutate: createFn } = useGroups({ page: 1, limit: 5 }, update?.id).useGroupCreate();
-  const { mutate: updateFn } = useGroups({ page: 1, limit: 5 }, update?.id).useGroupUpdate();
+  const { mutate: createFn } = useGroup({ page: 1, limit: 5 }, update?.id).useGroupCreate();
+  const { mutate: updateFn } = useGroup({ page: 1, limit: 5 }, update?.id).useGroupUpdate();
   const { data } = useCourse({ page: 1, limit: 10 });
   console.log("Course data:", data);
 

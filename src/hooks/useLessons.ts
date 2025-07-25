@@ -5,10 +5,13 @@ import type { ParamsType } from "@types";
 export const useLessons = (params: ParamsType | {}) => {
 	const queryClient = useQueryClient();
 	
-	 const { data: {lessons} = {} } = useQuery({
+	 const { data } = useQuery({
 		queryKey: ["lessons", params],
 		queryFn: async () => lessonsService.getLessons(params),
 	});
+	
+	const lessons = data?.data?.lessons as any;
+	console.log(lessons);
 	const useLessonCreate = () => {
 		return useMutation({
 			mutationFn: async (data: any) => lessonsService.createLessons(data),
@@ -48,7 +51,7 @@ export const useLessons = (params: ParamsType | {}) => {
 
 	return {
 		useLessonCreate,
-		data:lessons,
+		lessons,
 		useLessonUpdate,
 		useLessonDelete,
 		useLessonUpdateStatusAndNotes,
