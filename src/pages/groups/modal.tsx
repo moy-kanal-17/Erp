@@ -39,7 +39,7 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
       setValue("status", update.status);
       setValue("courseId", update.courseId);
       setValue("start_date", dayjs(update.start_date)! );
-      setValue("end_date",  dayjs(update.end_date)! );
+
     }
   }, [update, setValue]);
 
@@ -47,9 +47,9 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
     const formattedData = {
       ...data,
       start_date: data.start_date ? dayjs(data.start_date).format("YYYY-MM-DD") : null,
-      end_date: data.end_date ? dayjs(data.end_date).format("YYYY-MM-DD") : null,
+    
       start_time: data.start_time?.format("HH:mm"),
-      end_time: data.end_time?.format("HH:mm"),
+
       roomId:1
     };
 
@@ -107,26 +107,7 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
           />
         </Form.Item>
 
-        <Form.Item
-          label="End Date"
-          validateStatus={errors.end_date ? "error" : ""}
-          help={errors.end_date?.message}
-        >
-          <Controller
-            name="end_date"
-            control={control}
-            render={({ field }) => (
-              <DatePicker
-                {...field}
-                style={{ width: "100%" }}
-                placeholder="End Date"
-                format="YYYY-MM-DD"
-                value={field.value}
-                onChange={(date) => field.onChange(date)}
-              />
-            )}
-          />
-        </Form.Item>
+
 
 
 
@@ -156,27 +137,7 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
   />
 </Form.Item>
 
-<Form.Item
-  label="End Time"
-  validateStatus={errors.end_time ? "error" : ""}
-  help={errors.end_time?.message}
->
-  <Controller
-    name="end_time"
-    control={control}
-    render={({ field }) => (
-      <TimePicker
-        {...field}
-        style={{ width: "100%" }}
-        format="HH:mm"
-        minuteStep={5}
-        placeholder="End Time"
-        value={field.value as any}
-        onChange={(time) => field.onChange(time)}
-      />
-    )}
-  />
-</Form.Item>
+
 
 
 

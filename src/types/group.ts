@@ -4,6 +4,6 @@ export interface Group {
     courseId: number,
     status: string,
     start_date: Date,
-    end_date: Date
+    // end_date: Date
     
 }
