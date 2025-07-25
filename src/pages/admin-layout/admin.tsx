@@ -7,7 +7,7 @@ import {
   HomeOutlined,
   TeamOutlined,
   UserOutlined,
-  CodeOutlined,
+  // CodeOutlined,
   BranchesOutlined,
   ReadOutlined,
   DownOutlined,
@@ -125,11 +125,11 @@ const Admin = () => {
                 icon: <BookOutlined />,
                 label: 'Courses',
               },
-              {
-                key: '6',
-                icon: <CodeOutlined />,
-                label: 'Projects',
-              },
+              // {
+              //   key: '6',
+              //   icon: <CodeOutlined />,
+              //   label: 'Projects',
+              // },
               {
                 key: '8',
                 icon: <BranchesOutlined />,

@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Layout, Menu, Table, Avatar, Dropdown, Typography, message,
+  Layout,  Table, Typography, message,
   Modal, Button, Form, Input, Select
 } from 'antd';
 import {
-  UserOutlined,
-  //  LogoutOutlined
+
     PlusOutlined, EditOutlined
 } from '@ant-design/icons';
-// import { useNavigate } from 'react-router-dom';
+
 import { teacherService } from '@service';
 
-const { Header, Content, Footer } = Layout;
+const {  Content, Footer } = Layout;
 const { Title } = Typography;
 
 const TeacherLayout: React.FC = () => {
-  // const navigate = useNavigate();
+
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -41,20 +40,7 @@ const TeacherLayout: React.FC = () => {
     fetchUsers();
   }, []);
 
-  // const handleLogout = () => {
-  //   localStorage.removeItem('access_token');
-  //   localStorage.removeItem('role');
-  //   navigate('/login');
-  //   message.success('✅ Chiqildi!');
-  // };
 
-  const userMenu = (
-    <Menu>
-      {/* <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
-        Chiqish
-      </Menu.Item> */}
-    </Menu>
-  );
 
   const showModal = (record: any = null) => {
     setEditingUser(record);
@@ -70,9 +56,9 @@ const TeacherLayout: React.FC = () => {
     try {
       const values = await form.validateFields();
 
-      // При создании нового — добавим branchId
+
       if (!editingUser) {
-        values.branchId = [5]; // можно сделать динамически
+        values.branchId = [5]; 
       }
 
       if (editingUser) {
@@ -111,19 +97,11 @@ const TeacherLayout: React.FC = () => {
 
   return (
     <Layout>
-      <Header style={{
-        background: '#fff', display: 'flex', justifyContent: 'space-between',
-        alignItems: 'center', padding: '0 24px', boxShadow: '0 1px 4px rgba(0,0,0,0.1)'
-      }}>
-        <Title level={4}>Teacher Panel</Title>
-        <Dropdown overlay={userMenu}>
 
-        </Dropdown>
-      </Header>
 
       <Content style={{ margin: 16, background: '#fff', padding: 24, borderRadius: 8 }}>
         <div className="flex justify-between items-center mb-4">
-          <Title level={5}>📚 O‘qituvchilar ro‘yxati</Title>
+          <Title level={5}>Teachers</Title>
           <Button type="primary" icon={<PlusOutlined />} onClick={() => showModal()}>
             Yangi qo‘shish
           </Button>
