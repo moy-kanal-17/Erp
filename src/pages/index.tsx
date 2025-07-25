@@ -15,6 +15,8 @@ const Student = lazy(()=> import('./admin-layout/users'))
 const  Curs = lazy(() => import("./curs/curs.tsx"));
 const  Rooms = lazy(() => import("./rooms/rooms.tsx"));
 const  GroupPage = lazy(() => import("./lessons/lessosG.tsx"));
+// const  Test = lazy(() => import("./test/test.tsx"));
+
 
 
 

@@ -9,6 +9,7 @@ import App from "../App";
 import { SignIn, SignUp, NotFound, TeacherLayout, AdminLayout, Worker, SingleGroup,Student, StudentLayout, Groups, LayoutProtect, LoginProtect, Curs, GroupPage } from "@pages";
 import Branchs from "../pages/branchs/branch";
 import Rooms from "../pages/rooms/rooms";
+// import Test from "../pages/test/test";
 const Router = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -25,6 +26,7 @@ const Router = () => {
          <Route path="courses" element={<Curs/>} />
          <Route path="branch" element={<Branchs/>} />
          <Route path="rooms" element={<Rooms/>} />
+
          <Route path="lessons" element={<GroupPage/>}></Route>
 
         
@@ -33,6 +35,8 @@ const Router = () => {
 
 
         </Route>
+         {/* <Route path="test" element={<Test/>} /> */}
+
 
         {/* TEACHER LAYOUT */}
         <Route path="teacher" element={<TeacherLayout/>}>

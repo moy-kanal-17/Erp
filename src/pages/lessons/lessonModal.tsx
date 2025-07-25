@@ -1,4 +1,4 @@
-import { lessonService } from "@service";
+import { lessonsService } from "@service";
 import { Modal, Form, Input, Select } from "antd";
 import { useEffect } from "react";
 import type { Lesson } from "../../types/lessons";
@@ -22,7 +22,7 @@ const LessonModal = ({ open, onClose, initialData }: LessonModalProps) => {
   const [form] = Form.useForm();
 
   const onSubmit = (result: Lesson) => {
-    lessonService.updateGroup(result);
+    lessonsService.updateLessons(result.id,result);
   };
   useEffect(() => {
     if (initialData) {

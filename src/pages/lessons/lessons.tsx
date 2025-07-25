@@ -2,7 +2,7 @@ import { Button } from "antd";
 import type { GroupLessonsType, Lesson } from "../../types/lessons";
 import { useRef, useState } from "react";
 import { DeleteFilled, EditFilled } from "@ant-design/icons";
-import { lessonService } from "@service";
+import { lessonsService } from "@service";
 import { Notification } from "@helpers";
 import LessonModal from "./lessonModal";
 
@@ -40,7 +40,7 @@ const GroupLessons = ({ lessons }: GroupLessonsType) => {
 
   const deleteLesson = (id: number) => {
     console.log(id);
-    const res = lessonService.deleteLesson(id);
+    const res = lessonsService.deleteLessons(id);
     if (!res) {
       console.log("hato!");
       Notification(
@@ -64,7 +64,7 @@ const GroupLessons = ({ lessons }: GroupLessonsType) => {
   };
 
   return (
-    <div style={{ position: "relative", width: "1650px" }}>
+    <div style={{ position: "relative", width: "1150px" }}>
       <div className="flex justify-between mb-5 p-5">
         <Button type="primary" onClick={goPrev} disabled={isStartDisabled()}>
           Prev

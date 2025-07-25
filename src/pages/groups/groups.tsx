@@ -1,6 +1,6 @@
 import { Button, Space, Table, type TablePaginationConfig } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-import { useGroup, useGeneral } from "@hooks";
+import { useGroups, useGeneral } from "@hooks";
 import { PopConfirm, GroupColumns } from "@components";
 import { type Group } from "@types";
 import { useEffect, useState } from "react";
@@ -27,7 +27,7 @@ const Groups = () => {
     }
    
   }, [location.search]);
-  const { data, useGroupDelete } = useGroup(params);
+  const { data, useGroupDelete } = useGroups(params);
   const { handlePagination } = useGeneral();
   const { mutate: deleteFn, isPending: isDeleting } = useGroupDelete();
   const deleteItem = (id: number) => {

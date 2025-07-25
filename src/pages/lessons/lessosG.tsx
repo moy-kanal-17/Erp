@@ -1,4 +1,4 @@
-import { lessonService } from "@service";
+import { lessonsService } from "@service";
 import GroupLessons from "./lessons";
 import { useEffect, useState } from "react";
 
@@ -9,7 +9,7 @@ const GroupPage = () => {
   useEffect(() => {
     const fetchLessons = async () => {
       try {
-        const response = await lessonService.lessons(params) as any;
+        const response = await lessonsService.getLessons(params) as any;
         setLessons(response || []);
       } catch (error) {
         console.error("Failed to fetch lessons", error);
