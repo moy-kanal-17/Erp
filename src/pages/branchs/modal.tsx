@@ -28,7 +28,7 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
       status: "",
       courseId: undefined,
       start_date: "2025-06-30",
-      end_date: "2025-06-30",
+      
     },
   });
 
@@ -38,7 +38,7 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
       setValue("status", update.status);
       setValue("courseId", update.courseId);
       setValue("start_date", update.start_date ? dayjs(update.start_date) : null);
-      setValue("end_date", update.end_date ? dayjs(update.end_date) : null);
+      // setValue("end_date", update.end_date ? dayjs(update.end_date) : null);
     }
   }, [update, setValue]);
 
@@ -101,26 +101,7 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
           />
         </Form.Item>
 
-        <Form.Item
-          label="End Date"
-          validateStatus={errors.end_date ? "error" : ""}
-          help={errors.end_date?.message}
-        >
-          <Controller
-            name="end_date"
-            control={control}
-            render={({ field }) => (
-              <DatePicker
-                {...field}
-                style={{ width: "100%" }}
-                placeholder="End Date"
-                format="YYYY-MM-DD"
-                value={field.value}
-                onChange={(date) => field.onChange(date)}
-              />
-            )}
-          />
-        </Form.Item>
+        
 
         <Form.Item
           label="Status"
