@@ -4,16 +4,18 @@ import {
   Modal, Button, Form, Input, Select
 } from 'antd';
 import {
-  UserOutlined, LogoutOutlined, PlusOutlined, EditOutlined
+  UserOutlined,
+  //  LogoutOutlined
+    PlusOutlined, EditOutlined
 } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { teacherService } from '@service';
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 
 const TeacherLayout: React.FC = () => {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -39,18 +41,18 @@ const TeacherLayout: React.FC = () => {
     fetchUsers();
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('role');
-    navigate('/login');
-    message.success('✅ Chiqildi!');
-  };
+  // const handleLogout = () => {
+  //   localStorage.removeItem('access_token');
+  //   localStorage.removeItem('role');
+  //   navigate('/login');
+  //   message.success('✅ Chiqildi!');
+  // };
 
   const userMenu = (
     <Menu>
-      <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
+      {/* <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
         Chiqish
-      </Menu.Item>
+      </Menu.Item> */}
     </Menu>
   );
 
@@ -115,7 +117,7 @@ const TeacherLayout: React.FC = () => {
       }}>
         <Title level={4}>Teacher Panel</Title>
         <Dropdown overlay={userMenu}>
-          <Avatar style={{ backgroundColor: '#1890ff', cursor: 'pointer' }} icon={<UserOutlined />} />
+
         </Dropdown>
       </Header>
 
