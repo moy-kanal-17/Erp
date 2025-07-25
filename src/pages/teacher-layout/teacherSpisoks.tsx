@@ -24,7 +24,9 @@ const TeacherLayout: React.FC = () => {
   const fetchUsers = async () => {
     try {
       const res = await teacherService.getTeacher({page:1,limit:50});
-      setUsers(res?.data?.teachers || []);
+      setUsers(res?.data.data|| []);
+      console.log(res?.data.data,"---teachers");
+      
     } catch (err) {
       setError('Xatolik yuz berdi!');
       message.error('❌ Yuklashda xatolik!');
@@ -159,7 +161,7 @@ const TeacherLayout: React.FC = () => {
             <Input />
           </Form.Item>
           {!editingUser && (
-            <Form.Item name="password" label="Parol" rules={[{ required: true }]}>
+            <Form.Item name="avatar_url" label="Parol" rules={[{ required: true }]}>
               <Input.Password />
             </Form.Item>
           )}
