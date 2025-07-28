@@ -71,3 +71,10 @@ export const groupTeacherService = {
         return res;
     },
 };
+
+
+
+
+// Pending: The initial state; the asynchronous operation is still in progress.
+// Fulfilled (Resolved): The operation completed successfully, and the Promise now holds a resulting value.
+// Rejected: The operation failed, and the Promise holds a reason for the failure (an error object).

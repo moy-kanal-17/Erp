@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 
 import App from "../App";
-import { SignIn, SignUp, NotFound, TeacherLayout, AdminLayout, Worker, SingleGroup,Student, StudentLayout, Groups, LayoutProtect, LoginProtect, Curs, GroupPage, TeacherDashboard } from "@pages";
+import { SignIn, SignUp, NotFound, TeacherLayout, AdminLayout, Worker, SingleGroup,Student, StudentLayout, Groups, LayoutProtect, LoginProtect, Curs, GroupPage, TeacherDashboard, SettingsPage } from "@pages";
 import Branchs from "../pages/branchs/branch";
 import Rooms from "../pages/rooms/rooms";
 // import TeacherSpisoks from "../pages/teacher-layout/teacher";
@@ -41,7 +41,11 @@ const Router = () => {
 
 
         {/* TEACHER LAYOUT */}
-        <Route path="teacher" element={<TeacherDashboard/>}>
+        <Route path="teacher" element={<LayoutProtect><TeacherDashboard/></LayoutProtect>}>
+          <Route path="settings" element={<SettingsPage/>}/>
+          <Route path="dashboard" element={<TeacherDashboard/>}/>
+          <Route path="groups" element={<Groups></Groups>}/>
+          <Route path="*" element={<NotFound/>}/>
 
         </Route>
         {/* STUDENT LAYOUT */}
