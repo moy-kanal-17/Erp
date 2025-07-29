@@ -40,15 +40,20 @@ export const useGroup = (params: ParamsType | {}, id = 0) => {
 			},
 		});
 	};
-	const useGroupUpdate = () => {
-		return useMutation({
-			mutationFn: async ({ id, data }: { id: number; data: any }) =>
-				groupsService.updateGroup(id, data),
-			onSuccess: () => {
-				queryClient.invalidateQueries({ queryKey: ["groups"] });
-			},
-		});
-	};
+const useGroupUpdate = () => {
+  return useMutation({
+    mutationFn: async (data: any) => {
+      const { id, ...rest } = data; 
+      console.log("in hook", id, rest);
+      return groupsService.updateGroup(id, rest); 
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["groups"] });
+    },
+  });
+};
+
+
 	const useGroupDelete = () => {
 		return useMutation({
 			mutationFn: async (id: number) => groupsService.deleteGroup(id),

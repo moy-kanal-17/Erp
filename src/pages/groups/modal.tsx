@@ -50,11 +50,13 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
     
       start_time: data.start_time?.format("HH:mm"),
 
-      roomId:1
+      roomId:43
     };
 
     if (update?.id) {
-      updateFn({ ...formattedData, id: update.id });
+      console.log("Updating group with data:", formattedData,"straniy yoli :",{...formattedData,id: update.id});
+      
+  updateFn({ ...formattedData, id: update.id });
     } else {
       createFn(formattedData);
     }
@@ -190,6 +192,8 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
             )}
           />
         </Form.Item>
+
+        {/* roomId */}
 
         <Form.Item>
           <Button type="primary" htmlType="submit" block>

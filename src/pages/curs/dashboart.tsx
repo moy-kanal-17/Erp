@@ -22,9 +22,9 @@ interface Course {
 interface Branch {
   id: number;
   name: string;
-  students: number;
-  courses: number;
-  status: string;
+  address: string;
+  call_number: string;
+  created_at: string;
 }
 
 const Dashboard: React.FC = () => {
@@ -168,12 +168,12 @@ const Dashboard: React.FC = () => {
                         <div>
                           <h3 className="font-medium text-gray-900">{branch.name}</h3>
                           <p className="text-sm text-gray-600">
-                            {branch.students} students • {branch.courses} courses
+                            {branch.call_number} call_number • {branch.address} address
                           </p>
                         </div>
                         <div className="flex items-center">
                           <span className="px-3 py-1 bg-green-100 text-green-800 text-sm rounded-full">
-                            {branch.status}
+                            {branch.created_at}
                           </span>
                         </div>
                       </div>
@@ -199,9 +199,9 @@ const Dashboard: React.FC = () => {
                     <div key={branch.id} className="p-6 border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
                       <h3 className="text-lg font-semibold text-gray-900 mb-2">{branch.name}</h3>
                       <div className="space-y-2 text-sm text-gray-600">
-                        <p>Students: {branch.students}</p>
-                        <p>Courses: {branch.courses}</p>
-                        <p>Status: <span className="capitalize">{branch.status}</span></p>
+                        <p>Call number: {branch.call_number}</p>
+                        <p>Address: {branch.address}</p>
+                        <p>created at: <span className="capitalize">{branch.created_at}</span></p>
                       </div>
                     </div>
                   ))}
