@@ -5,6 +5,8 @@ import type { ParamsType } from "@types";
 export const studentService = {
 	async getStudent(params: ParamsType) {
 		const res = await apiConfig().getRequest(ApiUrls.STUDENTS, params);
+		console.log("Student data in service	:", res);
+		
 		return res;
 	},
 	async deleteStudent(id: number) {

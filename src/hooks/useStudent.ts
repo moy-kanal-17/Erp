@@ -5,9 +5,11 @@ import type { ParamsType } from '@types'
 export const useStudents = (params: ParamsType) => {
 	const queryClient = useQueryClient();
 	const { data } = useQuery({
-		queryKey: ["student", params],
+		queryKey: ["students", params],
 		queryFn: async () => studentService.getStudent(params),
 	});
+	console.log("Student data:", data);
+	
 	const useStudentCreate = () => {
 		return useMutation({
 			mutationFn: async (data: any) => studentService.createStudent(data),

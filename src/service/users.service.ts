@@ -6,9 +6,12 @@ import { Notification } from '../helpers';
 export const userService = {
   getStudents: async () => {
     try {
-      const response = await apiConfig().getRequest(ApiUrls.STUDENTS);
+      const params = {
+        page: 1,
+        limit: 10,}
+      const response = await apiConfig().getRequest(ApiUrls.STUDENTS,params);
       console.log("📦 Foydalanuvchilar:", response);
-      return response?.data;
+      return response?.data.data;
     } catch (error) {
       console.error("Error getting users:", error);
       throw error;
