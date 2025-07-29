@@ -27,7 +27,7 @@ const GroupModal = ({ open, toggle, update }: GroupProps) => {
       name: "",
       status: "",
       courseId: undefined,
-      start_date: "2025-06-30",
+      start_date: dayjs("2025-06-30"),
       
     },
   });

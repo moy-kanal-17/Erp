@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Table, Typography, Button, Modal, Form, Input, message, Card } from 'antd';
+import { Table, Typography, Button, Modal, Form, Input, message, Card, Select, InputNumber } from 'antd';
 import { roomService } from '../../service/rooms.service';
 import type { Room } from '@types';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
+import { useBranch } from "@hooks";
 
 const { Title } = Typography;
 
@@ -14,6 +15,14 @@ const Rooms = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingRoom, setEditingRoom] = useState<Room | null>(null);
   const [form] = Form.useForm();
+const params = { page, limit };
+
+const { data } = useBranch(params);
+const branches = data?.branch ?? []; 
+
+console.log("branches", branches);
+
+
 
   const fetchRooms = async (page = 1, limit = 3) => {
     try {
@@ -74,7 +83,7 @@ const Rooms = () => {
       onOk: async () => {
         try {
           await roomService.deleteRoom(id);
-          message.success('🗑 Room fucking trashed!');
+          message.success('🗑 Room   trashed!');
           fetchRooms(page, limit);
         } catch (error) {
           message.error('😵 Couldn’t delete, something’s fucked!');
@@ -157,18 +166,43 @@ const Rooms = () => {
           >
             <Input size="large" />
           </Form.Item>
-          <Form.Item
-            name="capacity"
-            label="Capacity"
-            rules={[{ required: true, message: 'Enter capacity!' }]}
-          >
-            <Input type="number" size="large" />
-          </Form.Item>
-          <Form.Item>
-            <Button type="primary" htmlType="submit" size="large" block style={{ background: '#1890ff', borderColor: '#1890ff' }}>
-              {editingRoom ? 'Update' : 'Create'}
-            </Button>
-          </Form.Item>
+
+<Form.Item
+  name="capacity"
+  label="Capacity"
+  rules={[
+    { required: true, message: 'Enter capacity!' },
+    { type: 'number', min: 1, message: 'Capacity must be a positive integer' }
+  ]}
+>
+  <InputNumber size="large" style={{ width: '100%' }} />
+</Form.Item>
+
+
+
+
+
+
+ <Form.Item
+  name="branchId"
+  label="Branch"
+  rules={[{ required: true, message: "Please select a branch" }]}
+>
+  <Select placeholder="Select branch" size="large">
+    {branches?.map((branch: any) => (
+      <Select.Option key={branch.id} value={branch.id}>
+        {branch.name}
+      </Select.Option>
+    ))}
+  </Select>
+</Form.Item>
+
+<Form.Item>
+  <Button type="primary" htmlType="submit" size="large" block>
+    {editingRoom ? 'Update' : 'Create'}
+  </Button>
+</Form.Item>
+
         </Form>
       </Modal>
     </Card>

@@ -7,8 +7,8 @@ export const userService = {
   getStudents: async () => {
     try {
       const response = await apiConfig().getRequest(ApiUrls.STUDENTS);
-      console.log("📦 Foydalanuvchilar:", response?.data);
-      return response?.data.students;
+      console.log("📦 Foydalanuvchilar:", response);
+      return response?.data;
     } catch (error) {
       console.error("Error getting users:", error);
       throw error;

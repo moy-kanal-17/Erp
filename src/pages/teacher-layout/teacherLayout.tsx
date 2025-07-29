@@ -29,7 +29,7 @@ const TeacherLayoutt: React.FC<TeacherLayoutProps> = ({ children, defaultSelecte
     localStorage.removeItem('access_token');
     localStorage.removeItem('role');
     navigate('/login');
-    message.success('✅ Logged out like a fucking legend!');
+    message.success('✅ Logged out like a   legend!');
   };
 
   const userMenu = (

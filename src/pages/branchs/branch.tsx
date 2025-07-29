@@ -1,15 +1,21 @@
 import { Button, Space, Table, type TablePaginationConfig } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-import { useGroup, useGeneral } from "@hooks";
-import { PopConfirm, GroupColumns } from "@components";
-import { type Group } from "@types";
+import { 
+  // useGroup,
+   useGeneral } from "@hooks";
+import { PopConfirm, 
+  // GroupColumns
+ } from "@components";
+import { type Branch } from "@types";
+
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import GroupModal from "./modal";
+import BranchModal from "./branchModalS";
+import { useBranch } from "../../hooks/useBranch";
 
 const Branchs = () => {
   const [open, setOpen] = useState(false);
-  const [update, setUpdate] = useState<Group>();
+  const [update, setUpdate] = useState<Branch>();
   const [params, setParams] = useState({
     page: 1,
     limit: 10,
@@ -27,14 +33,16 @@ const Branchs = () => {
     }
    
   }, [location.search]);
-  const { data, useGroupDelete } = useGroup(params);
+  const { data, useBranchDelete } = useBranch(params);
+  console.log("data", data);
+  
   const { handlePagination } = useGeneral();
-  const { mutate: deleteFn, isPending: isDeleting } = useGroupDelete();
+  const { mutate: deleteFn, isPending: isDeleting } = useBranchDelete();
   const deleteItem = (id: number) => {
     deleteFn(id);
   };
   // batching
-  const editItem = (record: Group) => {
+  const editItem = (record: Branch) => {
     setUpdate(record);
     setOpen(true);
   };
@@ -48,11 +56,36 @@ const Branchs = () => {
     handlePagination({pagination, setParams});
   };
   const columns = [
-    ...(GroupColumns ?? []),
+
+
+     {
+      name: "id",
+      dataIndex: "id",
+      key: "id",
+    },
+
+         {
+      name: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+
+    {
+      name: "Call Number",
+      dataIndex: "call_number",
+      key: "call_number",
+    },
+    {
+      name: "Address",
+      dataIndex: "address",
+      key: "address",
+    }
+    
+    ,
     {
       title: "Action",
       key: "action",
-      render: (_: any, record: Group) => (
+      render: (_: any, record: Branch) => (
         <Space size="middle">
           <Button type="primary" onClick={() => editItem(record)}>
             <EditOutlined />
@@ -69,7 +102,7 @@ const Branchs = () => {
 
   return (
     <>
-      {open && <GroupModal open={open} toggle={toggle} 
+      {open && <BranchModal open={open} toggle={toggle} 
       update={update}
       />
       }
@@ -77,14 +110,14 @@ const Branchs = () => {
       <Button type="primary" onClick={() => setOpen(true)}>
         add group
       </Button>
-      <Table<Group>
-        columns={columns}
-        dataSource={data?.data.data}
+      <Table
+        columns={columns as any}
+        dataSource={data?.branch}
         rowKey={(row) => row.id!}
         pagination={{
           current: params.page,
           pageSize: params.limit,
-          total: data?.data?.total,
+          // total: data?.data?.total,
           showSizeChanger: true,
           pageSizeOptions: ["4", "5", "6", "7", "10"],
         }}

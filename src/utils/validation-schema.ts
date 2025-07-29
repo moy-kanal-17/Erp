@@ -10,3 +10,19 @@ export const groupFormSchema = yup.object().shape({
   start_time: yup.mixed().nullable(),
   // end_time:yup.mixed().nullable(),
 });
+
+
+// BRANCH FORM
+// import * as yup from "yup";
+
+export const branchFormSchema = yup.object().shape({
+  name: yup.string().required("Branch nomi majburiy"),
+  address: yup.string().required("Manzil majburiy"),
+  call_number: yup
+    .string()
+    .required("Telefon raqami majburiy")
+    .matches(
+      /^\+998 \(\d{2}\) \d{3}-\d{2}-\d{2}$/,
+      "Raqam formati: +998 (90) 123-45-67"
+    ),
+});

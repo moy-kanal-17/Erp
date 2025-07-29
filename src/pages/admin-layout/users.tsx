@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Modal, Form, Input, Select, message } from 'antd';
+import { Table, Button, Modal, Form, Input, message } from 'antd';
 import { userService } from '../../service/users.service';
-import { useGroup } from '../../hooks/useGroup'; 
-
-const { Option } = Select;
+// import { useGroup } from '../../hooks/useGroup'; 
+  
+// const { Option } = Select;
 
 const Student: React.FC = () => {
   const [users, setUsers] = useState([]);
@@ -11,8 +11,8 @@ const Student: React.FC = () => {
   const [form] = Form.useForm();
   const [editingId, setEditingId] = useState<number | null>(null);
 
-  const { data: groupsData } = useGroup({ page: 1, limit: 100 });
-  const groups = groupsData?.data?.data || [];
+  // const { data: groupsData } = useGroup({ page: 1, limit: 100 });
+  // const groups = groupsData?.data?.data || [];
 
   useEffect(() => {
     fetchUsers();
@@ -31,7 +31,7 @@ const Student: React.FC = () => {
   const openModal = (user: any = null) => {
     setEditingId(user?.id || null);
     if (user) {
-      form.setFieldsValue({ ...user, groupsId: user.groupsId ? user.groupsId[0] : undefined }); 
+      form.setFieldsValue({ ...user, }); 
    
       form.setFieldsValue({ password_hash: '', confirm_password: '' });
     } else {
@@ -48,7 +48,7 @@ const Student: React.FC = () => {
         ...values,
         lidId: null, 
         eventsId: null,
-        groupsId: values.groupsId ? [values.groupsId] : null, 
+        // groupsId: values.groupsId ? [values.groupsId] : null, 
       };
 
 
@@ -60,7 +60,7 @@ const Student: React.FC = () => {
       } else {
 
         payload.password_hash = values.password_hash;
-        delete payload.confirm_password;  }
+        payload.confirm_password = values.confirm_password;}
       
       console.log("Payload sent:", payload);
 
@@ -187,7 +187,7 @@ const Student: React.FC = () => {
             <Input />
           </Form.Item>
 
-          <Form.Item name="phone" label="Telefon raqami" rules={[{ required: true, message: 'Telefon raqam majburiy' }]}>
+          <Form.Item name="phone" label="Telefon raqami"  rules={[{ required: true, message: 'Telefon raqam majburiy' }]}>
 
             <Input /> 
           </Form.Item>
@@ -197,15 +197,7 @@ const Student: React.FC = () => {
             <Input /> 
           </Form.Item>
 
-          <Form.Item name="groupsId" label="Guruh" >
-            <Select placeholder="Guruhni tanlang">
-              {groups.map((group: any) => (
-                <Option key={group.id} value={group.id}>
-                  {group.name}
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
+
         </Form>
       </Modal>
     </div>
