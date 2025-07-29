@@ -88,6 +88,7 @@ const AddTeacherorStudentModal = ({
 		if (!id) {
 			setFilteredData(originalData);
 		} else {
+			if (!originalData) return;
 			const filtered = originalData.filter((item: any) => item.id === id);
 			setFilteredData(filtered);
 		}

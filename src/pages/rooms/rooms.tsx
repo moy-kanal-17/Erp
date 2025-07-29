@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Table, Typography, Button, Modal, Form, Input, message, Card, Select, InputNumber } from 'antd';
+import { Table, Typography, Button, Modal, Form, Input, message, Card, Select, InputNumber, Space } from 'antd';
 import { roomService } from '../../service/rooms.service';
 import type { Room } from '@types';
 import { DeleteFilled, EditFilled } from '@ant-design/icons';
@@ -30,7 +30,7 @@ console.log("branches", branches);
       setRooms(response.rooms);
       setTotal(response.total);
     } catch (error) {
-      message.error('😡 Couldn’t fetch rooms, shit’s broken!');
+      message.error('😡 Couldn’t fetch rooms,server broken!');
     }
   };
 
@@ -61,16 +61,16 @@ console.log("branches", branches);
     try {
       if (editingRoom) {
         await roomService.updateRoom({ id: editingRoom.id, ...values });
-        message.success('🎉 Room updated like a boss!');
+        message.success('🎉 Room updated!');
       } else {
         await roomService.createRoom(values);
-        message.success('🚀 Room created, crushing it!');
+        message.success('🚀 Room created!');
       }
       setIsModalOpen(false);
       form.resetFields();
       fetchRooms(page, limit);
     } catch (error) {
-      message.error('😡 Shit hit the fan, try again!');
+      message.error(' code brocken, try again!');
     }
   };
 
@@ -83,10 +83,10 @@ console.log("branches", branches);
       onOk: async () => {
         try {
           await roomService.deleteRoom(id);
-          message.success('🗑 Room   trashed!');
+          message.success('🗑 Room deleted!');
           fetchRooms(page, limit);
         } catch (error) {
-          message.error('😵 Couldn’t delete, something’s fucked!');
+          message.error('😵 Couldn’t delete!');
         }
       },
     });
@@ -114,12 +114,15 @@ console.log("branches", branches);
       key: 'actions',
       render: (_: any, record: Room) => (
         <div>
-          <Button type="primary"  size='small' onClick={() => showModal(record)}>
+          <Space size="middle">
+          <Button type="primary" size='middle' onClick={() => showModal(record)}>
             <EditFilled />
           </Button>
-          <Button type="dashed" size='small' danger onClick={() => handleDelete(record.id!)}>
+
+          <Button type="primary" size='middle' danger onClick={() => handleDelete(record.id!)}>
             <DeleteFilled />
           </Button>
+          </Space>
         </div>
       ),
     },
@@ -129,7 +132,7 @@ console.log("branches", branches);
     <Card>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
         <Title level={4}>Rooms</Title>
-        <Button type="primary" style={{ background: '#1890ff', borderColor: '#1890ff' }} onClick={() => showModal()}>
+        <Button type="primary" size='middle'  onClick={() => showModal()}>
           Create Room
         </Button>
       </div>

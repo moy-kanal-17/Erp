@@ -132,9 +132,9 @@ const Courses = () => {
         title: 'Actions',
         key: 'actions',
         render: (_: any, record: Course) => (
-          <Space>
-            <Button icon={<EditOutlined />} size="small" onClick={() => handleEdit(record)} />
-            <Button icon={<DeleteOutlined />} size="small" danger onClick={() => handleDelete(record.id)} />
+          <Space size="middle">
+            <Button icon={<EditOutlined />} size="middle" type='primary' onClick={() => handleEdit(record)} />
+            <Button icon={<DeleteOutlined />} size="middle" type='primary' danger onClick={() => handleDelete(record.id)} />
           </Space>
         ),
       },
