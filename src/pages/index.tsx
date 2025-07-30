@@ -17,6 +17,8 @@ const Student = lazy(()=> import('./admin-layout/users'))
 const  Curs = lazy(() => import("./curs/curs.tsx"));
 const  Rooms = lazy(() => import("./rooms/rooms.tsx"));
 const  GroupPage = lazy(() => import("./lessons/lessosG.tsx"));
+const Profile = lazy(() => import("./teacher-layout/teacherLayout.tsx"));
+const TeacherPaneLayout = lazy(() => import("./teacher-layout/TeachersCards.tsx"));
 
 
 const SettingsPage = lazy(() => import("./teacher-layout/teacher-settingsMenyu"))
@@ -25,4 +27,4 @@ const SettingsPage = lazy(() => import("./teacher-layout/teacher-settingsMenyu")
 
 
 
-export {SignIn,Curs,SettingsPage,GroupPage,TeacherDashboard,Rooms, Student,SignUp, NotFound, StudentLayout, SingleGroup, AdminLayout, TeacherLayout, Groups, LayoutProtect, LoginProtect, Worker}
+export {SignIn,TeacherPaneLayout,Profile,Curs,SettingsPage,GroupPage,TeacherDashboard,Rooms, Student,SignUp, NotFound, StudentLayout, SingleGroup, AdminLayout, TeacherLayout, Groups, LayoutProtect, LoginProtect, Worker}

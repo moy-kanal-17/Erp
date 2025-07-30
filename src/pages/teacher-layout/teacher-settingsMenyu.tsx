@@ -1,16 +1,12 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Layout, Menu, Table, Avatar, Dropdown, Typography, Button, Modal, Form, Input, message, Select, Card } from 'antd';
-import { UserOutlined, LogoutOutlined, HomeOutlined, SettingOutlined, TeamOutlined, CalendarOutlined, MenuOutlined, SearchOutlined, BellOutlined } from '@ant-design/icons';
-import { useGroupTeachers } from '@hooks';
-import type { ParamsType } from '@types';
-import 'antd/dist/reset.css';
+import { Layout, Menu, Card, Table, Avatar, Dropdown, Typography, Button, Modal, Form, Input, Select } from 'antd';
+import { HomeOutlined, UserOutlined, SettingOutlined, MenuOutlined, SearchOutlined, BellOutlined, LogoutOutlined } from '@ant-design/icons';
 
 const { Header, Sider, Content, Footer } = Layout;
 const { Title } = Typography;
 const { Option } = Select;
 
-// Types
 interface GroupTeacher {
   id: number;
   group: { id: number; name: string };
@@ -20,36 +16,40 @@ interface GroupTeacher {
   end_date: string;
 }
 
-const SettingsPage: React.FC = () => {
+const SettingsPage = () => {
   const navigate = useNavigate();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingGroupTeacher, setEditingGroupTeacher] = useState<GroupTeacher | null>(null);
   const [form] = Form.useForm();
 
-  // Hook
-  const params: ParamsType = { page: 1, limit: 20 };
-  const { data: groupTeachers, useGroupTeacherCreate, useGroupTeacherUpdate, useGroupTeacherDelete, useGroupTeacherActivate, useGroupTeacherDeactivate } = useGroupTeachers(params);
-  const { mutate: createGroupTeacher } = useGroupTeacherCreate();
-  const { mutate: updateGroupTeacher } = useGroupTeacherUpdate();
-  const { mutate: deleteGroupTeacher } = useGroupTeacherDelete();
-  const { mutate: activateGroupTeacher } = useGroupTeacherActivate();
-  const { mutate: deactivateGroupTeacher } = useGroupTeacherDeactivate();
-
-  // Menu
-  const menuItems = [
-    { key: 'dashboard', label: 'Dashboard', icon: <HomeOutlined /> },
-    { key: 'settings', label: 'Settings', icon: <SettingOutlined /> },
-    { key: 'groups', label: 'Groups', icon: <TeamOutlined /> },
-    { key: 'events', label: 'Events', icon: <CalendarOutlined /> },
+  const groupTeachers: GroupTeacher[] = [
+    { id: 1, group: { id: 1, name: 'Group A' }, teacher: { id: 1, first_name: 'John', last_name: 'Doe' }, status: true, start_date: '2021-03-01', end_date: '2021-12-31' },
+    { id: 2, group: { id: 2, name: 'Group B' }, teacher: { id: 2, first_name: 'Peter', last_name: 'Smith' }, status: false, start_date: '2021-04-01', end_date: '2021-11-30' }
   ];
 
-  // Logout
+  const mockGroups = [
+    { id: 1, name: 'Group A' },
+    { id: 2, name: 'Group B' },
+    { id: 3, name: 'Group C' }
+  ];
+
+  const mockTeachers = [
+    { id: 1, first_name: 'John', last_name: 'Doe' },
+    { id: 2, first_name: 'Peter', last_name: 'Smith' },
+    { id: 3, first_name: 'Mary', last_name: 'Johnson' }
+  ];
+
+  const menuItems = [
+    { key: 'dashboard', label: 'Dashboard', icon: <HomeOutlined /> },
+    { key: 'profile', label: 'Profile', icon: <UserOutlined /> },
+    { key: 'settings', label: 'Settings', icon: <SettingOutlined /> }
+  ];
+
   const handleLogout = () => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('role');
     navigate('/login');
-    message.success('✅ Logged out like a rockstar!');
   };
 
   const userMenu = (
@@ -60,7 +60,6 @@ const SettingsPage: React.FC = () => {
     </Menu>
   );
 
-  // Modal for group assignment
   const showModal = (groupTeacher?: GroupTeacher) => {
     if (groupTeacher) {
       setEditingGroupTeacher(groupTeacher);
@@ -68,7 +67,7 @@ const SettingsPage: React.FC = () => {
         group: groupTeacher.group.id,
         teacher: groupTeacher.teacher.id,
         start_date: groupTeacher.start_date,
-        end_date: groupTeacher.end_date,
+        end_date: groupTeacher.end_date
       });
     } else {
       setEditingGroupTeacher(null);
@@ -77,75 +76,50 @@ const SettingsPage: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleSubmit = async (values: any) => {
-    try {
-      if (editingGroupTeacher) {
-        await updateGroupTeacher({ id: editingGroupTeacher.id, data: values });
-        message.success('🎉 Assignment updated like a beast!');
-      } else {
-        await createGroupTeacher(values);
-        message.success('🚀 Teacher assigned to group, crushing it!');
-      }
-      setIsModalOpen(false);
-      form.resetFields();
-    } catch (error) {
-      message.error('😡 Something broke, give it another shot!');
-    }
+  const handleSubmit = (values: any) => {
+    setIsModalOpen(false);
+    console.log(values);
+
+    form.resetFields();
   };
 
   const handleDelete = (id: number) => {
+    console.log(id);
+    
     Modal.confirm({
       title: 'Delete this assignment?',
-      content: 'No turning back, make it quick!',
+      content: 'This action cannot be undone.',
       okText: 'Delete',
       cancelText: 'Cancel',
-      onOk: async () => {
-        try {
-          await deleteGroupTeacher(id);
-          message.success('🗑 Assignment obliterated!');
-        } catch (error) {
-          message.error('😵 Couldn’t delete, something’s messed up!');
-        }
-      },
+      onOk: () => {}
     });
   };
 
   const handleToggleStatus = (id: number, status: boolean) => {
+    console.log(id);
     Modal.confirm({
+
       title: status ? 'Deactivate assignment?' : 'Activate assignment?',
-      content: 'You sure you wanna do this?',
+      content: 'Are you sure?',
       okText: status ? 'Deactivate' : 'Activate',
       cancelText: 'Cancel',
-      onOk: async () => {
-        try {
-          if (status) {
-            await deactivateGroupTeacher(id);
-            message.success('🛑 Assignment shut down!');
-          } else {
-            await activateGroupTeacher(id);
-            message.success('✅ Assignment fired up, let’s go!');
-          }
-        } catch (error) {
-          message.error('😵 Status change failed, try again!');
-        }
-      },
+      onOk: () => {}
     });
   };
 
-  // Table columns
   const columns = [
     { title: 'ID', dataIndex: 'id', key: 'id', width: 60 },
     {
       title: 'Group',
       dataIndex: 'group',
       key: 'group',
-      render: (group: GroupTeacher['group']) => group.name || group.id,
+      render: (group: GroupTeacher['group']) => group.name || group.id
     },
     {
       title: 'Teacher',
       dataIndex: 'teacher',
       key: 'teacher',
-      render: (teacher: GroupTeacher['teacher']) => `${teacher.first_name} ${teacher.last_name}` || teacher.id,
+      render: (teacher: GroupTeacher['teacher']) => `${teacher.first_name} ${teacher.last_name}` || teacher.id
     },
     { title: 'Start Date', dataIndex: 'start_date', key: 'start_date' },
     { title: 'End Date', dataIndex: 'end_date', key: 'end_date' },
@@ -153,7 +127,7 @@ const SettingsPage: React.FC = () => {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: (status: boolean) => (status ? 'Active' : 'Inactive'),
+      render: (status: boolean) => (status ? 'Active' : 'Inactive')
     },
     {
       title: 'Actions',
@@ -170,27 +144,12 @@ const SettingsPage: React.FC = () => {
             {record.status ? 'Deactivate' : 'Activate'}
           </Button>
         </div>
-      ),
-    },
-  ];
-
-  // Mock groups and teachers for form (replace with real API data if available)
-  const mockGroups = [
-    { id: 1, name: 'Group A' },
-    { id: 2, name: 'Group B' },
-    { id: 3, name: 'Group C' },
-  ];
-
-  const mockTeachers = [
-    { id: 1, first_name: 'John', last_name: 'Doe' },
-    { id: 2, first_name: 'Peter', last_name: 'Smith' },
-    { id: 3, first_name: 'Mary', last_name: 'Johnson' },
+      )
+    }
   ];
 
   return (
     <Layout style={{ minHeight: '100vh', background: '#f5f5f5' }}>
-      {/* Sidebar */}
-      {/* <h1>Hi! Settings</h1> */}
       <Sider
         width={sidebarCollapsed ? 80 : 200}
         collapsible
@@ -198,14 +157,7 @@ const SettingsPage: React.FC = () => {
         onCollapse={setSidebarCollapsed}
         style={{ background: '#001529', boxShadow: '2px 0 6px rgba(0, 0, 0, 0.1)' }}
       >
-        <div
-          style={{
-            padding: '16px',
-            textAlign: 'center',
-            background: '#002140',
-            borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-          }}
-        >
+        <div style={{ padding: '16px', textAlign: 'center', background: '#000000ff', borderBottom: '1px solid rgba(230, 220, 220, 0.1)' }}>
           <Title level={4} style={{ color: '#fff', margin: 0, fontWeight: 'bold' }}>
             {sidebarCollapsed ? '🎓' : '🎓 Teacher ERP'}
           </Title>
@@ -219,23 +171,12 @@ const SettingsPage: React.FC = () => {
           style={{ borderRight: 'none' }}
         />
       </Sider>
-
-      {/* Main Content */}
       <Layout>
-        <Header
-          style={{
-            background: '#fff',
-            padding: '0 24px',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            boxShadow: '0 1px 4px rgba(0, 21, 41, 0.08)',
-          }}
-        >
+        <Header style={{ background: '#fff', padding: '0 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 1px 4px rgba(0, 21, 41, 0.08)' }}>
           <div className="flex items-center gap-4">
             <Button type="text" icon={<MenuOutlined />} onClick={() => setSidebarCollapsed(!sidebarCollapsed)} />
             <span className="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full">
-              ACADEMIC YEAR: 2025
+              ACADEMIC YEAR: CBSE - 2021
             </span>
           </div>
           <div className="flex items-center gap-4">
@@ -246,17 +187,7 @@ const SettingsPage: React.FC = () => {
             </Dropdown>
           </div>
         </Header>
-
-        <Content
-          style={{
-            margin: '24px 16px',
-            padding: '24px',
-            background: '#fff',
-            borderRadius: '8px',
-            minHeight: '500px',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
-          }}
-        >
+        <Content style={{ margin: '24px 16px', padding: '24px', background: '#fff', borderRadius: '8px', minHeight: '500px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)' }}>
           <Card title="Manage Group-Teacher Assignments">
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
               <Title level={4}>Assignments</Title>
@@ -264,7 +195,7 @@ const SettingsPage: React.FC = () => {
                 Assign Teacher to Group
               </Button>
             </div>
-            {groupTeachers?.length === 0 ? (
+            {groupTeachers.length === 0 ? (
               <p>No assignments found</p>
             ) : (
               <Table
@@ -277,8 +208,6 @@ const SettingsPage: React.FC = () => {
               />
             )}
           </Card>
-
-          {/* Modal for group assignment */}
           <Modal
             title={editingGroupTeacher ? 'Edit Assignment' : 'Assign Teacher to Group'}
             open={isModalOpen}
@@ -287,11 +216,7 @@ const SettingsPage: React.FC = () => {
             width={600}
           >
             <Form form={form} onFinish={handleSubmit} layout="vertical">
-              <Form.Item
-                name="group"
-                label="Group"
-                rules={[{ required: true, message: 'Select a group!' }]}
-              >
+              <Form.Item name="group" label="Group" rules={[{ required: true, message: 'Select a group!' }]}>
                 <Select size="large">
                   {mockGroups.map((group) => (
                     <Option key={group.id} value={group.id}>
@@ -300,11 +225,7 @@ const SettingsPage: React.FC = () => {
                   ))}
                 </Select>
               </Form.Item>
-              <Form.Item
-                name="teacher"
-                label="Teacher"
-                rules={[{ required: true, message: 'Select a teacher!' }]}
-              >
+              <Form.Item name="teacher" label="Teacher" rules={[{ required: true, message: 'Select a teacher!' }]}>
                 <Select size="large">
                   {mockTeachers.map((teacher) => (
                     <Option key={teacher.id} value={teacher.id}>
@@ -313,43 +234,21 @@ const SettingsPage: React.FC = () => {
                   ))}
                 </Select>
               </Form.Item>
-              <Form.Item
-                name="start_date"
-                label="Start Date"
-                rules={[{ required: true, message: 'Enter start date!' }]}
-              >
+              <Form.Item name="start_date" label="Start Date" rules={[{ required: true, message: 'Enter start date!' }]}>
                 <Input type="date" size="large" />
               </Form.Item>
-              <Form.Item
-                name="end_date"
-                label="End Date"
-                rules={[{ required: true, message: 'Enter end date!' }]}
-              >
+              <Form.Item name="end_date" label="End Date" rules={[{ required: true, message: 'Enter end date!' }]}>
                 <Input type="date" size="large" />
               </Form.Item>
               <Form.Item>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  size="large"
-                  block
-                >
+                <Button type="primary" htmlType="submit" size="large" block>
                   {editingGroupTeacher ? 'Update' : 'Assign'}
                 </Button>
               </Form.Item>
             </Form>
           </Modal>
         </Content>
-
-        <Footer
-          style={{
-            textAlign: 'center',
-            background: '#fff',
-            color: '#1f1f1f',
-            borderTop: '1px solid #e8e8e8',
-            padding: '16px',
-          }}
-        >
+        <Footer style={{ textAlign: 'center', background: '#fff', color: '#1f1f1f', borderTop: '1px solid #e8e8e8', padding: '16px' }}>
           Settings ©{new Date().getFullYear()} by You
         </Footer>
       </Layout>

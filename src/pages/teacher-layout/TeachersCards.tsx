@@ -1,39 +1,12 @@
-// import { Table, Tag } from 'antd';
-// import { useTeachers } from '@hooks';
+import { Outlet } from 'react-router-dom';
 
-// const TeachersTable = ({ search }: { search: string }) => {
-//   const { data = [] } = useTeachers({page: 1,
-//   limit: 3});
+const TeacherPaneLayout = () => {
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-[#0f172a] to-[#1e3a8a]">
+      <h1>Teacher Panel</h1>
+      <Outlet />
+    </div>
+  );
+};
 
-//   const filtered = data.filter((t: any) =>
-//     t.first_name.toLowerCase().includes(search.toLowerCase())
-//   );
-
-//   const columns = [
-//     {
-//       title: 'Name',
-//       dataIndex: 'first_name',
-//       key: 'first_name',
-//     },
-//     {
-//       title: 'Email',
-//       dataIndex: 'email',
-//       key: 'email',
-//     },
-//     {
-//       title: 'Phone',
-//       dataIndex: 'phone',
-//       key: 'phone',
-//     },
-//     {
-//       title: 'Status',
-//       dataIndex: 'is_active',
-//       render: (active: boolean) =>
-//         active ? <Tag color="green">Active</Tag> : <Tag color="red">Inactive</Tag>,
-//     },
-//   ];
-
-//   return <Table columns={columns} dataSource={filtered} rowKey="id" />;
-// };
-
-// export default TeachersTable;
+export default TeacherPaneLayout;

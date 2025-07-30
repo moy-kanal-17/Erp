@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 
 import App from "../App";
-import { SignIn, SignUp, NotFound, TeacherLayout, AdminLayout, Worker, SingleGroup,Student, StudentLayout, Groups, LayoutProtect, LoginProtect, Curs, GroupPage, TeacherDashboard, SettingsPage } from "@pages";
+import { SignIn, SignUp, NotFound, TeacherLayout, AdminLayout, Worker, SingleGroup,Student, StudentLayout, Groups, LayoutProtect, LoginProtect, Curs, GroupPage, TeacherDashboard, SettingsPage, Profile, TeacherPaneLayout } from "@pages";
 import Branchs from "../pages/branchs/branch";
 import Rooms from "../pages/rooms/rooms";
 import Dashboart from "../pages/curs/dashboart";
@@ -43,10 +43,10 @@ const Router = () => {
 
 
         {/* TEACHER LAYOUT */}
-        <Route path="teacher" element={<LayoutProtect><TeacherDashboard/></LayoutProtect>}>
+        <Route path="teacher" element={<LayoutProtect><TeacherPaneLayout/></LayoutProtect>}>
           <Route path="settings" element={<SettingsPage/>}/>
           <Route path="dashboard" element={<TeacherDashboard/>}/>
-          <Route path="groups" element={<Groups></Groups>}/>
+          <Route path="profile" element={<Profile></Profile>}/>
           <Route path="*" element={<NotFound/>}/>
 
         </Route>

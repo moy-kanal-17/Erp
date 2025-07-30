@@ -1,44 +1,17 @@
 import  { useState } from 'react';
-import { 
-  Users, 
-   
-  BookOpen, 
-  GraduationCap,
-  BarChart3,
-  Calendar,
-  Settings,
-  Bell,
-  Search,
-  Menu,
-  Home,
-  DollarSign,
-  Book,
-  Bus,
-  Building,
-  MessageSquare,
-  Award,
-  FileText,
-  Download,
-  Newspaper,
-  MessageCircle,
-  User,
-  ChevronDown,
-  
-  TrendingUp,
-  CheckCircle
-} from 'lucide-react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { Layout, Menu, Card, Button, Input, Avatar, Dropdown, Typography } from 'antd';
+import { HomeOutlined, UserOutlined, SettingOutlined, MenuOutlined, SearchOutlined, BellOutlined, LogoutOutlined } from '@ant-design/icons';
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { useGroup, } from '@hooks';
+import { BookOpen } from 'lucide-react';
+
+const { Header, Sider, Content, Footer } = Layout;
+const { Title } = Typography;
 
 const TeacherDashboard = () => {
-  const [activeTab, setActiveTab] = useState('Activity');
+  const navigate = useNavigate();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
-  const params = {page:1,limit:20}
-  const {data} = useGroup(params)
-  console.log(data, '--data teachers');
-  
-  // Sample data for charts
   const attendanceData = [
     { date: 'Mar 25', Students: 9, Employees: 3, Visitors: 0 },
     { date: 'Mar 26', Students: 7, Employees: 4, Visitors: 0 },
@@ -56,30 +29,6 @@ const TeacherDashboard = () => {
     { month: 'Apr', amount: 10000 },
     { month: 'May', amount: 18000 },
     { month: 'Jun', amount: 14000 }
-  ];
-
-  const menuItems = [
-    { icon: Home, label: 'Dashboard', active: true },
-    { icon: Settings, label: 'Settings' },
-    { icon: GraduationCap, label: 'Academic' },
-    { icon: DollarSign, label: 'HR/Payroll' },
-    { icon: Users, label: 'Student' },
-    { icon: DollarSign, label: 'Finance' },
-    { icon: Book, label: 'Library' },
-    { icon: Bus, label: 'Transport' },
-    { icon: Building, label: 'Hostel' },
-    { icon: MessageSquare, label: 'Messages/SMS' },
-    { icon: Award, label: 'Store Management' },
-    { icon: TrendingUp, label: 'Performance' },
-    { icon: Calendar, label: 'Events' },
-    { icon: Settings, label: 'Integration' },
-    { icon: CheckCircle, label: 'Task Manager' },
-    { icon: FileText, label: 'Reports' },
-    { icon: Download, label: 'Withdrawal' },
-    { icon: Download, label: 'Data Export' },
-    { icon: Newspaper, label: 'Newsfeeds' },
-    { icon: MessageCircle, label: 'Feedback' },
-    { icon: Book, label: 'Moodle' }
   ];
 
   const tasks = [
@@ -113,208 +62,144 @@ const TeacherDashboard = () => {
     }
   ];
 
+  const menuItems = [
+    { key: 'dashboard', label: 'Dashboard', icon: <HomeOutlined /> },
+    { key: 'profile', label: 'Profile', icon: <UserOutlined /> },
+    { key: 'settings', label: 'Settings', icon: <SettingOutlined /> }
+  ];
+
+  const handleLogout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('role');
+    navigate('/login');
+  };
+
+  const userMenu = (
+    
+    <Menu>
+      <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
+        Logout
+      </Menu.Item>
+    </Menu>
+  );
+
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <div className={`${sidebarCollapsed ? 'w-16' : 'w-64'} bg-slate-800 text-white transition-all duration-300 flex flex-col`}>
-        {/* Logo */}
-        <div className="p-4 border-b border-slate-700">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-              <GraduationCap className="w-5 h-5" />
-            </div>
-            {!sidebarCollapsed && (
-              <div>
-                <h2 className="font-bold text-sm">Demo Public School</h2>
-              </div>
-            )}
-          </div>
+
+    <Layout style={{ minHeight: '100vh', background: '#f5f5f5' }}>
+          <div className="min-h-screen bg-gradient-to-b from-[#0f172a] to-[#1e3a8a]">
+      <Outlet />
+    </div>
+      <Sider
+        width={sidebarCollapsed ? 80 : 200}
+        collapsible
+        collapsed={sidebarCollapsed}
+        onCollapse={setSidebarCollapsed}
+        style={{ background: '#001529', boxShadow: '2px 0 6px rgba(0, 0, 0, 0.1)' }}
+      >
+        <div style={{ padding: '16px', textAlign: 'center', background: '#002140', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+          <Title level={4} style={{ color: '#fff', margin: 0, fontWeight: 'bold' }}>
+            {sidebarCollapsed ? '🎓' : '🎓 Teacher ERP'}
+          </Title>
         </div>
-
-        {/* Menu Items */}
-        <div className="flex-1 overflow-y-auto py-4">
-          {menuItems.map((item, index) => (
-            <div
-              key={index}
-              className={`flex items-center gap-3 px-4 py-2.5 hover:bg-slate-700 cursor-pointer transition-colors ${
-                item.active ? 'bg-slate-700 border-r-2 border-blue-500' : ''
-              }`}
-            >
-              <item.icon className="w-4 h-4" />
-              {!sidebarCollapsed && <span className="text-sm">{item.label}</span>}
-            </div>
-          ))}
-        </div>
-
-        {/* Footer */}
-        <div className="p-4 border-t border-slate-700">
-          <div className="text-xs text-slate-400">
-            © 2015-21 Web-School ERP V5.0
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={['dashboard']}
+          items={menuItems}
+          onClick={({ key }) => navigate(`/teacher/${key}`)}
+          style={{ borderRight: 'none' }}
+        />
+      </Sider>
+      <Layout>
+        <Header style={{ background: '#fff', padding: '0 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', boxShadow: '0 1px 4px rgba(0, 21, 41, 0.08)' }}>
+          <div className="flex items-center gap-4">
+            <Button type="text" icon={<MenuOutlined />} onClick={() => setSidebarCollapsed(!sidebarCollapsed)} />
+            <span className="text-sm bg-green-100 text-green-800 px-3 py-1 rounded-full">
+              ACADEMIC YEAR: CBSE - 2021
+            </span>
           </div>
-        </div>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
-        <div className="bg-white border-b border-gray-200 px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <button
-                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                className="p-2 hover:bg-gray-100 rounded-lg"
-              >
-                <Menu className="w-5 h-5" />
-              </button>
-              <div className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
-                ACADEMIC YEAR: CBSE - 2021
-              </div>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
-              <button className="p-2 hover:bg-gray-100 rounded-lg relative">
-                <Bell className="w-5 h-5" />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
-              </button>
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-                <span className="text-sm font-medium">admin</span>
-                <ChevronDown className="w-4 h-4" />
-              </div>
-            </div>
+          <div className="flex items-center gap-4">
+            <Input placeholder="Search..." prefix={<SearchOutlined />} style={{ width: 200, borderRadius: 8 }} />
+            <Button type="text" icon={<BellOutlined />} />
+            <Dropdown overlay={userMenu}>
+              <Avatar size="large" style={{ backgroundColor: '#1890ff', cursor: 'pointer' }} icon={<UserOutlined />} />
+            </Dropdown>
           </div>
-        </div>
-
-        {/* Content */}
-        <div className="flex-1 p-6 overflow-auto">
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <div className="bg-white rounded-lg p-6 shadow-sm border">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-3xl font-bold text-gray-800">21</div>
-                  <div className="text-sm text-gray-600 mt-1">TOTAL STUDENTS</div>
+        </Header>
+        <Content style={{ margin: '24px 16px', padding: '24px', background: '#fff', borderRadius: '8px', minHeight: '500px', boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)' }}>
+          <Card title="Dashboard Overview">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
+              <Card>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-3xl font-bold text-gray-800">21</div>
+                    <div className="text-sm text-gray-600 mt-1">TOTAL STUDENTS</div>
+                  </div>
+                  <Avatar style={{ backgroundColor: '#efdbff' }} icon={<UserOutlined style={{ color: '#722ed1' }} />} size={48} />
                 </div>
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Users className="w-6 h-6 text-purple-600" />
+              </Card>
+              <Card>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-3xl font-bold text-gray-800">4</div>
+                    <div className="text-sm text-gray-600 mt-1">TOTAL EMPLOYEES</div>
+                  </div>
+                  <Avatar style={{ backgroundColor: '#bae7ff' }} icon={<UserOutlined style={{ color: '#1890ff' }} />} size={48} />
                 </div>
-              </div>
+              </Card>
+              <Card>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-3xl font-bold text-gray-800">10</div>
+                    <div className="text-sm text-gray-600 mt-1">TOTAL COURSE</div>
+                  </div>
+                  <Avatar style={{ backgroundColor: '#d9f7be' }} icon={<BookOpen style={{ color: '#52c41a' }} />} size={48} />
+                </div>
+              </Card>
+              <Card>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-3xl font-bold text-gray-800">9</div>
+                    <div className="text-sm text-gray-600 mt-1">TOTAL BATCH</div>
+                  </div>
+                  <Avatar style={{ backgroundColor: '#e6f4ff' }} icon={<HomeOutlined style={{ color: '#1677ff' }} />} size={48} />
+                </div>
+              </Card>
             </div>
-
-            <div className="bg-white rounded-lg p-6 shadow-sm border">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-3xl font-bold text-gray-800">4</div>
-                  <div className="text-sm text-gray-600 mt-1">TOTAL EMPLOYEES</div>
-                </div>
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <User className="w-6 h-6 text-blue-600" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 shadow-sm border">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-3xl font-bold text-gray-800">10</div>
-                  <div className="text-sm text-gray-600 mt-1">TOTAL COURSE</div>
-                </div>
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <BookOpen className="w-6 h-6 text-green-600" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-lg p-6 shadow-sm border">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-3xl font-bold text-gray-800">9</div>
-                  <div className="text-sm text-gray-600 mt-1">TOTAL BATCH</div>
-                </div>
-                <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center">
-                  <GraduationCap className="w-6 h-6 text-indigo-600" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Tabs */}
-          <div className="bg-white rounded-lg shadow-sm border mb-6">
-            <div className="border-b border-gray-200">
-              <div className="flex">
-                {['Activity', 'Schedule', 'Fee reports'].map((tab) => (
-                  <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`px-6 py-3 text-sm font-medium border-b-2 ${
-                      activeTab === tab
-                        ? 'border-blue-500 text-blue-600'
-                        : 'border-transparent text-gray-500 hover:text-gray-700'
-                    }`}
-                  >
-                    {tab}
-                  </button>
-                ))}
-                <div className="ml-auto flex items-center gap-2 px-6 py-3">
-                  <BarChart3 className="w-4 h-4 text-gray-400" />
-                  <span className="text-sm text-gray-600">Support</span>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6">
-              {/* Daily Attendance Chart */}
-              <div className="mb-8">
-                <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-lg font-semibold">Daily Attendance Overview</h3>
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-red-500 rounded"></div>
-                      <span className="text-sm text-gray-600">Students</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-blue-500 rounded"></div>
-                      <span className="text-sm text-gray-600">Employees</span>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 bg-green-500 rounded"></div>
-                      <span className="text-sm text-gray-600">Visitors</span>
-                    </div>
+            <Card title="Daily Attendance Overview" style={{ marginBottom: 24 }}>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold">Attendance</h3>
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-red-500 rounded"></div>
+                    <span className="text-sm text-gray-600">Students</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-blue-500 rounded"></div>
+                    <span className="text-sm text-gray-600">Employees</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 bg-green-500 rounded"></div>
+                    <span className="text-sm text-gray-600">Visitors</span>
                   </div>
                 </div>
-                <div className="h-80">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={attendanceData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="date" />
-                      <YAxis />
-                      <Tooltip />
-                      <Bar dataKey="Students" fill="#ef4444" />
-                      <Bar dataKey="Employees" fill="#3b82f6" />
-                      <Line type="monotone" dataKey="Visitors" stroke="#10b981" strokeWidth={2} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
               </div>
-            </div>
-          </div>
-
-          {/* Bottom Section */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Task Manager */}
-            <div className="lg:col-span-2 bg-white rounded-lg shadow-sm border">
-              <div className="p-6 border-b border-gray-200">
-                <h3 className="text-lg font-semibold">Task manager</h3>
+              <div className="h-80">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={attendanceData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="Students" fill="#ef4444" />
+                    <Bar dataKey="Employees" fill="#3b82f6" />
+                    <Line type="monotone" dataKey="Visitors" stroke="#10b981" strokeWidth={2} />
+                  </BarChart>
+                </ResponsiveContainer>
               </div>
-              <div className="overflow-x-auto">
+            </Card>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <Card title="Task Manager" className="lg:col-span-2">
                 <table className="w-full">
                   <thead className="bg-gray-50">
                     <tr>
@@ -350,22 +235,12 @@ const TeacherDashboard = () => {
                     ))}
                   </tbody>
                 </table>
-              </div>
-            </div>
-
-            {/* Right Sidebar */}
-            <div className="space-y-6">
-              {/* News Feeds */}
-              <div className="bg-white rounded-lg shadow-sm border">
-                <div className="p-4 bg-blue-600 text-white rounded-t-lg">
-                  <h3 className="font-semibold">NEWS FEEDS</h3>
-                </div>
-                <div className="p-4 space-y-4">
+              </Card>
+              <div className="space-y-6">
+                <Card title="News Feeds">
                   {newsFeeds.map((news) => (
                     <div key={news.id} className="flex items-start gap-3 pb-4 border-b border-gray-100 last:border-0">
-                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Bell className="w-4 h-4 text-blue-600" />
-                      </div>
+                      <Avatar style={{ backgroundColor: '#e6f4ff' }} icon={<BellOutlined style={{ color: '#1677ff' }} />} />
                       <div className="flex-1 min-w-0">
                         <div className="text-sm font-medium text-blue-600 hover:underline cursor-pointer">
                           {news.title}
@@ -378,91 +253,70 @@ const TeacherDashboard = () => {
                     </div>
                   ))}
                   <div className="text-center">
-                    <button className="text-blue-600 text-sm hover:underline">View all</button>
+                    <Button type="link">View all</Button>
                   </div>
-                </div>
-              </div>
-
-              {/* Birthday Notifications */}
-              <div className="bg-white rounded-lg shadow-sm border">
-                <div className="p-4 border-b border-gray-200">
-                  <h3 className="font-semibold">Birthday Notifications</h3>
-                </div>
-                <div className="p-4">
+                </Card>
+                <Card title="Birthday Notifications">
                   <div className="grid grid-cols-3 gap-4 text-center">
                     <div>
-                      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-2">
-                        <User className="w-6 h-6 text-gray-400" />
-                      </div>
+                      <Avatar style={{ backgroundColor: '#f0f0f0' }} icon={<UserOutlined style={{ color: '#8c8c8c' }} />} size={48} className="mb-2" />
                       <div className="text-lg font-bold">0</div>
                       <div className="text-xs text-gray-600">Students</div>
                     </div>
                     <div>
-                      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-2">
-                        <Users className="w-6 h-6 text-gray-400" />
-                      </div>
+                      <Avatar style={{ backgroundColor: '#f0f0f0' }} icon={<UserOutlined style={{ color: '#8c8c8c' }} />} size={48} className="mb-2" />
                       <div className="text-lg font-bold">0</div>
                       <div className="text-xs text-gray-600">Staff</div>
                     </div>
                     <div>
-                      <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-2">
-                        <User className="w-6 h-6 text-gray-400" />
-                      </div>
+                      <Avatar style={{ backgroundColor: '#f0f0f0' }} icon={<UserOutlined style={{ color: '#8c8c8c' }} />} size={48} className="mb-2" />
                       <div className="text-lg font-bold">0</div>
                       <div className="text-xs text-gray-600">Employees</div>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              {/* Fee Collection */}
-              <div className="bg-white rounded-lg shadow-sm border">
-                <div className="p-4 border-b border-gray-200">
-                  <h3 className="font-semibold">Fee collection of the day</h3>
-                  <div className="text-xs text-gray-500">📅 30-03-2021</div>
-                </div>
-                <div className="p-4 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-blue-100 rounded flex items-center justify-center">
-                        <span className="text-xs">💰</span>
+                </Card>
+                <Card title="Fee Collection of the Day">
+                  <div className="text-xs text-gray-500 mb-4">📅 30-03-2021</div>
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Avatar style={{ backgroundColor: '#e6f4ff' }} size="small" icon={<span>💰</span>} />
+                        <span className="text-sm">Amount</span>
                       </div>
-                      <span className="text-sm">Amount</span>
+                      <span className="font-bold">12650</span>
                     </div>
-                    <span className="font-bold">12650</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-green-100 rounded flex items-center justify-center">
-                        <span className="text-xs">💳</span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Avatar style={{ backgroundColor: '#d9f7be' }} size="small" icon={<span>💳</span>} />
+                        <span className="text-sm">Discount</span>
                       </div>
-                      <span className="text-sm">Discount</span>
+                      <span className="font-bold">200</span>
                     </div>
-                    <span className="font-bold">200</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-purple-100 rounded flex items-center justify-center">
-                        <span className="text-xs">💸</span>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Avatar style={{ backgroundColor: '#efdbff' }} size="small" icon={<span>💸</span>} />
+                        <span className="text-sm">Fine</span>
                       </div>
-                      <span className="text-sm">Fine</span>
+                      <span className="font-bold">100</span>
                     </div>
-                    <span className="font-bold">100</span>
+                    <div className="h-32">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={feeCollectionData}>
+                          <Line type="monotone" dataKey="amount" stroke="#3b82f6" strokeWidth={2} />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
                   </div>
-                  <div className="h-32">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <LineChart data={feeCollectionData}>
-                        <Line type="monotone" dataKey="amount" stroke="#3b82f6" strokeWidth={2} />
-                      </LineChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
+                </Card>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </Card>
+        </Content>
+        <Footer style={{ textAlign: 'center', background: '#fff', color: '#1f1f1f', borderTop: '1px solid #e8e8e8', padding: '16px' }}>
+          Dashboard ©{new Date().getFullYear()} by You
+        </Footer>
+      </Layout>
+    </Layout>
   );
 };
 
