@@ -45,7 +45,9 @@ const Router = () => {
         {/* TEACHER LAYOUT */}
         <Route path="teacher" element={<LayoutProtect><TeacherPaneLayout/></LayoutProtect>}>
           <Route path="settings" element={<SettingsPage/>}/>
-          <Route index path="dashboard" element={<TeacherDashboard/>}/>
+          <Route index  element={<TeacherDashboard/>}/>
+          <Route path="dashboard" element={<TeacherDashboard/>}/>
+          
           <Route path="profile" element={<Profile></Profile>}/>
           <Route path="*" element={<NotFound/>}/>
 
