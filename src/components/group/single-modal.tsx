@@ -31,7 +31,7 @@ const AddTeacherorStudentModal = ({
 	});
 	let originalData: any[] = [];
 	if (addingTeacher) {
-		const { data: teachers } = useTeachers({ page: 1, limit: 100 });
+		const { data: teachers } = useTeachers();
 		originalData = teachers ? teachers.data.data : [];
 		console.log(teachers?.data.data,"teachersIN IF!");
 		
