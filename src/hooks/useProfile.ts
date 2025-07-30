@@ -11,7 +11,7 @@ export const useProfile = () => {
 
 
   return {
-    profile: profileQuery.data,
+    profile: profileQuery.data?.admin,
     isLoading: profileQuery.isLoading,
     isError: profileQuery.isError,
     error: profileQuery.error,

@@ -1,5 +1,6 @@
 import { apiConfig } from '@api/config';
 import { ApiUrls } from '@api/api-urls';
+import {  getUserIdFromToken } from '@helpers';
 
 export interface AdminProfile {
   firstName: string;
@@ -9,8 +10,11 @@ export interface AdminProfile {
 }
 
 export const profileService = {
-  async getProfile(): Promise<AdminProfile> {
-    const res = await apiConfig().getRequest(`/admin${ApiUrls.PROFILE}`);
+  async getProfile() {
+    const token =getUserIdFromToken(); 
+
+    console.log('Access token:', token);
+    const res = await apiConfig().getRequest(`/admin/${token}`);
     console.log('Profile data:', res?.data);
     
     return res?.data;
