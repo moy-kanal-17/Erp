@@ -64,7 +64,7 @@ const GroupLessons = ({ lessons }: GroupLessonsType) => {
   };
 
   return (
-    <div style={{ position: "relative", width: "1150px" }}>
+    <div style={{ position: "relative", width: "860px" }}>
       <div className="flex justify-between mb-5 p-5">
         <Button type="primary" onClick={goPrev} disabled={isStartDisabled()}>
           Prev

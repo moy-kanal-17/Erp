@@ -12,6 +12,7 @@ import {
   ReadOutlined,
   DownOutlined,
   LogoutOutlined,
+  ProfileOutlined,
 
 } from '@ant-design/icons';
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -49,6 +50,10 @@ const Admin = () => {
           break;
         case '9':
           navigate('/admin/rooms');
+          break;
+
+        case '10':
+          navigate('/admin/profile');
           break;
         default:
           break;
@@ -139,6 +144,11 @@ const Admin = () => {
                 key: '9',
                 icon: <ReadOutlined />,
                 label: 'Rooms',
+              },
+                            {
+                key: '10',
+                icon: <ProfileOutlined />,
+                label: 'Profile',
               },
             ]}
           />

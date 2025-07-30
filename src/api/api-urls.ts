@@ -22,7 +22,8 @@ export class ApiUrls {
     //Lessons
     public static LEASSONS:string = '/lessons'
 
-
+    //PROFILE
+    public static PROFILE: string = "/profile";
 
 
 	// AUTH
