@@ -8,24 +8,22 @@ import {
   Camera, 
   Save, 
   X, 
-  Settings, 
+
   Bell, 
   Lock, 
-  Home,
+
   Search,
-  Menu,
-  LogOut,
+
   BookOpen,
   Award,
   Clock,
   Users
 } from 'lucide-react';
-import { Navigate } from 'react-router-dom';
+
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const [activeTab, ] = useState('profile');
+
   const [profileData, setProfileData] = useState({
     firstName: 'John',
     lastName: 'Smith',
@@ -39,7 +37,7 @@ const Profile = () => {
     bio: 'Passionate educator with over 8 years of experience in mathematics and science education. Committed to fostering critical thinking and problem-solving skills in students.',
     qualifications: ['M.Ed in Mathematics', 'B.Sc in Applied Mathematics', 'Teaching Certification']
   });
-  const navigate = Navigate;
+
 
   const [tempData, setTempData] = useState({ ...profileData });
 
@@ -62,19 +60,9 @@ const Profile = () => {
     setTempData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('role');
-    navigate({ to: '/' });
-    console.log('Logging out...');
-  };
 
-  const menuItems = [
-    { key: 'dashboard', label: 'Dashboard', icon: Home },
-    { key: 'profile', label: 'Profile', icon: User },
-    { key: 'courses', label: 'My Courses', icon: BookOpen },
-    { key: 'settings', label: 'Settings', icon: Settings }
-  ];
+
+
 
   const stats = [
     { label: 'Students Taught', value: '245', icon: Users, color: 'bg-blue-500' },
@@ -122,72 +110,17 @@ const Profile = () => {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      <div className={`${sidebarCollapsed ? 'w-16' : 'w-64'} bg-gray-900 text-white transition-all duration-300 flex flex-col`}>
-        {/* Logo */}
-        <div className="p-4 border-b border-gray-700">
-          <div className="flex items-center">
-            <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
-              🎓
-            </div>
-            {!sidebarCollapsed && (
-              <span className="ml-3 text-xl font-semibold">Teacher ERP</span>
-            )}
-          </div>
-        </div>
 
-        {/* Navigation */}
-        <nav className="flex-1 px-4 py-6">
-          <ul className="space-y-2">
-            {menuItems.map((item) => {
-              const IconComponent = item.icon;
-              return (
-                <li key={item.key}>
-                  <button
-                    onClick={() => navigate({to: `/teacher/${item.key}`})}
-                    className={`w-full flex items-center px-3 py-2 rounded-lg transition-colors ${
-                      activeTab === item.key
-                        ? 'bg-blue-600 text-white'
-                        : 'text-gray-300 hover:bg-gray-800 hover:text-white'
-                    }`}
-                  >
-                    <IconComponent className="w-5 h-5" />
-                    {!sidebarCollapsed && <span className="ml-3">{item.label}</span>}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
-        </nav>
 
-        {/* Logout */}
-        <div className="p-4 border-t border-gray-700">
-          <button
-            onClick={handleLogout}
-            className="w-full flex items-center px-3 py-2 text-gray-300 hover:bg-red-600 hover:text-white rounded-lg transition-colors"
-          >
-            <LogOut className="w-5 h-5" />
-            {!sidebarCollapsed && <span className="ml-3">Logout</span>}
-          </button>
-        </div>
-      </div>
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
         <header className="bg-white shadow-sm border-b border-gray-200">
           <div className="flex items-center justify-between px-6 py-4">
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-                className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                <Menu className="w-5 h-5" />
-              </button>
-              <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm font-medium">
-                ACADEMIC YEAR: 2024-2025
-              </span>
-            </div>
+
+
+
 
             <div className="flex items-center space-x-4">
               <div className="relative">
