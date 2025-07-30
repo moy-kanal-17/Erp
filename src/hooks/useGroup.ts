@@ -3,11 +3,13 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ParamsType } from "@types";
 
 export const useGroup = (params: ParamsType | {}, id = 0) => {
-	const queryClient = useQueryClient();
-	const { data } = useQuery({
-		queryKey: ["groups", params],
-		queryFn: async () => groupsService.getGroup(params),
-	});
+  const queryClient = useQueryClient();
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['group', id],
+    queryFn: async () => groupsService.getGroup({ ...params, id }),
+  });
+  
 	const { data: dataById } = useQuery({
 		enabled: !!id,
 		queryKey: ["groupById"],
@@ -87,6 +89,7 @@ const useGroupUpdate = () => {
 		useGroupUpdate,
 		useGroupDelete,
 		dataById,
+		isLoading,
 		useGroupAddStudent,
 		useGroupAddTeacher,
 		students,
