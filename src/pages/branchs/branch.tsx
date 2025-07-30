@@ -9,7 +9,7 @@ import { PopConfirm,
 import { type Branch } from "@types";
 
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import {  useLocation } from "react-router-dom";
 import BranchModal from "./branchModalS";
 import { useBranch } from "../../hooks/useBranch";
 
@@ -94,7 +94,7 @@ const Branchs = () => {
             handleDelete={() => deleteItem(record.id!)}
             loading={isDeleting}
           />
-          <Link to={`/admin/group/${record.id}`}>view</Link>
+          {/* <Link to={`/admin/group/${record.id}`}>view</Link> */}
         </Space>
       ),
     },

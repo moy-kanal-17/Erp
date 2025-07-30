@@ -3,6 +3,7 @@ export interface Lesson {
   title: string;
   notes:string;
   status:string
+  date: string;
 }
 
 export interface GroupLessonsType {

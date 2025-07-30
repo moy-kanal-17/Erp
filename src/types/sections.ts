@@ -21,9 +21,9 @@ export interface LessonType {
 	title: string;
 	notes: string;
 	date: string;
-	status: string;
 	groupId: number;
 	roomId: number;
+	status: 'new' | 'completed' | 'in_progress' | 'cancelled' | 'yangi' | 'tugagan' | 'bekor qilingan';
 }
 
 export interface StudentType {

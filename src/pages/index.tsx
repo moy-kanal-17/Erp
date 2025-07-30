@@ -21,6 +21,7 @@ const Profile = lazy(() => import("./teacher-layout/teacherLayout.tsx"));
 const TeacherPaneLayout = lazy(() => import("./teacher-layout/TeachersCards.tsx"));
 const AdminProfile = lazy(() => import("./admin-layout/profile.tsx"));
 
+// const LessonsList = lazy(() => import("./lessons/lessons-list.tsx"));
 const SettingsPage = lazy(() => import("./teacher-layout/teacher-settingsMenyu"))
 // const  Test = lazy(() => import("./test/test.tsx"));
 
