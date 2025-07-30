@@ -1,6 +1,6 @@
 export interface Room {
   id?:number,
   branchId: number,
-  name: Room ,
+  name: string ,
   capacity: number
 }

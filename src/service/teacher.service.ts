@@ -18,6 +18,12 @@ export const teacherService = {
 		);
 		return res;
 	},
+	async getTeacherGroupById(id: number) {
+		const res = await apiConfig().getRequest(
+			`${ApiUrls.GROUP_TEACHERS_BY_TEACHER_ID}/${id}`
+		);
+		return res;
+	},
 	async createTeacher(body: object) {
 		const res = await apiConfig().postRequest(`${ApiUrls.TEACHER}`, body);
 		return res;
