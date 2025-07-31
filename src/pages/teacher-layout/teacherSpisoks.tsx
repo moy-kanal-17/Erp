@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { IMaskInput } from 'react-imask';
 import {
   Layout, Table, Typography, message, Modal, Button, Form, Input, Select,
   Card, Space, Avatar, Tag, Skeleton, Empty, Tooltip, Divider, Row, Col
 } from 'antd';
 import {
-  PlusOutlined, EditOutlined, UserOutlined, PhoneOutlined, 
-  MailOutlined, TeamOutlined,  EyeOutlined
+  PlusOutlined, EditOutlined, UserOutlined, PhoneOutlined,
+  MailOutlined, TeamOutlined, EyeOutlined
 } from '@ant-design/icons';
-
 import { teacherService } from '@service';
 
 const { Content, Footer } = Layout;
@@ -23,6 +23,21 @@ const TeacherLayout: React.FC = () => {
   const [editingUser, setEditingUser] = useState<any>(null);
   const [viewingUser, setViewingUser] = useState<any>(null);
   const [form] = Form.useForm();
+
+  const formatPhoneForDisplay = (phone: string) => {
+    if (!phone) return '';
+    // Преобразование 998999999999 -> +998 (99) 999-99-99
+    const cleanPhone = phone.replace(/\D/g, '');
+    if (cleanPhone.length === 12 && cleanPhone.startsWith('998')) {
+      return `+${cleanPhone.slice(0, 3)} (${cleanPhone.slice(3, 5)}) ${cleanPhone.slice(5, 8)}-${cleanPhone.slice(8, 10)}-${cleanPhone.slice(10, 12)}`;
+    }
+    return phone;
+  };
+
+  const formatPhoneForAPI = (phone: string) => {
+    // Преобразование +998 (99) 999-99-99 -> 998999999999
+    return phone
+  };
 
   const fetchUsers = async () => {
     try {
@@ -46,7 +61,10 @@ const TeacherLayout: React.FC = () => {
     setEditingUser(record);
     setModalVisible(true);
     if (record) {
-      form.setFieldsValue(record);
+      form.setFieldsValue({
+        ...record,
+        phone: formatPhoneForDisplay(record.phone),
+      });
     } else {
       form.resetFields();
     }
@@ -61,17 +79,21 @@ const TeacherLayout: React.FC = () => {
     try {
       setSubmitting(true);
       const values = await form.validateFields();
+      const formattedValues = {
+        ...values,
+        phone: formatPhoneForAPI(values.phone),
+      };
 
       if (!editingUser) {
-        values.branchId = [5];
+        formattedValues.branchId = [5];
       }
 
       if (editingUser) {
-        delete values.password;
-        await teacherService.updateTeacher(editingUser.id, values);
+        delete formattedValues.password;
+        await teacherService.updateTeacher(editingUser.id, formattedValues);
         message.success("🔄 O'qituvchi tahrirlandi!");
       } else {
-        await teacherService.createTeacher(values);
+        await teacherService.createTeacher(formattedValues);
         message.success("✅ O'qituvchi qo'shildi!");
       }
 
@@ -104,22 +126,42 @@ const TeacherLayout: React.FC = () => {
     }
   };
 
+  const TeacherAvatar = ({ user, size = 40 }: any) => {
+    const [imageError, setImageError] = useState(false);
+
+    if (user.avatar_url && !imageError) {
+      const avatarSrc = `${user.avatar_url}`;
+      return (
+        <Avatar
+          size={size}
+          src={avatarSrc}
+          onError={() => {
+            setImageError(true);
+            return false;
+          }}
+          style={{ border: '2px solid #f0f0f0' }}
+        />
+      );
+    }
+
+    return (
+      <Avatar
+        size={size}
+        icon={user.first_name ? undefined : <UserOutlined />}
+        style={{ backgroundColor: '#f56a00', fontSize: size > 50 ? '32px' : '16px' }}
+      >
+        {user.first_name?.[0]?.toUpperCase()}
+      </Avatar>
+    );
+  };
+
   const columns = [
     {
-      title: 'O\'qituvchi',
+      title: "Teacher's",
       key: 'teacher',
       render: (_: any, record: any) => (
         <Space>
-          <Avatar 
-            size={40} 
-            icon={<UserOutlined />}
-            style={{ 
-              backgroundColor: '#f56a00',
-              fontSize: '16px'
-            }}
-          >
-            {record.first_name?.[0]?.toUpperCase()}
-          </Avatar>
+          <TeacherAvatar user={record} size={40} />
           <div>
             <Text strong>{record.first_name} {record.last_name}</Text>
             <br />
@@ -131,13 +173,13 @@ const TeacherLayout: React.FC = () => {
       ),
     },
     {
-      title: 'Aloqa ma\'lumotlari',
+      title: 'Contact information',
       key: 'contact',
       render: (_: any, record: any) => (
         <Space direction="vertical" size="small">
           <Space size="small">
             <PhoneOutlined style={{ color: '#52c41a' }} />
-            <Text>{record.phone}</Text>
+            <Text>{formatPhoneForDisplay(record.phone)}</Text>
           </Space>
           <Space size="small">
             <MailOutlined style={{ color: '#1890ff' }} />
@@ -147,12 +189,12 @@ const TeacherLayout: React.FC = () => {
       ),
     },
     {
-      title: 'Roli',
+      title: 'Role',
       dataIndex: 'role',
       key: 'role',
       render: (role: string) => (
-        <Tag 
-          color={getRoleColor(role)} 
+        <Tag
+          color={getRoleColor(role)}
           style={{ fontSize: '12px', padding: '4px 8px' }}
         >
           {getRoleIcon(role)} {role}
@@ -160,22 +202,22 @@ const TeacherLayout: React.FC = () => {
       ),
     },
     {
-      title: 'Amallar',
+      title: 'Actions',
       key: 'actions',
       render: (_: any, record: any) => (
         <Space>
           <Tooltip title="Ko'rish">
-            <Button 
-              type="text" 
-              icon={<EyeOutlined />} 
+            <Button
+              type="text"
+              icon={<EyeOutlined />}
               onClick={() => showViewModal(record)}
               style={{ color: '#1890ff' }}
             />
           </Tooltip>
           <Tooltip title="Tahrirlash">
-            <Button 
-              type="text" 
-              icon={<EditOutlined />} 
+            <Button
+              type="text"
+              icon={<EditOutlined />}
               onClick={() => showModal(record)}
               style={{ color: '#52c41a' }}
             />
@@ -199,11 +241,11 @@ const TeacherLayout: React.FC = () => {
   return (
     <Layout style={{ minHeight: '100vh', background: '#f0f2f5' }}>
       <Content style={{ margin: '24px', minHeight: 'calc(100vh - 134px)' }}>
-        <Card 
-          style={{ 
+        <Card
+          style={{
             borderRadius: 12,
             boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            marginBottom: 24
+            marginBottom: 24,
           }}
         >
           <Row justify="space-between" align="middle">
@@ -211,35 +253,36 @@ const TeacherLayout: React.FC = () => {
               <Space align="center">
                 <TeamOutlined style={{ fontSize: 24, color: '#1890ff' }} />
                 <Title level={3} style={{ margin: 0 }}>
-                  O'qituvchilar boshqaruvi
+                  Teachers
                 </Title>
               </Space>
+              <br />
               <Text type="secondary">
-                Jami: {users.length} ta o'qituvchi
+                Total: {users.length} teachers
               </Text>
             </Col>
             <Col>
-              <Button 
-                type="primary" 
+              <Button
+                type="primary"
                 size="large"
-                icon={<PlusOutlined />} 
+                icon={<PlusOutlined />}
                 onClick={() => showModal()}
-                style={{ 
+                style={{
                   borderRadius: 8,
                   height: 44,
-                  fontSize: '16px'
+                  fontSize: '16px',
                 }}
               >
-                Yangi o'qituvchi qo'shish
+                Add a new teacher
               </Button>
             </Col>
           </Row>
         </Card>
 
-        <Card 
-          style={{ 
+        <Card
+          style={{
             borderRadius: 12,
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
           }}
         >
           {loading ? (
@@ -258,16 +301,16 @@ const TeacherLayout: React.FC = () => {
               </Button>
             </Empty>
           ) : (
-            <Table 
-              columns={columns} 
-              dataSource={users} 
-              rowKey="id" 
+            <Table
+              columns={columns}
+              dataSource={users}
+              rowKey="id"
               pagination={{
                 pageSize: 10,
                 showSizeChanger: true,
                 showQuickJumper: true,
-                showTotal: (total, range) => 
-                  `${range[0]}-${range[1]} / ${total} ta`
+                showTotal: (total, range) =>
+                  `${range[0]}-${range[1]} / ${total} ta`,
               }}
               style={{ borderRadius: 8 }}
             />
@@ -275,11 +318,13 @@ const TeacherLayout: React.FC = () => {
         </Card>
       </Content>
 
-      <Footer style={{ 
-        textAlign: 'center', 
-        background: '#fff',
-        borderTop: '1px solid #f0f0f0'
-      }}>
+      <Footer
+        style={{
+          textAlign: 'center',
+          background: '#fff',
+          borderTop: '1px solid #f0f0f0',
+        }}
+      >
         <Text type="secondary">
           Teacher Management System ©{new Date().getFullYear()} - Barcha huquqlar himoyalangan
         </Text>
@@ -291,7 +336,7 @@ const TeacherLayout: React.FC = () => {
         title={
           <Space>
             <UserOutlined />
-            {editingUser ? 'O\'qituvchini tahrirlash' : 'Yangi o\'qituvchi qo\'shish'}
+            {editingUser ? "O'qituvchini tahrirlash" : "Yangi o'qituvchi qo'shish"}
           </Space>
         }
         onCancel={() => {
@@ -306,22 +351,22 @@ const TeacherLayout: React.FC = () => {
         style={{ top: 20 }}
       >
         <Divider />
-        <Form form={form} layout="vertical" size="large">
+        <Form form={form} layout="vertical">
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item 
-                name="first_name" 
-                label="Ism" 
-                rules={[{ required: true, message: 'Ism kiritish majburiy!' }]}
+              <Form.Item
+                name="first_name"
+                label="Ism"
+                rules={[{ required: true, message: "Ismni kiriting!" }]}
               >
                 <Input prefix={<UserOutlined />} placeholder="Ismni kiriting" />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item 
-                name="last_name" 
-                label="Familiya" 
-                rules={[{ required: true, message: 'Familiya kiritish majburiy!' }]}
+              <Form.Item
+                name="last_name"
+                label="Familiya"
+                rules={[{ required: true, message: "Familiyani kiriting!" }]}
               >
                 <Input prefix={<UserOutlined />} placeholder="Familiyani kiriting" />
               </Form.Item>
@@ -330,57 +375,58 @@ const TeacherLayout: React.FC = () => {
 
           <Row gutter={16}>
             <Col span={12}>
-              <Form.Item 
-                name="phone" 
-                label="Telefon" 
-                rules={[{ required: true, message: 'Telefon raqam kiritish majburiy!' }]}
+              <Form.Item
+                name="phone"
+                label="Telefon"
+                rules={[
+                  { required: true, message: "Telefon raqamni kiriting!" },
+                  {
+                    pattern: /^\+998 \(\d{2}\) \d{3}-\d{2}-\d{2}$/,
+                    message: "Telefon raqam +998 (XX) XXX-XX-XX formatida bo'lishi kerak!",
+                  },
+                ]}
               >
-                <Input prefix={<PhoneOutlined />} placeholder="+998 90 123 45 67" />
+                <IMaskInput
+
+                  placeholder="+998 (99) 999-99-99"
+                  onAccept={(value: string) => form.setFieldsValue({ phone: value })}
+                  style={{ width: '100%' }}
+                />
               </Form.Item>
             </Col>
             <Col span={12}>
-              <Form.Item 
-                name="email" 
-                label="Email" 
+              <Form.Item
+                name="email"
+                label="Email"
                 rules={[
-                  { required: true, message: 'Email kiritish majburiy!' },
-                  { type: 'email', message: 'Noto\'g\'ri email format!' }
+                  { required: true, message: "Emailni kiriting!" },
+                  { type: 'email', message: "To'g'ri email kiriting!" },
                 ]}
               >
-                <Input prefix={<MailOutlined />} placeholder="example@gmail.com" />
+                <Input prefix={<MailOutlined style={{ color: '#1890ff' }} />} placeholder="example@gmail.com" />
               </Form.Item>
             </Col>
           </Row>
 
           {!editingUser && (
-            <Form.Item 
-              name="password" 
-              label="Parol" 
-              rules={[{ required: true, message: 'Parol kiritish majburiy!' }]}
+            <Form.Item
+              name="password"
+              label="Parol"
+              rules={[{ required: true, message: "Parolni kiriting!" }]}
             >
               <Input.Password placeholder="Parolni kiriting" />
             </Form.Item>
           )}
 
-          <Form.Item 
-            name="role" 
-            label="Roli" 
-            rules={[{ required: true, message: 'Rol tanlash majburiy!' }]}
+          <Form.Item
+            name="role"
+            label="Roli"
+            rules={[{ required: true, message: "Rolni tanlang!" }]}
           >
-            <Select placeholder="Rolni tanlang" size="large">
-              <Select.Option value="teacher">
-                <Space>
-                  👨‍🏫 O'qituvchi
-                </Space>
-              </Select.Option>
-              <Select.Option value="admin">
-                <Space>
-                  👑 Admin
-                </Space>
-              </Select.Option>
+            <Select placeholder="Rolni tanlang" size="large" style={{ width: '100%' }}>
               <Select.Option value="main teacher">
                 <Space>
-                  🎓 Bosh o'qituvchi
+                  🎓 Main Teacher
                 </Space>
               </Select.Option>
             </Select>
@@ -394,37 +440,32 @@ const TeacherLayout: React.FC = () => {
         title={
           <Space>
             <EyeOutlined />
-            O'qituvchi ma'lumotlari
+            Teacher information
           </Space>
         }
         onCancel={() => setViewModalVisible(false)}
         footer={[
-          <Button key="edit" type="primary" onClick={() => {
-            setViewModalVisible(false);
-            showModal(viewingUser);
-          }}>
-            Tahrirlash
+          <Button
+            key="edit"
+            type="primary"
+            onClick={() => {
+              setViewModalVisible(false);
+              showModal(viewingUser);
+            }}
+            style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
+          >
+            Edit
           </Button>,
           <Button key="close" onClick={() => setViewModalVisible(false)}>
-            Yopish
-          </Button>
+            Close
+          </Button>,
         ]}
         width={500}
       >
         {viewingUser && (
           <div style={{ padding: '20px 0' }}>
             <div style={{ textAlign: 'center', marginBottom: 24 }}>
-              <Avatar 
-                size={80} 
-                icon={<UserOutlined />}
-                style={{ 
-                  backgroundColor: '#f56a00',
-                  fontSize: '32px',
-                  marginBottom: 16
-                }}
-              >
-                {viewingUser.first_name?.[0]?.toUpperCase()}
-              </Avatar>
+              <TeacherAvatar user={viewingUser} size={80} />
               <Title level={4} style={{ margin: '8px 0 4px 0' }}>
                 {viewingUser.first_name} {viewingUser.last_name}
               </Title>
@@ -442,7 +483,7 @@ const TeacherLayout: React.FC = () => {
               </div>
               <div>
                 <Text strong>Telefon: </Text>
-                <Text>{viewingUser.phone}</Text>
+                <Text>{formatPhoneForDisplay(viewingUser.phone)}</Text>
               </div>
               <div>
                 <Text strong>Email: </Text>

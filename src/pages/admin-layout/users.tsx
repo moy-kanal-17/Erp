@@ -154,7 +154,7 @@ const Student: React.FC = () => {
 
   const columns = [
     {
-      title: 'O\'quvchi',
+      title: 'Students',
       key: 'student',
       render: (_: any, record: Student) => (
         <Space>
@@ -185,7 +185,7 @@ const Student: React.FC = () => {
       ),
     },
     {
-      title: 'Aloqa ma\'lumotlari',
+      title: 'Contact Information',
       key: 'contact',
       render: (_: any, record: Student) => (
         <Space direction="vertical" size="small">
@@ -201,7 +201,7 @@ const Student: React.FC = () => {
       ),
     },
     {
-      title: 'Tug\'ilgan sana',
+      title: 'Date of birth',
       key: 'birth',
       render: (_: any, record: Student) => {
         const age = getAge(record.date_of_birth);
@@ -222,7 +222,7 @@ const Student: React.FC = () => {
       },
     },
     {
-      title: 'Amallar',
+      title: 'Actions',
       key: 'actions',
       render: (_: any, record: Student) => (
         <Space>
@@ -234,7 +234,7 @@ const Student: React.FC = () => {
               style={{ color: '#1890ff' }}
             />
           </Tooltip>
-          <Tooltip title="Tahrirlash">
+          <Tooltip title="Edit">
             <Button 
               type="text" 
               icon={<EditOutlined />} 
@@ -242,7 +242,7 @@ const Student: React.FC = () => {
               style={{ color: '#52c41a' }}
             />
           </Tooltip>
-          <Tooltip title="O'chirish">
+          <Tooltip title="Delete">
             <Button 
               type="text" 
               icon={<DeleteOutlined />} 
@@ -299,10 +299,11 @@ const Student: React.FC = () => {
               <TeamOutlined style={{ fontSize: 28, color: '#1890ff' }} />
               <div>
                 <Title level={3} style={{ margin: 0 }}>
-                  O'quvchilar boshqaruvi
+                  Student management
                 </Title>
+                
                 <Text type="secondary">
-                  Jami: {users.length} ta o'quvchi
+                  Total: {users.length} readers
                 </Text>
               </div>
             </Space>
@@ -319,7 +320,7 @@ const Student: React.FC = () => {
                 fontSize: '16px'
               }}
             >
-              Yangi o'quvchi qo'shish
+             Add new student
             </Button>
           </Col>
         </Row>
@@ -331,7 +332,7 @@ const Student: React.FC = () => {
           <Col xs={24} sm={6}>
             <Card style={{ borderRadius: 8, textAlign: 'center' }}>
               <Statistic
-                title="Jami o'quvchilar"
+                title="Total students"
                 value={users.length}
                 prefix={<TeamOutlined />}
                 valueStyle={{ color: '#1890ff' }}
@@ -341,7 +342,7 @@ const Student: React.FC = () => {
           <Col xs={24} sm={6}>
             <Card style={{ borderRadius: 8, textAlign: 'center' }}>
               <Statistic
-                title="Erkaklar"
+                title="Men"
                 value={getGenderStats().maleCount}
                 prefix={<ManOutlined />}
                 valueStyle={{ color: '#1890ff' }}
@@ -351,7 +352,7 @@ const Student: React.FC = () => {
           <Col xs={24} sm={6}>
             <Card style={{ borderRadius: 8, textAlign: 'center' }}>
               <Statistic
-                title="Ayollar"
+                title="Women"
                 value={getGenderStats().femaleCount}
                 prefix={<WomanOutlined />}
                 valueStyle={{ color: '#eb2f96' }}
@@ -387,7 +388,7 @@ const Student: React.FC = () => {
             description="Hozircha o'quvchilar yo'q"
           >
             <Button type="primary" onClick={() => openModal()}>
-              Birinchi o'quvchini qo'shish
+              Add the first student
             </Button>
           </Empty>
         ) : (
@@ -396,7 +397,7 @@ const Student: React.FC = () => {
             columns={columns} 
             rowKey="id" 
             pagination={{
-              pageSize: 10,
+              pageSize: 5,
               showSizeChanger: true,
               showQuickJumper: true,
               showTotal: (total, range) => 
@@ -413,7 +414,7 @@ const Student: React.FC = () => {
         title={
           <Space>
             <UserOutlined />
-            {editingId ? 'O\'quvchini tahrirlash' : 'Yangi o\'quvchi qo\'shish'}
+            {editingId ? 'Edit Student' : 'Add new student'}
           </Space>
         }
         open={modalOpen}

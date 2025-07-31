@@ -182,21 +182,20 @@ const Groups = () => {
       width: 200,
       render: (_: any, record: Group) => (
         <Space size="small">
-          <Tooltip title="Edit Group">
+            <Tooltip title="Edit Group">
             <Button 
               type="primary" 
               icon={<EditOutlined />}
-              size="small"
+              size="large"
               onClick={() => editItem(record)}
               style={{ borderRadius: '6px' }}
             />
-          </Tooltip>
-          
-          <PopConfirm
+            </Tooltip>
+            
+            <PopConfirm
             handleDelete={() => deleteItem(record.id!)}
             loading={isDeleting}
-          />
-          
+            />
           <Tooltip title="View Details">
             <Link to={`/admin/group/${record.id}`}>
               <Button 

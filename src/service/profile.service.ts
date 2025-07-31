@@ -1,8 +1,8 @@
 import { apiConfig } from '@api/config';
-import { ApiUrls } from '@api/api-urls';
-import {  getUserIdFromToken } from '@helpers';
 
-export interface AdminProfile {
+import { getUserIdFromToken, getUserRoleFromToken } from '@helpers';
+
+export interface CommonProfile {
   firstName: string;
   lastName: string;
   email: string;
@@ -11,18 +11,43 @@ export interface AdminProfile {
 
 export const profileService = {
   async getProfile() {
-    const token =getUserIdFromToken(); 
+    const id = getUserIdFromToken();
+    const role = getUserRoleFromToken(); 
 
-    console.log('Access token:', token);
-    const res = await apiConfig().getRequest(`/admin/${token}`);
-    console.log('Profile data:', res?.data);
+    if (!id || !role) throw new Error('Token information missing');
+
+    const res = await apiConfig().getRequest(`/${role}/${id}`);
+    return res?.data[role];
+  },
+
+  updatePassword: async (
+    role: string,
+    id: number,
+    data: {
+      old_password: string;
+      password: string;
+      confirm_password: string;
+    }
+  ) => {
+    const res = await apiConfig().patchRequest(`/${role}/change-password/${id}`, data);
+    return res?.data;
+  },
+
+  updateAvatar: async (role: string, id: number, file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await apiConfig().postRequest(`/${role}/${id}/avatar`, formData);
+    console.log('Avatar update response:', res);
     
     return res?.data;
   },
 
-  async updateProfile(model: Partial<AdminProfile>): Promise<AdminProfile> {
-    const res = await apiConfig().putRequest(`/admin-auth${ApiUrls.PROFILE}`, model);
-    console.log('Updated profile data:', res?.data);
+  updateProfile: async (
+    role: string,
+    id: number,
+    model: Partial<CommonProfile>
+  ): Promise<CommonProfile> => {
+    const res = await apiConfig().putRequest(`/${role}/${id}`, model);
     return res?.data;
   }
 };

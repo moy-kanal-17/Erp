@@ -8,7 +8,7 @@ interface Lesson {
   title: string;
   notes: string;
   date: string;
-  status: 'new' | 'completed' | 'in_progress' | 'cancelled' | 'yangi' | 'tugagan' | 'bekor qilingan';
+  status: 'new' | 'completed' | 'in_progress' | 'cancelled' ;
 }
 
 interface GroupLessonsProps {
@@ -31,7 +31,7 @@ const GroupLessons: React.FC<GroupLessonsProps> = ({ lessons }) => {
       completed: 0,
       in_progress: 0,
       cancelled: 0,
-      yangi: 0,
+
       tugagan: 0,
       bekor_qilingan: 0,
     };
@@ -48,9 +48,7 @@ const GroupLessons: React.FC<GroupLessonsProps> = ({ lessons }) => {
     { label: 'Completed', value: 'completed' },
     { label: 'In Progress', value: 'in_progress' },
     { label: 'Cancelled', value: 'cancelled' },
-    { label: 'Yangi', value: 'yangi' },
-    { label: 'Tugagan', value: 'tugagan' },
-    { label: 'Bekor qilingan', value: 'bekor_qilingan' },
+
   ];
 
   return (
@@ -78,9 +76,8 @@ const GroupLessons: React.FC<GroupLessonsProps> = ({ lessons }) => {
         <Tag color="green">Completed: {stats.completed}</Tag>
         <Tag color="orange">In Progress: {stats.in_progress}</Tag>
         <Tag color="red">Cancelled: {stats.cancelled}</Tag>
-        <Tag color="purple">Yangi: {stats.yangi}</Tag>
-        <Tag color="cyan">Tugagan: {stats.tugagan}</Tag>
-        <Tag color="gray">Bekor qilingan: {stats.bekor_qilingan}</Tag>
+
+
       </div>
 
       {/* Список уроков с горизонтальной прокруткой */}
@@ -98,9 +95,9 @@ const GroupLessons: React.FC<GroupLessonsProps> = ({ lessons }) => {
                 <h4 className="text-sm font-semibold text-gray-800">{lesson.title}</h4>
                 <Tag
                   color={
-                    lesson.status === 'new' || lesson.status === 'yangi'
+                    lesson.status === 'new' 
                       ? 'blue'
-                      : lesson.status === 'completed' || lesson.status === 'tugagan'
+                      : lesson.status === 'completed' 
                       ? 'green'
                       : lesson.status === 'in_progress'
                       ? 'orange'

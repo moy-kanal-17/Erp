@@ -313,10 +313,10 @@ const Courses = () => {
               <BookOutlined style={{ fontSize: 28, color: '#1890ff' }} />
               <div>
                 <Title level={3} style={{ margin: 0 }}>
-                  Kurslar boshqaruvi
+                  Course management
                 </Title>
                 <Text type="secondary">
-                  Jami: {response?.length || 0} ta kurs
+                  Total: {response?.length || 0} courses
                 </Text>
               </div>
             </Space>
@@ -333,7 +333,7 @@ const Courses = () => {
                 fontSize: '16px'
               }}
             >
-              Yangi kurs qo'shish
+              Add a new course
             </Button>
           </Col>
         </Row>
@@ -345,7 +345,7 @@ const Courses = () => {
           <Col xs={24} sm={8}>
             <Card style={{ borderRadius: 8, textAlign: 'center' }}>
               <Statistic
-                title="Jami kurslar"
+                title="Total courses"
                 value={response.length}
                 prefix={<BookOutlined />}
                 valueStyle={{ color: '#1890ff' }}
@@ -355,7 +355,7 @@ const Courses = () => {
           <Col xs={24} sm={8}>
             <Card style={{ borderRadius: 8, textAlign: 'center' }}>
               <Statistic
-                title="O'rtacha narx"
+                title="Average price"
                 value={response.reduce((sum, course) => sum + course.price, 0) / response.length}
                 formatter={(value) => formatPrice(Number(value))}
                 prefix={<DollarOutlined />}
@@ -366,7 +366,7 @@ const Courses = () => {
           <Col xs={24} sm={8}>
             <Card style={{ borderRadius: 8, textAlign: 'center' }}>
               <Statistic
-                title="O'rtacha davomiyligi"
+                title="Average duration"
                 value={Math.round(response.reduce((sum, course) => sum + course.duration, 0) / response.length)}
                 suffix="kun"
                 prefix={<CalendarOutlined />}
@@ -391,12 +391,12 @@ const Courses = () => {
             image={Empty.PRESENTED_IMAGE_SIMPLE}
             description={
               <span style={{ color: '#ff4d4f' }}>
-                Ma'lumotlarni yuklashda xatolik yuz berdi
+                An error occurred while loading data. Please try again later.
               </span>
             }
           >
             <Button type="primary" onClick={() => queryClient.refetchQueries({ queryKey: ['courses'] })}>
-              Qayta yuklash
+              Refresh
             </Button>
           </Empty>
         ) : (

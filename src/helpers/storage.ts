@@ -32,5 +32,22 @@ export const getUserIdFromToken = (): number | null => {
   } catch (err) {
     console.error("Token decode error", err);
     return null;
-  }
+  }  
 };
+
+
+  export const getUserRoleFromToken = (): string | null => {
+  try {
+    const token = getItem("access_token");
+    if (!token) return null;
+    const decoded: { id: number,role:string } = jwtDecode(token);
+    console.log("Decoded token:", decoded.id,decoded.role);
+    console.log("decoded", decoded);
+    
+    
+    return decoded.role;
+  } catch (err) {
+    console.error("Token decode error", err);
+    return null;
+  }
+  }
