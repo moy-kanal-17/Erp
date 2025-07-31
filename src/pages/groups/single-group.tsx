@@ -1,7 +1,8 @@
-import  { useEffect } from 'react';
+import { useEffect } from 'react';
+import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { Card, Collapse, Skeleton, Button } from 'antd';
-import { Calendar, Clock, ArrowLeft, Users } from 'lucide-react';
+import { Card, Collapse, Skeleton, Button, Tag } from 'antd';
+import { CalendarOutlined,  ArrowLeftOutlined, TeamOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGroup } from '@hooks';
 import GroupTeachers from '../../components/group/group-teachers';
@@ -9,6 +10,73 @@ import GroupLessons from '../../components/group/group-lessons';
 import GroupStudents from '../../components/group/group-students';
 
 const { Panel } = Collapse;
+
+const StyledContainer = styled(motion.div)`
+  width: 100%;
+  min-height: calc(100vh - 112px);
+  padding: 2%;
+  background: transparent;
+`;
+
+const StyledContentWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 2%;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+
+  @media (max-width: 991px) {
+    flex-direction: column;
+  }
+`;
+
+const StyledSidebarCard = styled(Card)`
+  width: 25%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+  padding: 2%;
+  height: fit-content;
+
+  @media (max-width: 991px) {
+    width: 100%;
+  }
+`;
+
+const StyledMainCard = styled(Card)`
+  width: 75%;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+
+  @media (max-width: 991px) {
+    width: 100%;
+  }
+`;
+
+const StyledCollapse = styled(Collapse)`
+  background: transparent;
+  border: none;
+`;
+
+const StyledPanelHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #595959;
+`;
+
+const StyledInfoItem = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #595959;
+  margin-bottom: 8px;
+`;
 
 const SingleGroup = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,68 +86,64 @@ const SingleGroup = () => {
     ? dataById.data.group
     : { course: { title: '', price: 0, description: '', duration: 0, lessons_in_a_week: 0, lesson_duration: 0 } };
 
-  // Отладка данных lessons
   useEffect(() => {
     console.log('isLoading:', isLoading);
     console.log('lessons:', lessons);
     console.log('lessons?.data?.lessons:', lessons?.data?.lessons);
-
   }, [isLoading, lessons]);
 
-  // Гибкая проверка lessons
-  const lessonsList = lessons?.data?.lessons  || [];
+  const lessonsList = lessons?.data?.lessons || [];
 
   return (
-    <motion.div
+    <StyledContainer
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-gray-100 min-h-screen p-4 sm:p-6"
     >
-      <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-4">
+      <StyledContentWrapper>
         {/* Sidebar */}
-        <Card className="w-full md:w-1/4 bg-white rounded-lg shadow-md p-4">
+        <StyledSidebarCard>
           {isLoading ? (
             <Skeleton active paragraph={{ rows: 6 }} title={false} />
           ) : (
             <>
-              <div className="flex items-center justify-between mb-3">
-                <h2 className="text-base font-semibold text-gray-900">{groupData.name || 'Unnamed Group'}</h2>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <h2 style={{ fontSize: '16px', fontWeight: 600, color: '#000' }}>{groupData.name || 'Unnamed Group'}</h2>
                 {groupData.status === 'new' ? (
-                  <span className="px-2 py-1 rounded-full bg-yellow-100 text-yellow-800 text-xs font-medium">New</span>
+                  <Tag color="#f56a00" style={{ fontSize: '12px', padding: '4px 8px' }}>New</Tag>
                 ) : (
-                  <span className="px-2 py-1 rounded-full bg-green-100 text-green-800 text-xs font-medium">Active</span>
+                  <Tag color="#52c41a" style={{ fontSize: '12px', padding: '4px 8px' }}>Active</Tag>
                 )}
               </div>
               <Button
                 type="text"
-                icon={<ArrowLeft className="w-4 h-4" />}
+                icon={<ArrowLeftOutlined style={{ fontSize: '14px' }} />}
                 onClick={() => navigate('/admin/groups')}
-                className="text-gray-600 hover:text-gray-800 mb-3"
+                style={{ color: '#595959', marginBottom: '12px', fontSize: '12px' }}
               >
                 Back to Groups
               </Button>
-              <div className="space-y-2 text-xs text-gray-600">
-                <div className="flex items-center">
-                  <Calendar className="w-4 h-4 mr-1.5 text-blue-500" />
-                  Start: <span className="font-medium ml-1">{groupData.start_date || 'N/A'}</span>
-                </div>
-                <div className="flex items-center">
-                  <Calendar className="w-4 h-4 mr-1.5 text-blue-500" />
-                  End: <span className="font-medium ml-1">{groupData.end_date || 'N/A'}</span>
-                </div>
-                <div className="flex items-center">
-                  <Clock className="w-4 h-4 mr-1.5 text-blue-500" />
-                  Time: <span className="font-medium ml-1">{groupData.start_time && groupData.end_time ? `${groupData.start_time} - ${groupData.end_time}` : 'N/A'}</span>
-                </div>
-                <div className="flex items-center">
-                  Price: <span className="font-medium ml-1">{groupData.course?.price?.toLocaleString() || 0} sum</span>
-                </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <StyledInfoItem>
+                  <CalendarOutlined style={{ fontSize: '14px', color: '#1890ff', marginRight: '6px' }} />
+                  Start: <span style={{ fontWeight: 500, marginLeft: '4px' }}>{groupData.start_date || 'N/A'}</span>
+                </StyledInfoItem>
+                <StyledInfoItem>
+                  <CalendarOutlined style={{ fontSize: '14px', color: '#1890ff', marginRight: '6px' }} />
+                  End: <span style={{ fontWeight: 500, marginLeft: '4px' }}>{groupData.end_date || 'N/A'}</span>
+                </StyledInfoItem>
+                <StyledInfoItem>
+                  <ClockCircleOutlined style={{ fontSize: '14px', color: '#1890ff', marginRight: '6px' }} />
+                  Time: <span style={{ fontWeight: 500, marginLeft: '4px' }}>{groupData.start_time && groupData.end_time ? `${groupData.start_time} - ${groupData.end_time}` : 'N/A'}</span>
+                </StyledInfoItem>
+                <StyledInfoItem>
+                  Price: <span style={{ fontWeight: 500, marginLeft: '4px' }}>{groupData.course?.price?.toLocaleString() || 0} sum</span>
+                </StyledInfoItem>
               </div>
-              <div className="mt-3">
-                <h3 className="text-sm font-semibold text-gray-800">{groupData.course?.title || 'No Course'}</h3>
-                <p className="text-xs text-gray-600 mt-1">{groupData.course?.description || 'No description'}</p>
-                <div className="flex flex-wrap gap-2 text-xs text-gray-500 mt-2">
+              <div style={{ marginTop: '12px' }}>
+                <h3 style={{ fontSize: '14px', fontWeight: 600, color: '#000' }}>{groupData.course?.title || 'No Course'}</h3>
+                <p style={{ fontSize: '12px', color: '#595959', marginTop: '4px' }}>{groupData.course?.description || 'No description'}</p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', fontSize: '12px', color: '#595959', marginTop: '8px' }}>
                   <span>Duration: {groupData.course?.duration || 0} month</span>
                   <span>Per week: {groupData.course?.lessons_in_a_week || 0} lesson</span>
                   <span>Lesson time: {groupData.course?.lesson_duration || 0} min</span>
@@ -87,25 +151,20 @@ const SingleGroup = () => {
               </div>
             </>
           )}
-        </Card>
+        </StyledSidebarCard>
 
         {/* Main Content */}
-        <Card className="w-full md:w-3/4 bg-white rounded-lg shadow-md overflow-hidden">
-          <Collapse
-            defaultActiveKey={['1', '2', '3']}
-            expandIconPosition="end"
-            className="bg-transparent border-none"
-            style={{ background: 'transparent' }}
-          >
+        <StyledMainCard>
+          <StyledCollapse defaultActiveKey={['1', '2', '3']} expandIconPosition="end">
             <Panel
               header={
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4 text-blue-500" />
-                  <h3 className="text-sm font-semibold text-gray-700">Teachers</h3>
-                </div>
+                <StyledPanelHeader>
+                  <TeamOutlined style={{ fontSize: '14px', color: '#1890ff' }} />
+                  <h3>Teachers</h3>
+                </StyledPanelHeader>
               }
               key="1"
-              className="mb-3"
+              style={{ marginBottom: '12px' }}
             >
               {isLoading || !teachers?.data ? (
                 <Skeleton active paragraph={{ rows: 4 }} title={false} />
@@ -118,18 +177,18 @@ const SingleGroup = () => {
                   <GroupTeachers teachers={teachers.data} />
                 </motion.div>
               ) : (
-                <p className="text-gray-500 text-xs">No teachers assigned to this group.</p>
+                <p style={{ fontSize: '12px', color: '#595959' }}>No teachers assigned to this group.</p>
               )}
             </Panel>
             <Panel
               header={
-                <div className="flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-blue-500" />
-                  <h3 className="text-sm font-semibold text-gray-700">Lessons</h3>
-                </div>
+                <StyledPanelHeader>
+                  <CalendarOutlined style={{ fontSize: '14px', color: '#1890ff' }} />
+                  <h3>Lessons</h3>
+                </StyledPanelHeader>
               }
               key="2"
-              className="mb-3"
+              style={{ marginBottom: '12px' }}
             >
               {isLoading ? (
                 <Skeleton active paragraph={{ rows: 4 }} title={false} />
@@ -139,19 +198,18 @@ const SingleGroup = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-
                   <GroupLessons lessons={lessonsList} />
                 </motion.div>
               ) : (
-                <p className="text-gray-500 text-xs">No lessons scheduled for this group.</p>
+                <p style={{ fontSize: '12px', color: '#595959' }}>No lessons scheduled for this group.</p>
               )}
             </Panel>
             <Panel
               header={
-                <div className="flex items-center gap-2">
-                  <Users className="w-4 h-4 text-blue-500" />
-                  <h3 className="text-sm font-semibold text-gray-700">Students</h3>
-                </div>
+                <StyledPanelHeader>
+                  <TeamOutlined style={{ fontSize: '14px', color: '#1890ff' }} />
+                  <h3>Students</h3>
+                </StyledPanelHeader>
               }
               key="3"
             >
@@ -166,13 +224,13 @@ const SingleGroup = () => {
                   <GroupStudents students={students.data} id={id} />
                 </motion.div>
               ) : (
-                <p className="text-gray-500 text-xs">No students assigned to this group.</p>
+                <p style={{ fontSize: '12px', color: '#595959' }}>No students assigned to this group.</p>
               )}
             </Panel>
-          </Collapse>
-        </Card>
-      </div>
-    </motion.div>
+          </StyledCollapse>
+        </StyledMainCard>
+      </StyledContentWrapper>
+    </StyledContainer>
   );
 };
 

@@ -7,22 +7,24 @@ import {
   HomeOutlined,
   TeamOutlined,
   UserOutlined,
-  // CodeOutlined,
   BranchesOutlined,
   ReadOutlined,
   DownOutlined,
   LogoutOutlined,
   ProfileOutlined,
-
 } from '@ant-design/icons';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { clearStorage } from '@helpers';
+import { useProfile } from '@hooks';
 
 const { Header, Sider, Content } = Layout;
 
 const Admin = () => {
   const navigate = useNavigate();
   const isMounted = useRef(true);
+  const { profile } = useProfile();
+
+  console.log("profile", profile);
 
   const handleMenuClick = useCallback(
     (e: any) => {
@@ -51,7 +53,6 @@ const Admin = () => {
         case '9':
           navigate('/admin/rooms');
           break;
-
         case '10':
           navigate('/admin/profile');
           break;
@@ -81,10 +82,21 @@ const Admin = () => {
     <Menu
       items={[
         {
+          key: 'profile',
+          icon: <UserOutlined style={{ color: '#1890ff' }} />,
+          label: profile ? `${profile.first_name} ${profile.last_name} (${profile.role || 'User'})` : 'Loading...',
+          disabled: true,
+          style: { color: '#595959', fontSize: '14px', padding: '8px 12px' },
+        },
+        {
+          type: 'divider',
+        },
+        {
           key: 'logout',
-          icon: <LogoutOutlined />,
+          icon: <LogoutOutlined style={{ color: '#f56a00' }} />,
           label: 'Logout',
           onClick: handleLogout,
+          style: { color: '#595959', fontSize: '14px', padding: '8px 12px' },
         },
       ]}
     />
@@ -92,8 +104,8 @@ const Admin = () => {
 
   return (
     <StyledLayout>
-      <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-        <Sider breakpoint="lg" collapsedWidth="80" style={{ background: '#0f172a' }}>
+      <StyledSider breakpoint="lg" collapsedWidth="80">
+        <motion.div initial={{ opacity: 0, x: -50 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
           <LogoWrapper>
             <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ delay: 0.2, duration: 0.4 }}>
               Admin
@@ -130,11 +142,6 @@ const Admin = () => {
                 icon: <BookOutlined />,
                 label: 'Courses',
               },
-              // {
-              //   key: '6',
-              //   icon: <CodeOutlined />,
-              //   label: 'Projects',
-              // },
               {
                 key: '8',
                 icon: <BranchesOutlined />,
@@ -145,24 +152,24 @@ const Admin = () => {
                 icon: <ReadOutlined />,
                 label: 'Rooms',
               },
-                            {
+              {
                 key: '10',
                 icon: <ProfileOutlined />,
                 label: 'Profile',
               },
             ]}
           />
-        </Sider>
-      </motion.div>
-      <Layout>
+        </motion.div>
+      </StyledSider>
+      <StyledContentLayout>
         <StyledHeader>
-          <motion.h2 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} style={{ margin: 0 }}>
+          <motion.h2 initial={{ y: -20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.3 }} style={{ margin: 0, color: '#fff' }}>
             Admin Panel
           </motion.h2>
           <Dropdown overlay={dropdownMenu} placement="bottomRight">
             <Button type="text" style={{ color: 'white' }}>
-              <UserOutlined></UserOutlined>
-               <DownOutlined />
+              <UserOutlined />
+              {profile ? `${profile.first_name} ${profile.last_name}` : 'User'} <DownOutlined />
             </Button>
           </Dropdown>
         </StyledHeader>
@@ -171,7 +178,7 @@ const Admin = () => {
             <Outlet />
           </motion.div>
         </ContentWrapper>
-      </Layout>
+      </StyledContentLayout>
     </StyledLayout>
   );
 };
@@ -179,7 +186,33 @@ const Admin = () => {
 // Styled Components
 const StyledLayout = styled(Layout)`
   background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-  min-height: 100vh;
+`;
+
+const StyledSider = styled(Sider)`
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  background: #0f172a;
+  overflow-y: auto;
+
+  &.ant-layout-sider-collapsed {
+    width: 80px !important;
+  }
+`;
+
+const StyledContentLayout = styled(Layout)`
+  margin-left: 200px;
+  transition: margin-left 0.2s;
+
+  @media (max-width: 991px) {
+    margin-left: 80px;
+  }
+
+  @media (max-width: 576px) {
+    margin-left: 0;
+  }
 `;
 
 const LogoWrapper = styled.div`
@@ -203,6 +236,9 @@ const StyledHeader = styled(Header)`
   justify-content: space-between;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(12px);
+  position: sticky;
+  top: 0;
+  z-index: 99;
 `;
 
 const ContentWrapper = styled(Content)`
@@ -210,7 +246,7 @@ const ContentWrapper = styled(Content)`
   padding: 24px;
   background: rgba(255, 255, 255, 0.95);
   border-radius: 8px;
-  min-height: 360px;
+  min-height: calc(100vh - 112px);
   box-shadow: 0 10px 50px rgba(0, 0, 0, 0.3);
 `;
 

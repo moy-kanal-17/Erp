@@ -30,7 +30,9 @@ import {
   TeamOutlined,
   SearchOutlined,
   ReloadOutlined,
-  ExclamationCircleOutlined
+  ExclamationCircleOutlined,
+  EditOutlined,
+  DeleteOutlined
 } from '@ant-design/icons';
 import { useBranch } from "@hooks";
 
@@ -211,22 +213,20 @@ const Rooms = () => {
       width: 120,
       render: (_: any, record: Room) => (
         <Space size="small">
-          <Tooltip title="Edit Room">
+          <Tooltip title="Edit">
             <Button 
-              type="primary" 
-              icon={<EditFilled />}
-              size="small"
+              type="text" 
+              icon={<EditOutlined />} 
               onClick={() => showModal(record)}
-              style={{ borderRadius: '6px' }}
+              style={{ color: '#52c41a' }}
             />
           </Tooltip>
-          <Tooltip title="Delete Room">
+          <Tooltip title="Delete">
             <Button 
-              danger 
-              icon={<DeleteFilled />}
-              size="small"
+              type="text" 
+              icon={<DeleteOutlined />} 
               onClick={() => handleDelete(record)}
-              style={{ borderRadius: '6px' }}
+              style={{ color: '#f5222d' }}
             />
           </Tooltip>
         </Space>

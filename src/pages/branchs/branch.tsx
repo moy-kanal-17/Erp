@@ -1,11 +1,9 @@
-import { Button, Space, Table, type TablePaginationConfig } from "antd";
-import { EditOutlined } from "@ant-design/icons";
+import { Button, Space, Table, Tooltip, type TablePaginationConfig } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 import { 
   // useGroup,
    useGeneral } from "@hooks";
-import { PopConfirm, 
-  // GroupColumns
- } from "@components";
+
 import { type Branch } from "@types";
 
 import { useEffect, useState } from "react";
@@ -87,13 +85,24 @@ const Branchs = () => {
       key: "action",
       render: (_: any, record: Branch) => (
         <Space size="middle">
-          <Button type="primary" onClick={() => editItem(record)}>
-            <EditOutlined />
-          </Button>
-          <PopConfirm
-            handleDelete={() => deleteItem(record.id!)}
-            loading={isDeleting}
-          />
+          <Tooltip title="Edit">
+            <Button
+              type="text"
+              icon={<EditOutlined />}
+              onClick={() => editItem(record)}
+              style={{ color: "#52c41a" }}
+            />
+          </Tooltip>
+
+          <Tooltip title="Delete">
+            <Button
+              type="text"
+              icon={<DeleteOutlined />}
+              onClick={() => deleteItem(record.id!)}
+              loading={isDeleting}
+              style={{ color: "#f5222d" }}
+            />
+          </Tooltip>
           {/* <Link to={`/admin/group/${record.id}`}>view</Link> */}
         </Space>
       ),
