@@ -33,7 +33,7 @@ const Profile = () => {
       email: profile?.email,
       phone: profile?.phone,
       address: profile?.address,
-      bio: profile?.bio,
+ 
     });
   };
 
@@ -286,17 +286,7 @@ const Profile = () => {
                       type="tel"
                     />
                   </div>
-                  <ProfileField
-                    label="Address"
-                    value={profile?.address}
-                    field="address"
-                  />
-                  <ProfileField
-                    label="Bio"
-                    value={profile?.bio}
-                    field="bio"
-                    type="textarea"
-                  />
+
                 </Form>
               </div>
 
