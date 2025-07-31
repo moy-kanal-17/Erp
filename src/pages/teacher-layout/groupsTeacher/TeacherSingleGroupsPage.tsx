@@ -270,7 +270,7 @@ const SingleGroupPage: React.FC = () => {
               <Button
                 type="text"
                 icon={<ArrowLeftOutlined style={{ fontSize: '14px', color: '#1890ff' }} />}
-                onClick={() => navigate('/admin/groups')}
+                onClick={() => navigate('/teacher/groups')}
                 style={{ color: '#595959', marginBottom: '12px', fontSize: '12px' }}
               >
                 Back to Groups
