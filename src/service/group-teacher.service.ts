@@ -14,6 +14,13 @@ export const groupTeacherService = {
         console.log("res", res)
         return res;
     },
+    async getTeachersGroupById(id: Number) {
+        const res = await apiConfig().getRequest(
+            `${ApiUrls.GROUPS}/${id}/teacher`
+        );
+        console.log("res---------", res)
+        return res?.data;
+    },
     async getGroupLessons(id: number) {
         const res = await apiConfig().getRequest(`${ApiUrls.GROUP_LESSONS}/${id}`);
         return res;

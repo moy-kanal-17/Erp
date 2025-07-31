@@ -1,5 +1,8 @@
 import  { useState } from 'react';
 import { Card, Table, Typography, Button, Modal, Form, Input, Select, message } from 'antd';
+import { useTeacherMyGroups,
+  //  useTeachers
+   } from '@hooks';
 
 const { Title } = Typography;
 const { Option } = Select;
@@ -13,11 +16,15 @@ interface GroupTeacher {
   end_date: string;
 }
 
-const SettingsPage = () => {
+const SettingsPag = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingGroupTeacher, setEditingGroupTeacher] = useState<GroupTeacher | null>(null);
   const [form] = Form.useForm();
 
+  // const teachersHooks = useTeachers();
+  const Mygroups = useTeacherMyGroups();
+  console.log('Mygroups', Mygroups);
+  
   const groupTeachers: GroupTeacher[] = [
     { id: 1, group: { id: 1, name: 'Group A' }, teacher: { id: 1, first_name: 'John', last_name: 'Doe' }, status: true, start_date: '2021-03-01', end_date: '2021-12-31' },
     { id: 2, group: { id: 2, name: 'Group B' }, teacher: { id: 2, first_name: 'Peter', last_name: 'Smith' }, status: false, start_date: '2021-04-01', end_date: '2021-11-30' }
@@ -188,4 +195,4 @@ const SettingsPage = () => {
   );
 };
 
-export default SettingsPage;
+export default SettingsPag;

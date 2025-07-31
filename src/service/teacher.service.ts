@@ -7,6 +7,10 @@ export const teacherService = {
 		const res = await apiConfig().getRequest(ApiUrls.TEACHER, params);
 		return res;
 	},
+	async getTeacherMyGroups() {
+		const res = await apiConfig().getRequest(ApiUrls.GROUP_TEACHERS_MY);
+		return res;
+	},
 	async deleteTeacher(id: number) {
 		const res = await apiConfig().deleteRequest(`${ApiUrls.TEACHER}/${id}`);
 		return res;

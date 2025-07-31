@@ -47,7 +47,7 @@ export const profileService = {
     id: number,
     model: Partial<CommonProfile>
   ): Promise<CommonProfile> => {
-    const res = await apiConfig().putRequest(`/${role}/${id}`, model);
+    const res = await apiConfig().patchRequest(`/${role}/${id}`, model);
     return res?.data;
   }
 };

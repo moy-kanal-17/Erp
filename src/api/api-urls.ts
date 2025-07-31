@@ -12,6 +12,7 @@ export class ApiUrls {
     public static STUDENTS: string = '/students'
     // TECHERS
     public static TEACHERS: string = '/teacher'
+
     // COURSES
     public static COURSES: string = "/courses"
 
@@ -34,6 +35,8 @@ export class ApiUrls {
 	public static LESSONS: string = "/lessons";
 	public static GROUP_LESSONS: string = this.LESSONS + "/group";
 	public static GROUP_TEACHERS: string = "/group-teachers";
+  public static GROUP_TEACHERS_MY: string = "/group-teachers/my-groups";
+
 	public static GROUP_TEACHERS_BY_GROUP_ID: string =
 		this.GROUP_TEACHERS + "/by-group";
 

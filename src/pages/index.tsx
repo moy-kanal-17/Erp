@@ -20,15 +20,15 @@ const  GroupPage = lazy(() => import("./lessons/lessosG.tsx"));
 const Profile = lazy(() => import("./teacher-layout/teacherLayout.tsx"));
 const TeacherPaneLayout = lazy(() => import("./teacher-layout/TeachersCards.tsx"));
 const AdminProfile = lazy(() => import("./admin-layout/profile.tsx"));
-
+const TeacherSingleGroupsPage = lazy(() => import("./teacher-layout/groupsTeacher/TeacherSingleGroupsPage.tsx"));
 // const LessonsList = lazy(() => import("./lessons/lessons-list.tsx"));
 // const Attendace = lazy(() => import("./teacher-layout/attendace/teacher.attendace.tsx"));
 const SettingsPage = lazy(() => import("./teacher-layout/teacher-settingsMenyu"))
 // const  Test = lazy(() => import("./test/test.tsx"));
+const TeacherGroupsPage = lazy(() => import("./teacher-layout/groupsTeacher/teacherGroups.tsx"));
 
 
 
-
-export {SignIn,AdminProfile,TeacherPaneLayout,Profile,Curs,SettingsPage,GroupPage,TeacherDashboard,Rooms, Student,SignUp, NotFound, StudentLayout, SingleGroup, AdminLayout, TeacherLayout, Groups, LayoutProtect, LoginProtect,
+export {SignIn,AdminProfile,TeacherSingleGroupsPage,TeacherGroupsPage,TeacherPaneLayout,Profile,Curs,SettingsPage,GroupPage,TeacherDashboard,Rooms, Student,SignUp, NotFound, StudentLayout, SingleGroup, AdminLayout, TeacherLayout, Groups, LayoutProtect, LoginProtect,
     // Attendace
      Worker}

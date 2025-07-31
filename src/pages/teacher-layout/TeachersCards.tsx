@@ -1,7 +1,7 @@
 import  { useState } from 'react';
 import { useNavigate, Outlet } from 'react-router-dom';
 import { Layout, Menu, Avatar, Dropdown, Typography, Button, Input } from 'antd';
-import { HomeOutlined, UserOutlined, SettingOutlined, MenuOutlined, SearchOutlined, BellOutlined, LogoutOutlined } from '@ant-design/icons';
+import { HomeOutlined, UserOutlined,  MenuOutlined, SearchOutlined, BellOutlined, LogoutOutlined, UserAddOutlined } from '@ant-design/icons';
 import { ListChecksIcon } from 'lucide-react';
 
 const { Header, Sider, Content, Footer } = Layout;
@@ -15,7 +15,7 @@ const TeacherPaneLayout = () => {
     { key: 'dashboard', label: 'Dashboard', icon: <HomeOutlined /> },
     { key: 'profile', label: 'Profile', icon: <UserOutlined /> },
     { key: 'attendance', label: 'Attendace', icon: <ListChecksIcon /> },
-    { key: 'settings', label: 'Settings', icon: <SettingOutlined /> },
+    { key: 'groups', label: 'Groups', icon: <UserAddOutlined /> },
 
   ];
 

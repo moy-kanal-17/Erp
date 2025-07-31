@@ -6,7 +6,8 @@ import {
 } from 'antd';
 import {
   PlusOutlined, EditOutlined, UserOutlined, PhoneOutlined,
-  MailOutlined, TeamOutlined, EyeOutlined
+  MailOutlined, TeamOutlined, EyeOutlined,
+  DeleteFilled
 } from '@ant-design/icons';
 import { teacherService } from '@service';
 
@@ -21,7 +22,7 @@ const TeacherLayout: React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [viewModalVisible, setViewModalVisible] = useState(false);
   const [editingUser, setEditingUser] = useState<any>(null);
-  const [viewingUser, setViewingUser] = useState<any>(null);
+  const [viewingUser] = useState<any>(null);
   const [form] = Form.useForm();
 
   const formatPhoneForDisplay = (phone: string) => {
@@ -70,10 +71,12 @@ const TeacherLayout: React.FC = () => {
     }
   };
 
-  const showViewModal = (record: any) => {
-    setViewingUser(record);
-    setViewModalVisible(true);
-  };
+  // const showViewModal = (record: any) => {
+  //   console.log("record", record);
+    
+  //   setViewingUser(record);
+  //   setViewModalVisible(true);
+  // };
 
   const handleSubmit = async () => {
     try {
@@ -97,6 +100,16 @@ const TeacherLayout: React.FC = () => {
         message.success("✅ O'qituvchi qo'shildi!");
       }
 
+      // const deleteUser=async (id:number) => {
+      //   try {
+      //     await teacherService.deleteTeacher(id);
+      //     message.success("✅ O'qituvchi o'chirildi!");
+      //     fetchUsers();
+      //   } catch (err) {
+      //     console.error(err);
+      //     message.error("❌ O'chirishda xatolik yuz berdi.");
+      //   }
+      // }
       setModalVisible(false);
       fetchUsers();
       form.resetFields();
@@ -206,20 +219,21 @@ const TeacherLayout: React.FC = () => {
       key: 'actions',
       render: (_: any, record: any) => (
         <Space>
-          <Tooltip title="Ko'rish">
-            <Button
-              type="text"
-              icon={<EyeOutlined />}
-              onClick={() => showViewModal(record)}
-              style={{ color: '#1890ff' }}
-            />
-          </Tooltip>
-          <Tooltip title="Tahrirlash">
+          <Tooltip title="Edit">
             <Button
               type="text"
               icon={<EditOutlined />}
               onClick={() => showModal(record)}
               style={{ color: '#52c41a' }}
+            />
+          </Tooltip>
+
+          <Tooltip title="Delete">
+            <Button
+              type="text"
+              icon={<DeleteFilled />}
+              onClick={() => deleteUser(record.id)}
+              style={{ color: '#c41a1aff' }}
             />
           </Tooltip>
         </Space>
@@ -336,7 +350,7 @@ const TeacherLayout: React.FC = () => {
         title={
           <Space>
             <UserOutlined />
-            {editingUser ? "O'qituvchini tahrirlash" : "Yangi o'qituvchi qo'shish"}
+            {editingUser ? "Edit Teacher" : "add a new Teacher "}
           </Space>
         }
         onCancel={() => {
@@ -344,8 +358,8 @@ const TeacherLayout: React.FC = () => {
           form.resetFields();
         }}
         onOk={handleSubmit}
-        okText="Saqlash"
-        cancelText="Bekor qilish"
+        okText="Save"
+        cancelText="close"
         confirmLoading={submitting}
         width={600}
         style={{ top: 20 }}
@@ -387,7 +401,13 @@ const TeacherLayout: React.FC = () => {
                 ]}
               >
                 <IMaskInput
-
+                  mask="+998 (00) 000-00-00"
+                  definitions={{
+                    '0': /[0-9]/,
+                  }}
+                  unmask={true}
+                  inputMode="tel"
+                  type="tel"
                   placeholder="+998 (99) 999-99-99"
                   onAccept={(value: string) => form.setFieldsValue({ phone: value })}
                   style={{ width: '100%' }}
@@ -489,6 +509,22 @@ const TeacherLayout: React.FC = () => {
                 <Text strong>Email: </Text>
                 <Text>{viewingUser.email}</Text>
               </div>
+
+
+                <div>
+                <Text strong>Password: </Text>
+                <Text>{viewingUser.password}</Text>
+              </div>
+
+                              <div>
+                <Text strong>branches: </Text>
+                <Text>{viewingUser.branchId}</Text>
+              </div>
+
+              <div>
+                <Text strong>avatar_url: </Text>
+                <Text>{viewingUser.avatar_url}</Text>
+              </div>
             </Space>
           </div>
         )}
@@ -498,3 +534,16 @@ const TeacherLayout: React.FC = () => {
 };
 
 export default TeacherLayout;
+
+function deleteUser(id: number): void {
+  console.log(id);
+  teacherService.deleteTeacher(id)
+    .then(() => {
+      message.success("✅ O'qituvchi o'chirildi!");;
+    })
+    .catch((err) => {
+      console.error(err);
+      message.error("❌ O'chirishda xatolik yuz berdi.");
+    });
+  
+}
