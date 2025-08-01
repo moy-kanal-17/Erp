@@ -51,3 +51,22 @@ export const getUserIdFromToken = (): number | null => {
     return null;
   }
   }
+
+
+
+
+    export const getUserTokenFromToken = () => {
+  try {
+    const token = getItem("access_token");
+    if (!token) return null;
+    const decoded: { id: number,role:string } = jwtDecode(token);
+    console.log("Decoded token:", decoded.id,decoded.role);
+    console.log("decoded", decoded);
+    
+    
+    return decoded;
+  } catch (err) {
+    console.error("Token decode error", err);
+    return null;
+  }
+  }

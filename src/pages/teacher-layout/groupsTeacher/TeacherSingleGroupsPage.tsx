@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Card, Table, Tag, Button, Space, Popconfirm, message, Skeleton, Alert } from 'antd';
-import { CalendarOutlined, ClockCircleOutlined, ArrowLeftOutlined, TeamOutlined, DeleteOutlined, CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
+import { CalendarOutlined, ClockCircleOutlined, ArrowLeftOutlined, TeamOutlined, DeleteOutlined, CheckCircleOutlined, CloseCircleOutlined, EyeOutlined } from '@ant-design/icons';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTeachersGroupById, useGroupTeacherActivate, useGroupTeacherDeactivate, useGroupTeacherDelete } from '@hooks';
 
@@ -111,6 +111,7 @@ const SingleGroupPage: React.FC = () => {
     },
     groupTeachers: data?.groupTeachers || [],
     groupStudents: data?.groupStudents || [],
+    lessons: data?.lessons || [],
   };
   console.log('Processed groupData:', groupData);
 
@@ -244,6 +245,65 @@ const SingleGroupPage: React.FC = () => {
     },
   ];
 
+  const lessonColumns = [
+    {
+      title: 'ID',
+      dataIndex: 'id',
+      key: 'id',
+    },
+    {
+      title: 'Title',
+      dataIndex: 'title',
+      key: 'title',
+      render: (title: string) => title || 'N/A',
+    },
+    {
+      title: 'Notes',
+      dataIndex: 'notes',
+      key: 'notes',
+      render: (notes: string) => notes || 'N/A',
+    },
+    {
+      title: 'Date',
+      dataIndex: 'date',
+      key: 'date',
+      render: (date: string) => (date ? new Date(date).toLocaleDateString('en-US') : 'N/A'),
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status: string) => (
+        <Tag
+          color={status === 'completed' ? '#52c41a' : status === 'cancelled' ? '#f56a00' : '#1890ff'}
+          style={{ fontSize: '12px', padding: '4px 8px' }}
+        >
+          {status || 'N/A'}
+        </Tag>
+      ),
+    },
+    {
+      title: 'Room',
+      dataIndex: ['room', 'name'],
+      key: 'room',
+      render: (name: string) => name || 'N/A',
+    },
+    {
+      title: 'Actions',
+      key: 'actions',
+      render: (_: any, record: any) => (
+        <Button
+          type="text"
+          icon={<EyeOutlined style={{ color: '#1890ff' }} />}
+          onClick={() => navigate(`/teacher/lesson/${record.id}`)}
+          style={{ color: '#595959' }}
+        >
+          View
+        </Button>
+      ),
+    },
+  ];
+
   return (
     <StyledContainer
       initial={{ opacity: 0, y: 20 }}
@@ -326,7 +386,7 @@ const SingleGroupPage: React.FC = () => {
               <p style={{ fontSize: '12px', color: '#595959' }}>No teachers assigned to this group.</p>
             )}
           </div>
-          <div>
+          <div style={{ marginBottom: '24px' }}>
             <h3 style={{ fontSize: '14px', fontWeight: 600, color: '#595959', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <TeamOutlined style={{ color: '#1890ff' }} /> Students
             </h3>
@@ -342,6 +402,24 @@ const SingleGroupPage: React.FC = () => {
               />
             ) : (
               <p style={{ fontSize: '12px', color: '#595959' }}>No students assigned to this group.</p>
+            )}
+          </div>
+          <div>
+            <h3 style={{ fontSize: '14px', fontWeight: 600, color: '#595959', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <CalendarOutlined style={{ color: '#1890ff' }} /> Lessons
+            </h3>
+            {isGroupLoading ? (
+              <Skeleton active paragraph={{ rows: 4 }} title={false} />
+            ) : groupData.lessons.length > 0 ? (
+              <StyledTable
+                columns={lessonColumns}
+                dataSource={groupData.lessons}
+                rowKey="id"
+                pagination={{ pageSize: 10 }}
+                locale={{ emptyText: 'No lessons scheduled' }}
+              />
+            ) : (
+              <p style={{ fontSize: '12px', color: '#595959' }}>No lessons scheduled for this group.</p>
             )}
           </div>
         </StyledMainCard>

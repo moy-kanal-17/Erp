@@ -25,6 +25,13 @@ export const useTeacherMyGroups = () => {
   });
 };
 
+export const useTeacherMyAttendace = () => {
+  return useQuery({
+    queryKey: ["teacher-my-groups"],
+    queryFn: async () => teacherService.getTeacherMyGroups(),
+  });
+};
+
 export const useTeacherCreate = () => {
   const queryClient = useQueryClient();
   return useMutation({

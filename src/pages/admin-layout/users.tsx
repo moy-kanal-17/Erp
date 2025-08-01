@@ -31,7 +31,9 @@ const Student: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [viewModalOpen, setViewModalOpen] = useState(false);
-  const [viewingStudent, setViewingStudent] = useState<Student | null>(null);
+  const [viewingStudent, 
+    // setViewingStudent
+  ] = useState<Student | null>(null);
   const [form] = Form.useForm();
   const [editingId, setEditingId] = useState<number | null>(null);
 
@@ -52,10 +54,10 @@ const Student: React.FC = () => {
     }
   };
 
-  const showViewModal = (student: Student) => {
-    setViewingStudent(student);
-    setViewModalOpen(true);
-  };
+  // const showViewModal = (student: Student) => {
+  //   setViewingStudent(student);
+  //   setViewModalOpen(true);
+  // };
 
   const openModal = (user: Student | null = null) => {
     setEditingId(user?.id || null);
@@ -226,14 +228,7 @@ const Student: React.FC = () => {
       key: 'actions',
       render: (_: any, record: Student) => (
         <Space>
-          <Tooltip title="Ko'rish">
-            <Button 
-              type="text" 
-              icon={<EyeOutlined />} 
-              onClick={() => showViewModal(record)}
-              style={{ color: '#1890ff' }}
-            />
-          </Tooltip>
+
           <Tooltip title="Edit">
             <Button 
               type="text" 

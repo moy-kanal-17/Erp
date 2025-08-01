@@ -26,9 +26,10 @@ const TeacherSingleGroupsPage = lazy(() => import("./teacher-layout/groupsTeache
 const SettingsPage = lazy(() => import("./teacher-layout/teacher-settingsMenyu"))
 // const  Test = lazy(() => import("./test/test.tsx"));
 const TeacherGroupsPage = lazy(() => import("./teacher-layout/groupsTeacher/teacherGroups.tsx"));
+const LessonPage = lazy(() => import("./teacher-layout/lesson/lessons.tsx"));
 
 
 
-export {SignIn,AdminProfile,TeacherSingleGroupsPage,TeacherGroupsPage,TeacherPaneLayout,Profile,Curs,SettingsPage,GroupPage,TeacherDashboard,Rooms, Student,SignUp, NotFound, StudentLayout, SingleGroup, AdminLayout, TeacherLayout, Groups, LayoutProtect, LoginProtect,
+export {SignIn,AdminProfile,LessonPage,TeacherSingleGroupsPage,TeacherGroupsPage,TeacherPaneLayout,Profile,Curs,SettingsPage,GroupPage,TeacherDashboard,Rooms, Student,SignUp, NotFound, StudentLayout, SingleGroup, AdminLayout, TeacherLayout, Groups, LayoutProtect, LoginProtect,
     // Attendace
      Worker}

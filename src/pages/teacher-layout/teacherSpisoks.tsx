@@ -7,7 +7,8 @@ import {
 import {
   PlusOutlined, EditOutlined, UserOutlined, PhoneOutlined,
   MailOutlined, TeamOutlined, EyeOutlined,
-  DeleteFilled
+  // DeleteFilled,
+  DeleteOutlined
 } from '@ant-design/icons';
 import { teacherService } from '@service';
 
@@ -231,9 +232,9 @@ const TeacherLayout: React.FC = () => {
           <Tooltip title="Delete">
             <Button
               type="text"
-              icon={<DeleteFilled />}
+              icon={<DeleteOutlined />}
               onClick={() => deleteUser(record.id)}
-              style={{ color: '#c41a1aff' }}
+              style={{ color: '#df0000ff' }}
             />
           </Tooltip>
         </Space>
