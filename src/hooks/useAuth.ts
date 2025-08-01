@@ -16,3 +16,10 @@ export const useForgetPassword = () => {
 };
 
 
+export const useVerifyOtp = () => {
+    return useMutation({
+        mutationFn: async ( otp:any ) => authService.verifyForgetPasswordOtp(otp.otp!),
+    });
+};
+
+

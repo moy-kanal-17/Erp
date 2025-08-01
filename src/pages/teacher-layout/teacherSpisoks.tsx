@@ -395,10 +395,7 @@ const TeacherLayout: React.FC = () => {
                 label="Telefon"
                 rules={[
                   { required: true, message: "Telefon raqamni kiriting!" },
-                  {
-                    pattern: /^\+998 \(\d{2}\) \d{3}-\d{2}-\d{2}$/,
-                    message: "Telefon raqam +998 (XX) XXX-XX-XX formatida bo'lishi kerak!",
-                  },
+
                 ]}
               >
                 <IMaskInput

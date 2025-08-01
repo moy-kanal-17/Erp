@@ -28,6 +28,7 @@ export class ApiUrls {
 
 
 	// AUTH
+  public static VERIFY_OTP: string = "/verify-otp";
 
 	public static LOGOUT: string = "/log-out";
 	public static BRANCHES: string = "/branches";

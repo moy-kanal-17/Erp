@@ -12,6 +12,11 @@ export const authService = {
   console.log('Forget password response:', response);
   return response?.data; 
 }
+},
 
+async verifyForgetPasswordOtp(otp: number) {
+  const response = await apiConfig().postRequest(`admin${ApiUrls.VERIFY_OTP}/`, {otp});
+  console.log('Verify OTP response:', response);
+  return response?.data; 
 }
 }

@@ -109,7 +109,7 @@ const SignIn = () => {
                 Kirish
               </Button>
             </Space>
-            <h1>you forget password? <Link to={'/forget-password'}>tap</Link></h1>
+            <h1>Forgot your password? <Link to={'/forget-password'}>Click</Link></h1>
           </Card>
         </div>
       </div>

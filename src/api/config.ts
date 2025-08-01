@@ -18,6 +18,19 @@ export function apiConfig() {
         Notification('error', err?.message)
     }
   }
+
+
+    async function postOtp(url:string, body:number){
+    try{
+        const res = await axiosInstance.post(url, body)
+         Notification('success', res.data.message)
+        return res
+    }catch(err:any){
+        Notification('error', err?.message)
+    }
+  }
+
+
   async function putRequest(url:string, body:object={}){
     try{
         const res = await axiosInstance.put(url, body)
@@ -48,6 +61,7 @@ export function apiConfig() {
     postRequest,
     putRequest,
     deleteRequest,
-    patchRequest
+    patchRequest,
+    postOtp
   }
 }
