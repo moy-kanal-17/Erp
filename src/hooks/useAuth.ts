@@ -5,4 +5,12 @@ export const useAuth = () => {
     return useMutation({
         mutationFn: async ({ data, role }: { data: SignIn; role: string }) => authService.signIn(data, role),
     })
+
 }
+
+
+export const useForgetPassword = () => {
+    return useMutation({
+        mutationFn: async ({ email, role }: { email: string; role: string }) => authService.sendForgetPasswordOtp({email, role}),
+    });
+};

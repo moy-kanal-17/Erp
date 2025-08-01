@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "@hooks";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { setItem } from "@helpers";
 import { Button, Input, Select, Typography, Card, Space } from "antd";
 
@@ -109,6 +109,7 @@ const SignIn = () => {
                 Kirish
               </Button>
             </Space>
+            <h1>you forget password? <Link to={'/forget-password'}>tap</Link></h1>
           </Card>
         </div>
       </div>

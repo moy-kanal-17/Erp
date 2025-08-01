@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 
 import App from "../App";
-import { SignIn, SignUp, NotFound, TeacherLayout, AdminLayout, Worker, SingleGroup,Student, StudentLayout, Groups, LayoutProtect, LoginProtect, Curs, GroupPage, TeacherDashboard,  Profile, TeacherPaneLayout, AdminProfile, TeacherGroupsPage, TeacherSingleGroupsPage, LessonPage, 
+import { SignIn, SignUp, NotFound, TeacherLayout, AdminLayout, Worker, SingleGroup,Student, StudentLayout, Groups, LayoutProtect, LoginProtect, Curs, GroupPage, TeacherDashboard,  Profile, TeacherPaneLayout, AdminProfile, TeacherGroupsPage, TeacherSingleGroupsPage, LessonPage, ForgetPassword, 
   // Attendace
  } from "@pages";
 import Branchs from "../pages/branchs/branch";
@@ -23,6 +23,7 @@ const Router = () => {
       <Route path="/" element={<App />}>
         <Route index element={<LoginProtect><SignIn/></LoginProtect>}/>
         <Route path="sign-up" element={<SignUp/>}/>
+        <Route path="forget-password" element={<ForgetPassword/>}/>
         
         {/* ADMIN LAYOUT */}
         <Route path="admin" element={<LayoutProtect><AdminLayout/></LayoutProtect>}>
