@@ -35,6 +35,8 @@ export class ApiUrls {
 	public static LESSONS: string = "/lessons";
 	public static GROUP_LESSONS: string = this.LESSONS + "/group";
 	public static GROUP_TEACHERS: string = "/group-teachers";
+	public static GROUP_TEACHERS_DEACTIVATE: string = "/group-teachers/deactivate";
+
   public static GROUP_TEACHERS_MY: string = "/group-teachers/my-groups";
 
 	public static GROUP_TEACHERS_BY_GROUP_ID: string =

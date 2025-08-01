@@ -32,7 +32,7 @@ export const groupTeacherService = {
         return res;
     },
     async deactivateGroupTeacher(id: number) {
-        const res = await apiConfig().patchRequest(`${ApiUrls.GROUP_TEACHERS}/deactivate/${id}`);
+        const res = await apiConfig().patchRequest(`${ApiUrls.GROUP_TEACHERS_DEACTIVATE}/${id}`);
         return res;
     },
     async getGroupStudents(id: number) {
