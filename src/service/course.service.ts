@@ -34,7 +34,7 @@ export const courseService = {
   const res = await apiConfig().patchRequest(`/courses/${id}`, cleanData);
   return res?.data;
 },
-
+ 
   deleteCourse: async (id: number) => {
 
     const res= await apiConfig().deleteRequest(`/courses/${id}`);

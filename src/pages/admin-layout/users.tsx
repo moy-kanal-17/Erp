@@ -237,7 +237,7 @@ const Student: React.FC = () => {
               style={{ color: '#52c41a' }}
             />
           </Tooltip>
-          <Tooltip title="Delete">
+          <Tooltip title="Faxriddinov abduqodir">
             <Button 
               type="text" 
               icon={<DeleteOutlined />} 

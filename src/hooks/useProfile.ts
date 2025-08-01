@@ -24,7 +24,7 @@ export const useProfile = () => {
       return profileService.updatePassword(role, +id, data);
     },
     onSuccess: () => {
-      message.success('Password changed successfully');
+      // message.success('Password changed successfully');
     },
     onError: (error: any) => {
       message.error(error?.response?.data?.message || 'Failed to update password');

@@ -8,7 +8,7 @@ export const useStudents = (params: ParamsType) => {
 		queryKey: ["students", params],
 		queryFn: async () => studentService.getStudent(params),
 	});
-	console.log("Student data:", data);
+
 	
 	const useStudentCreate = () => {
 		return useMutation({

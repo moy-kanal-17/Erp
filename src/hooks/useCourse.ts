@@ -10,6 +10,7 @@ export const useCourse = (params: ParamsType) => {
   });
 
 
+
   return {
     data,
   };

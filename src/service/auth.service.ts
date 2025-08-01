@@ -10,7 +10,7 @@ export const authService = {
  async sendForgetPasswordOtp(data: { email: string; role: string }) { {
   const response = await apiConfig().postRequest('https://erp-edu.uz/api/admin/forget-password', data);
   console.log('Forget password response:', response);
-  return response?.data; // { message: "OTP sent successfully" }
+  return response?.data; 
 }
 
 }

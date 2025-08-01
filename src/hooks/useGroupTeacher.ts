@@ -2,16 +2,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { groupTeacherService } from '@service';
 import type { ParamsType } from '@types';
 
-interface GroupTeacher {
-  id: number;
-  group: { id: number; name: string }; 
-  teacher: { id: number; first_name: string; last_name: string };
-  status: boolean;
-  start_date: string;
-  end_date: string;
-}
+import type { GroupTeacher } from '@types';
 
-// ✅ Fetch hook
+
 export const useGroupTeachers = (params: ParamsType = { page: 1, limit: 10 }) => {
   const { data, isLoading } = useQuery({
     queryKey: ['group-teachers', params],
@@ -34,7 +27,7 @@ export const useTeachersGroupById = (id: number) => {
   });
 };
 
-// ✅ Create hook
+
 export const useGroupTeacherCreate = () => {
   const queryClient = useQueryClient();
 
@@ -47,7 +40,7 @@ export const useGroupTeacherCreate = () => {
   });
 };
 
-// ✅ Update hook
+
 export const useGroupTeacherUpdate = () => {
   const queryClient = useQueryClient();
 
@@ -60,7 +53,7 @@ export const useGroupTeacherUpdate = () => {
   });
 };
 
-// ✅ Delete hook
+
 export const useGroupTeacherDelete = () => {
   const queryClient = useQueryClient();
 
@@ -72,7 +65,7 @@ export const useGroupTeacherDelete = () => {
   });
 };
 
-// ✅ Activate hook
+
 export const useGroupTeacherActivate = () => {
   const queryClient = useQueryClient();
 
@@ -84,7 +77,7 @@ export const useGroupTeacherActivate = () => {
   });
 };
 
-// ✅ Deactivate hook
+
 export const useGroupTeacherDeactivate = () => {
   const queryClient = useQueryClient();
 
