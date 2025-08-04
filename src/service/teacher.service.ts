@@ -4,9 +4,10 @@ import type { ParamsType } from "@types";
 
 export const teacherService = {
 	async getTeacher(params: ParamsType) {
+		
 		console.log("Fetching teachers with params:", params);
 		
-		const res = await apiConfig().getRequest(ApiUrls.TEACHER);
+		const res = await apiConfig().getRequest(ApiUrls.TEACHER,{page:1,limit:100});
 		return res;
 	},
 	async getTeacherMyGroups() {
