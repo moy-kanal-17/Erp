@@ -19,7 +19,7 @@ const Profile = () => {
     isUpdatingAvatar,
     updateProfile,
     isUpdatingProfile,
-  } = useProfile();
+  } = useProfile('teacher');
   const [isEditing, setIsEditing] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [form] = Form.useForm();
