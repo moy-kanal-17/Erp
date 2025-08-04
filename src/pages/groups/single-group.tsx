@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Card, Collapse, Skeleton, Button, Tag } from 'antd';
-import { CalendarOutlined,  ArrowLeftOutlined, TeamOutlined, ClockCircleOutlined } from '@ant-design/icons';
+import { CalendarOutlined, ArrowLeftOutlined, TeamOutlined, ClockCircleOutlined } from '@ant-design/icons';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGroup } from '@hooks';
 import GroupTeachers from '../../components/group/group-teachers';
@@ -88,9 +88,11 @@ const SingleGroup = () => {
 
   useEffect(() => {
     console.log('isLoading:', isLoading);
+    console.log('students:', students);
+    console.log('students?.data:', students?.data);
     console.log('lessons:', lessons);
     console.log('lessons?.data?.lessons:', lessons?.data?.lessons);
-  }, [isLoading, lessons]);
+  }, [isLoading, students, lessons]);
 
   const lessonsList = lessons?.data?.lessons || [];
 
@@ -168,7 +170,7 @@ const SingleGroup = () => {
             >
               {isLoading || !teachers?.data ? (
                 <Skeleton active paragraph={{ rows: 4 }} title={false} />
-              ) : teachers.data.length > 0 ? (
+              ) : (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -176,8 +178,6 @@ const SingleGroup = () => {
                 >
                   <GroupTeachers teachers={teachers.data} />
                 </motion.div>
-              ) : (
-                <p style={{ fontSize: '12px', color: '#595959' }}>No teachers assigned to this group.</p>
               )}
             </Panel>
             <Panel
@@ -192,7 +192,7 @@ const SingleGroup = () => {
             >
               {isLoading ? (
                 <Skeleton active paragraph={{ rows: 4 }} title={false} />
-              ) : lessonsList.length > 0 ? (
+              ) : (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -200,8 +200,6 @@ const SingleGroup = () => {
                 >
                   <GroupLessons lessons={lessonsList} />
                 </motion.div>
-              ) : (
-                <p style={{ fontSize: '12px', color: '#595959' }}>No lessons scheduled for this group.</p>
               )}
             </Panel>
             <Panel
@@ -215,7 +213,7 @@ const SingleGroup = () => {
             >
               {isLoading || !students?.data ? (
                 <Skeleton active paragraph={{ rows: 4 }} title={false} />
-              ) : students.data.length > 0 ? (
+              ) : (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -223,8 +221,6 @@ const SingleGroup = () => {
                 >
                   <GroupStudents students={students.data} id={id} />
                 </motion.div>
-              ) : (
-                <p style={{ fontSize: '12px', color: '#595959' }}>No students assigned to this group.</p>
               )}
             </Panel>
           </StyledCollapse>

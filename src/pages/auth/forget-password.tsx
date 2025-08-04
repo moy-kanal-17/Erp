@@ -108,7 +108,7 @@ const ForgetPassword: React.FC = () => {
     }
 
     verifyOtp(
-      { otp: Number(otp) }, // Convert OTP to number
+      { otp: Number(otp) },
       {
         onSuccess: () => {
           message.success('OTP verified successfully!');
@@ -116,8 +116,8 @@ const ForgetPassword: React.FC = () => {
           setOtp('');
           navigate('/reset-password');
         },
-        onError: () => {
-          message.error('Invalid OTP. Try again.');
+        onError: (error) => {
+          message.error(`Invalid OTP. Try again. ${error}`,);
         },
       }
     );

@@ -66,7 +66,7 @@ const Student: React.FC = () => {
         ...user,
         date_of_birth: user.date_of_birth ? dayjs(user.date_of_birth) : null
       });
-      form.setFieldsValue({ password_hash: '', confirm_password: '' });
+      form.setFieldsValue({ password_hash: '' });
     } else {
       form.resetFields();
     }
@@ -91,7 +91,7 @@ const Student: React.FC = () => {
         delete payload.groupsId;
       } else {
         payload.password_hash = values.password_hash;
-        payload.confirm_password = values.confirm_password;
+
       }
       
       console.log("Payload sent:", payload);
@@ -472,27 +472,7 @@ const Student: React.FC = () => {
                   <Input.Password placeholder="Parolni kiriting" />
                 </Form.Item>
               </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="confirm_password"
-                  label="Parolni tasdiqlash"
-                  dependencies={['password_hash']}
-                  hasFeedback
-                  rules={[
-                    { required: true, message: 'Parolni tasdiqlash majburiy!' },
-                    ({ getFieldValue }) => ({
-                      validator(_, value) {
-                        if (!value || getFieldValue('password_hash') === value) {
-                          return Promise.resolve();
-                        }
-                        return Promise.reject(new Error('Kiritilgan parollar mos kelmadi!'));
-                      },
-                    }),
-                  ]}
-                >
-                  <Input.Password placeholder="Parolni qayta kiriting" />
-                </Form.Item>
-              </Col>
+
             </Row>
           )}
 

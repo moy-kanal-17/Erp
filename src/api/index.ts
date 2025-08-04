@@ -3,6 +3,7 @@ import { clearStorage, getItem } from "@helpers";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
+   withCredentials: true
 });
 
 axiosInstance.interceptors.request.use((config) => {
@@ -14,13 +15,13 @@ axiosInstance.interceptors.request.use((config) => {
 });
 
 axiosInstance.interceptors.response.use(
-  (response) => response, // Pass through successful responses
+  (response) => response, 
   async (error) => {
     if (error.response && error.response.status === 401) {
       window.location.href = "/";
       clearStorage();
     }
-    return Promise.reject(error); // Reject other errors
+    return Promise.reject(error); 
   }
 );
 
