@@ -1,16 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { message } from 'antd';
 import { profileService } from '@service';
-import { getUserIdFromToken, getUserRoleFromToken } from '@helpers';
+import { getUserIdFromToken } from '@helpers';
 
-export const useProfile = () => {
+export const useProfile = (role:string) => {
   const id = getUserIdFromToken();
-  const role = getUserRoleFromToken();
   const queryClient = useQueryClient();
 
   const profileQuery = useQuery({
     queryKey: ['profile', role, id],
-    queryFn: () => profileService.getProfile(),
+    queryFn: () => profileService.getProfile(id!, role),
     enabled: !!id && !!role,
   });
 

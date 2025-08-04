@@ -74,7 +74,7 @@ const AdminProfile = () => {
     isUpdatingPassword,
     updateAvatar,
     isUpdatingAvatar,
-  } = useProfile();
+  } = useProfile('admin');
   const [form] = Form.useForm();
   const [isChangingPassword, setIsChangingPassword] = useState(false);
 

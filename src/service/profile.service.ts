@@ -1,6 +1,8 @@
 import { apiConfig } from '@api/config';
 
-import { getUserIdFromToken, getUserRoleFromToken } from '@helpers';
+
+// import { getUserIdFromToken, getUserRoleFromToken } from '@helpers';
+
 
 export interface CommonProfile {
   firstName: string;
@@ -10,15 +12,19 @@ export interface CommonProfile {
 }
 
 export const profileService = {
-  async getProfile() {
-    const id = getUserIdFromToken();
-    const role = getUserRoleFromToken(); 
+
+  async getProfile(id:number, role:string) {
+
 
     if (!id || !role) throw new Error('Token information missing');
+    console.log('Fetching profile for role:', role, 'and ID:', id);
 
     const res = await apiConfig().getRequest(`/${role}/${id}`);
-    return res?.data[role];
+    console.log('Profile fetch response:✅', res?.data.admin || res?.data.student || res?.data.teacher || res?.data.parent || res?.data.employee);
+
+    return res?.data.admin || res?.data.student || res?.data.teacher || res?.data.parent || res?.data.employee;
   },
+
 
   updatePassword: async (
     role: string,

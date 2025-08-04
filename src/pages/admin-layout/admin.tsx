@@ -22,9 +22,9 @@ const { Header, Sider, Content } = Layout;
 const Admin = () => {
   const navigate = useNavigate();
   const isMounted = useRef(true);
-  const { profile } = useProfile();
+  const { profile } = useProfile('admin');
 
-  console.log("profile", profile);
+  console.log("profile in admin❌", profile);
 
   const handleMenuClick = useCallback(
     (e: any) => {
