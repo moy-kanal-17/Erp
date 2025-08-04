@@ -11,6 +11,8 @@ export const useLessons = (params: ParamsType | {}) => {
 	});
 	
 	const lessons = data?.data?.lessons as any;
+
+
 	console.log(lessons);
 	const useLessonCreate = () => {
 		return useMutation({

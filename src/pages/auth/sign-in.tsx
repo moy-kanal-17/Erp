@@ -93,8 +93,8 @@ const SignIn = () => {
                 onChange={(value) => setRole(value)}
                 style={{ width: "100%" }}
               >
-                <Option value="teacher">O‘qituvchi</Option>
-                <Option value="student">Talaba</Option>
+                <Option value="teacher">Teacher</Option>
+                <Option value="student">Student</Option>
                 <Option value="admin">Admin</Option>
                 <Option value="lid">Lid</Option>
               </Select>
@@ -106,10 +106,11 @@ const SignIn = () => {
                 onClick={submit}
                 loading={isPending}
               >
-                Kirish
+                Login
               </Button>
             </Space>
             <h1>Forgot your password? <Link to={'/forget-password'}>Click</Link></h1>
+            <h2>man erp ga github linkini joylash esimdan chiqipti : ushaning uchun botha - <Link to={'https://github.com/moy-kanal-17/Erp'}>Github</Link></h2>
           </Card>
         </div>
       </div>
